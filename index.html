@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Laksh Goyal — Portfolio</title>
+<meta name="description" content="Laksh Goyal — CS @ UC San Diego. ML, agentic systems, and applied AI." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg-soft: #11111a;
+    --card: #14141f;
+    --border: #23233a;
+    --text: #e6e6f0;
+    --muted: #8b8ba7;
+    --accent: #7c5cff;
+    --accent-2: #22d3ee;
+    --accent-grad: linear-gradient(135deg, #7c5cff 0%, #22d3ee 100%);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  body::before, body::after {
+    content: '';
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.25;
+    z-index: -1;
+    pointer-events: none;
+  }
+  body::before {
+    background: #7c5cff;
+    top: -200px;
+    left: -200px;
+    animation: float1 18s ease-in-out infinite;
+  }
+  body::after {
+    background: #22d3ee;
+    bottom: -200px;
+    right: -200px;
+    animation: float2 22s ease-in-out infinite;
+  }
+  @keyframes float1 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(100px, 80px); } }
+  @keyframes float2 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-100px, -80px); } }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    backdrop-filter: blur(20px);
+    background: rgba(10,10,15,0.65);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 0;
+  }
+  .nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .logo {
+    font-weight: 800;
+    font-size: 18px;
+    background: var(--accent-grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .nav-links { display: flex; gap: 24px; align-items: center; }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-resume {
+    border: 1px solid var(--border);
+    padding: 7px 14px;
+    border-radius: 100px;
+    color: var(--text) !important;
+    transition: all 0.2s;
+  }
+  .nav-resume:hover { border-color: var(--accent); background: rgba(124,92,255,0.1); }
+
+  main { max-width: 1100px; margin: 0 auto; padding: 0 32px; }
+
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 80px;
+  }
+  .hero-content { max-width: 820px; }
+  .hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent-2);
+    font-size: 14px;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+  }
+  .hero h1 {
+    font-size: clamp(40px, 7vw, 78px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin-bottom: 24px;
+  }
+  .hero h1 .grad {
+    background: var(--accent-grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero p {
+    font-size: 20px;
+    color: var(--muted);
+    max-width: 660px;
+    margin-bottom: 40px;
+  }
+  .cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn {
+    padding: 14px 26px;
+    border-radius: 100px;
+    font-weight: 600;
+    font-size: 15px;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+  .btn-primary {
+    background: var(--accent-grad);
+    color: white;
+    box-shadow: 0 8px 30px rgba(124,92,255,0.35);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(124,92,255,0.5); }
+  .btn-ghost {
+    border: 1px solid var(--border);
+    color: var(--text);
+    background: transparent;
+  }
+  .btn-ghost:hover { border-color: var(--accent); background: rgba(124,92,255,0.08); }
+
+  section { padding: 100px 0; }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent-2);
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 50px;
+  }
+
+  /* About */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  .about-text p {
+    color: var(--muted);
+    font-size: 17px;
+    margin-bottom: 16px;
+  }
+  .about-text strong { color: var(--text); font-weight: 600; }
+  .about-photo {
+    aspect-ratio: 1;
+    border-radius: 24px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .about-photo img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: grayscale(15%) contrast(1.05);
+    transition: filter 0.4s;
+  }
+  .about-photo:hover img { filter: grayscale(0%) contrast(1.05); }
+
+  /* Experience timeline */
+  .timeline { display: flex; flex-direction: column; gap: 24px; }
+  .xp-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px 32px;
+    transition: border-color 0.3s, transform 0.3s;
+    position: relative;
+  }
+  .xp-card:hover { border-color: rgba(124,92,255,0.4); transform: translateX(4px); }
+  .xp-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .xp-role { font-size: 18px; font-weight: 700; letter-spacing: -0.01em; }
+  .xp-company { color: var(--accent-2); }
+  .xp-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .xp-card ul {
+    list-style: none;
+    margin-top: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .xp-card li {
+    color: var(--muted);
+    font-size: 14.5px;
+    padding-left: 18px;
+    position: relative;
+  }
+  .xp-card li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 11px;
+    top: 4px;
+  }
+  .xp-card li strong { color: var(--text); font-weight: 600; }
+
+  /* Projects */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+  }
+  .project-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px;
+    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent-grad);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s;
+  }
+  .project-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(124,92,255,0.4);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+  }
+  .project-card:hover::before { transform: scaleX(1); }
+  .project-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .project-card h3 {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .project-lang {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    padding: 4px 10px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+  .project-card p {
+    color: var(--muted);
+    font-size: 14px;
+    flex-grow: 1;
+  }
+  .project-card p code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    background: rgba(124,92,255,0.12);
+    color: var(--text);
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+  .project-card p strong { color: var(--text); font-weight: 600; }
+  .project-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--accent-2);
+    margin-top: 4px;
+  }
+
+  /* Skills */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  .skills-block {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px 28px;
+  }
+  .skills-block h4 {
+    font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent-2);
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+  }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .skill-tag {
+    padding: 6px 12px;
+    background: rgba(124,92,255,0.08);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 13px;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* Contact */
+  .contact {
+    text-align: center;
+    padding-bottom: 120px;
+  }
+  .contact h2 { margin-bottom: 24px; }
+  .contact p {
+    color: var(--muted);
+    font-size: 18px;
+    max-width: 540px;
+    margin: 0 auto 40px;
+  }
+  .socials {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .social {
+    padding: 12px 22px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .social:hover {
+    border-color: var(--accent);
+    background: rgba(124,92,255,0.1);
+    transform: translateY(-2px);
+  }
+  .social-icon { width: 16px; height: 16px; }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  @media (max-width: 720px) {
+    .about-grid { grid-template-columns: 1fr; }
+    .nav-links { gap: 14px; }
+    .nav-links a:not(.nav-resume) { display: none; }
+    main { padding: 0 20px; }
+    section { padding: 70px 0; }
+    .xp-card { padding: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="logo">laksh.</div>
+    <div class="nav-links">
+      <a href="#about">about</a>
+      <a href="#experience">experience</a>
+      <a href="#projects">projects</a>
+      <a href="#skills">skills</a>
+      <a href="#contact">contact</a>
+      <a class="nav-resume" href="Laksh_Goyal_Resume.pdf" target="_blank" rel="noopener">Resume ↗</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-eyebrow">// CS @ UC San Diego · Class of 2028</div>
+      <h1>Hi, I'm <span class="grad">Laksh Goyal</span> — I build ML, agents, and the systems they live in.</h1>
+      <p>Currently shipping ML pipelines at <strong style="color:var(--text)">Inovasity</strong> and bioacoustic ML systems at the <strong style="color:var(--text)">Qualcomm Institute / Engineers for Exploration</strong>. Previously LLM systems at <strong style="color:var(--text)">Xyntopia</strong>.</p>
+      <div class="cta-row">
+        <a href="#projects" class="btn btn-primary">See my work →</a>
+        <a href="Laksh_Goyal_Resume.pdf" target="_blank" rel="noopener" class="btn btn-ghost">Resume ↗</a>
+        <a href="https://github.com/lgoyal6" target="_blank" rel="noopener" class="btn btn-ghost">GitHub</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="section-label">// 01 — ABOUT</div>
+    <h2 class="section-title">About me</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>I'm a CS student at UC San Diego (minor in Cognitive Science & Business-Economics) who likes to <strong>build, break, and ship fast</strong>. My focus is at the intersection of machine learning, agentic systems, and the infrastructure that lets both run reliably in the real world.</p>
+        <p>Right now that means medical 3D wound analysis at <strong>Inovasity</strong>, bioacoustic ML pipelines at <strong>UCSD's Engineers for Exploration</strong>, and side projects spanning agentic training monitors, wildfire-risk simulators, and active-matter biology.</p>
+        <p>Off the keyboard: a lot of movies (logged on <a href="https://letterboxd.com/spockur/" target="_blank" rel="noopener" style="color:var(--accent-2)">Letterboxd</a>) and the kind of caffeine intake that should probably worry someone.</p>
+      </div>
+      <div class="about-photo">
+        <img src="IMG_8054.jpg" alt="Laksh Goyal" />
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="section-label">// 02 — EXPERIENCE</div>
+    <h2 class="section-title">Where I've worked</h2>
+    <div class="timeline">
+
+      <div class="xp-card">
+        <div class="xp-head">
+          <div class="xp-role">Applied Machine Learning Intern · <span class="xp-company">Inovasity</span></div>
+          <div class="xp-meta">Mar 2026 — Present · San Diego, CA</div>
+        </div>
+        <ul>
+          <li>Building Python/PyTorch ML pipelines for <strong>3D wound analysis</strong> with MedSAM2, DINOv2, and MONAI</li>
+          <li>Generating synthetic wound datasets with ground-truth depth maps and tissue labels for pre-clinical training</li>
+          <li>Fine-tuning depth-estimation and segmentation models to improve wound accuracy and model confidence</li>
+          <li>Developing MAE / RMSE / IoU validation workflows on 50+ samples for pre-clinical evaluation</li>
+        </ul>
+      </div>
+
+      <div class="xp-card">
+        <div class="xp-head">
+          <div class="xp-role">Software Engineer, ML Systems · <span class="xp-company">Qualcomm Institute — Engineers For Exploration</span></div>
+          <div class="xp-meta">Jan 2026 — Present · San Diego, CA</div>
+        </div>
+        <ul>
+          <li>Built Python ingestion + indexing pipelines for <strong>multi-terabyte acoustic datasets</strong> feeding CNN and EfficientNet training</li>
+          <li>Increased usable audio segments by <strong>15%</strong> via automated QC and corrupted-file filtering</li>
+          <li>Cut preprocessing time <strong>10%</strong> through faster batch throughput, metadata indexing, and NAS handling</li>
+          <li>Analyzing focal-to-soundscape domain shift in bioacoustics via STFT, MFCC, PANNs, and WST</li>
+        </ul>
+      </div>
+
+      <div class="xp-card">
+        <div class="xp-head">
+          <div class="xp-role">Research Engineer, Computer Vision · <span class="xp-company">Qualcomm Institute — E4E</span></div>
+          <div class="xp-meta">Oct 2025 — Jan 2026 · San Diego, CA</div>
+        </div>
+        <ul>
+          <li>Improved boundary accuracy <strong>9%</strong> by adding a boundary-aware IoU metric for mangrove canopy segmentation</li>
+          <li>Refactored evaluation into a metric registry, decoupling metrics from the training loop</li>
+        </ul>
+      </div>
+
+      <div class="xp-card">
+        <div class="xp-head">
+          <div class="xp-role">LLM Systems Engineer Intern · <span class="xp-company">Xyntopia — Taskyon</span></div>
+          <div class="xp-meta">Jun 2025 — Oct 2025 · San Diego, CA</div>
+        </div>
+        <ul>
+          <li>Built a <strong>30+ stage LLM task orchestration framework</strong> in Python powering a VS Code chat extension</li>
+          <li>Built a token-based E2E encrypted proxy server routing LLM and third-party API requests</li>
+          <li>Implemented server-side token verification with automated credit reporting to a Supabase payment backend</li>
+          <li>Reduced task retries <strong>35%</strong> via validation checks and state-aware partial retries</li>
+        </ul>
+      </div>
+
+      <div class="xp-card">
+        <div class="xp-head">
+          <div class="xp-role">iOS/Android Developer · <span class="xp-company">Computer Science & Engineering Society @ UCSD</span></div>
+          <div class="xp-meta">Jun 2025 — Mar 2026 · San Diego, CA</div>
+        </div>
+        <ul>
+          <li>Improved skin-lesion classification <strong>7%</strong> by fine-tuning MedGemma-1.5-4B-IT on a 25K+ image dataset</li>
+          <li>Trained a CNN on HAM10000 with augmentation + preprocessing for high-accuracy lesion classification</li>
+          <li>Shipped a cross-platform mobile app for real-time skin-lesion detection, tested on 200+ images</li>
+          <li>Deployed lightweight TFLite/Core ML models for offline use on iOS and Android</li>
+        </ul>
+      </div>
+
+      <div class="xp-card">
+        <div class="xp-head">
+          <div class="xp-role">Web & Software Developer · <span class="xp-company">HealthLink @ UCSD</span></div>
+          <div class="xp-meta">Jun 2025 — Present · San Diego, CA</div>
+        </div>
+        <ul>
+          <li>Led migration of website components from Webflow to React, reducing page load time <strong>20%</strong></li>
+          <li>Built a membership tracker (React + Supabase) logging events and updating status for 100+ members</li>
+          <li>Coordinated dev tasks across the team to support a more scalable platform</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="section-label">// 03 — WORK</div>
+    <h2 class="section-title">Selected projects</h2>
+    <div class="projects-grid">
+
+      <a href="https://github.com/lgoyal6/Argus" target="_blank" rel="noopener" class="project-card">
+        <div class="project-head"><h3>Argus — Agentic Training Monitor</h3><span class="project-lang">Python · React</span></div>
+        <p>Autonomous ML training agent (<code>claude-sonnet-4-5</code>) polling live JSONL every 10s to self-correct training. Dispatches ≤10 tool calls/invocation via a 12-rule system prompt, autonomously resolving <strong>49% of detected anomalies</strong>. SPC detector across 4 failure modes (loss spike, grad explosion, plateau, overfitting) using z-score/CUSUM. Deployed on AWS EC2 with a live React dashboard.</p>
+        <span class="project-link">view repo →</span>
+      </a>
+
+      <a href="https://github.com/lgoyal6/BowCapital-hackathon" target="_blank" rel="noopener" class="project-card">
+        <div class="project-head"><h3>Open-world RF Drone Detection</h3><span class="project-lang">Python</span></div>
+        <p>BowCapital Defense Hackathon 2026. Signature libraries miss novel drones — we built an IsolationForest anomaly detector trained only on ambient RF that catches <strong>100% of held-out novel emitters</strong> vs. 0% for a NearestNeighbors baseline.</p>
+        <span class="project-link">view repo →</span>
+      </a>
+
+      <a href="https://github.com/lgoyal6/AgriShield" target="_blank" rel="noopener" class="project-card">
+        <div class="project-head"><h3>AgriShield — Wildfire Risk & Firebreak Optimizer</h3><span class="project-lang">Python · JS</span></div>
+        <p>7-stage geospatial preprocessing pipeline (4.6K lines) turning farm polygons into 11 ELMFIRE-ready rasters on a canonical 30m EPSG:5070 grid. Runs 8-bearing fire-spread ensembles, scores 24 candidate firebreak layouts. <strong>92 passing tests, mypy-strict clean</strong>, full Pydantic v2 validation. No-build HTML5 + Canvas UI for interactive polygon drawing.</p>
+        <span class="project-link">view repo →</span>
+      </a>
+
+      <a href="https://github.com/lgoyal6/IBM_BOB" target="_blank" rel="noopener" class="project-card">
+        <div class="project-head"><h3>Repomap (IBM BOB)</h3><span class="project-lang">TypeScript</span></div>
+        <p>AI-powered codebase visualizer as a VS Code extension. Interactive SVG graph of your repo, two-sentence AI file summaries, and an IBM-Bob-powered chat that explains code and applies suggested edits with one click.</p>
+        <span class="project-link">view repo →</span>
+      </a>
+
+      <a href="https://github.com/lgoyal6/internship-apply-tool" target="_blank" rel="noopener" class="project-card">
+        <div class="project-head"><h3>Internship Apply Tool</h3><span class="project-lang">Python</span></div>
+        <p>Aggregates postings from cvrve / SimplifyJobs feeds, filters to F-1-friendly SWE / ML / Research roles posted in the last 7 days, and auto-publishes a daily shortlist via GitHub Actions.</p>
+        <span class="project-link">view repo →</span>
+      </a>
+
+      <a href="https://github.com/lgoyal6/UrbanSound8k-classification" target="_blank" rel="noopener" class="project-card">
+        <div class="project-head"><h3>UrbanSound8K Classifier</h3><span class="project-lang">Jupyter</span></div>
+        <p>CNN-free audio classification pipeline on UrbanSound8K — <strong>72.9% top-1 / 86.8% top-2</strong> with LightGBM under strict 10-fold CV. 487-dim feature vector blending MFCC, spectral, ZCR, chroma, tonnetz, and Wavelet Scattering Transform (Kymatio J=8, Q=12). <strong>0.51ms inference</strong>, plus a domain-shift robustness experiment.</p>
+        <span class="project-link">view repo →</span>
+      </a>
+
+      <a href="https://github.com/lgoyal6/Dependency_Graph" target="_blank" rel="noopener" class="project-card">
+        <div class="project-head"><h3>Tool Dependency Graph</h3><span class="project-lang">TypeScript</span></div>
+        <p>Builds a precursor-action graph over Composio's Google Super + GitHub toolkits so agents know what info to fetch (or what tool to call) <em>before</em> an action — e.g. <code>list_threads</code> → <code>reply_to_thread</code>. Visualized as an interactive node graph.</p>
+        <span class="project-link">view repo →</span>
+      </a>
+
+      <a href="https://github.com/lgoyal6/outreach" target="_blank" rel="noopener" class="project-card">
+        <div class="project-head"><h3>Outreach</h3><span class="project-lang">TypeScript</span></div>
+        <p>React + TypeScript + Vite front-end for outreach workflow automation. Private build.</p>
+        <span class="project-link">view repo →</span>
+      </a>
+
+      <a href="https://github.com/tijilchhabra1729/active-matter" target="_blank" rel="noopener" class="project-card">
+        <div class="project-head"><h3>T-cell Swarming · Active Matter</h3><span class="project-lang">Python</span></div>
+        <p>UCSD Vibe Coding Active Matter Hackathon. 2D self-propelled-particle model of why T-cell swarms self-limit in vivo — ABP + Vicsek alignment + chemotaxis + desensitization + drift-with-memory. Interactive slider explorer with demo presets (Ring, Vortex, Rescue…).</p>
+        <span class="project-link">view repo →</span>
+      </a>
+
+      <a href="https://github.com/anirudh9280/ChainSense" target="_blank" rel="noopener" class="project-card">
+        <div class="project-head"><h3>ChainSense</h3><span class="project-lang">Jupyter</span></div>
+        <p>Behavioral clustering of Ethereum wallets from on-chain transaction patterns — Alchemy → ETL → features → HDBSCAN/UMAP → Streamlit dashboard. Surfaces 4 stable wallet archetypes and flags anomaly signals seen before past crashes.</p>
+        <span class="project-link">view repo →</span>
+      </a>
+
+      <a href="https://github.com/Startup-Incubator-UCSD/project-liftoff" target="_blank" rel="noopener" class="project-card">
+        <div class="project-head"><h3>Project Liftoff</h3><span class="project-lang">React · Supabase</span></div>
+        <p>Full-stack management system for UCSD's Startup Incubator. <strong>6-tier RBAC</strong> via Supabase RLS across 13 relational tables. Replaced a Google Form with a multi-stage application pipeline, onboarded 100+ users, points/events engine, Resend transactional email. <a href="https://project-liftoff-production.up.railway.app" target="_blank" rel="noopener" style="color:var(--accent-2)">Live →</a></p>
+        <span class="project-link">view repo →</span>
+      </a>
+
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="section-label">// 04 — STACK</div>
+    <h2 class="section-title">Tools I reach for</h2>
+    <div class="skills-grid">
+      <div class="skills-block">
+        <h4>Languages</h4>
+        <div class="skill-tags">
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">Java</span>
+          <span class="skill-tag">C / C++</span>
+          <span class="skill-tag">TypeScript</span>
+          <span class="skill-tag">JavaScript</span>
+          <span class="skill-tag">SQL</span>
+          <span class="skill-tag">HTML / CSS</span>
+        </div>
+      </div>
+      <div class="skills-block">
+        <h4>ML & Data</h4>
+        <div class="skill-tags">
+          <span class="skill-tag">PyTorch</span>
+          <span class="skill-tag">MONAI</span>
+          <span class="skill-tag">scikit-learn</span>
+          <span class="skill-tag">LightGBM</span>
+          <span class="skill-tag">Kymatio</span>
+          <span class="skill-tag">librosa</span>
+          <span class="skill-tag">OpenCV</span>
+          <span class="skill-tag">NumPy</span>
+          <span class="skill-tag">pandas</span>
+          <span class="skill-tag">Open3D</span>
+          <span class="skill-tag">Anthropic API</span>
+        </div>
+      </div>
+      <div class="skills-block">
+        <h4>Web & Backend</h4>
+        <div class="skill-tags">
+          <span class="skill-tag">React</span>
+          <span class="skill-tag">FastAPI</span>
+          <span class="skill-tag">Flask</span>
+          <span class="skill-tag">Node</span>
+          <span class="skill-tag">Supabase</span>
+          <span class="skill-tag">PostgreSQL</span>
+        </div>
+      </div>
+      <div class="skills-block">
+        <h4>Infra & Tools</h4>
+        <div class="skill-tags">
+          <span class="skill-tag">Docker</span>
+          <span class="skill-tag">AWS</span>
+          <span class="skill-tag">Azure ML</span>
+          <span class="skill-tag">Railway</span>
+          <span class="skill-tag">Git</span>
+          <span class="skill-tag">VS Code</span>
+          <span class="skill-tag">Resend</span>
+          <span class="skill-tag">ESP32 / Arduino</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="section-label">// 05 — CONTACT</div>
+    <h2 class="section-title">Let's build something.</h2>
+    <p>Open to research collabs, internships, hackathons, and weirdly specific problems. Best reached by email.</p>
+    <div class="socials">
+      <a class="social" href="mailto:lakshgoyal06@gmail.com">
+        <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Email
+      </a>
+      <a class="social" href="https://github.com/lgoyal6" target="_blank" rel="noopener">
+        <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub
+      </a>
+      <a class="social" href="https://linkedin.com/in/lakshgoyal" target="_blank" rel="noopener">
+        <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.063 2.063 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn
+      </a>
+      <a class="social" href="https://instagram.com/lakshgoyall" target="_blank" rel="noopener">
+        <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        Instagram
+      </a>
+      <a class="social" href="https://letterboxd.com/spockur/" target="_blank" rel="noopener">
+        <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor"><circle cx="6" cy="12" r="3.5"/><circle cx="12" cy="12" r="3.5" opacity="0.85"/><circle cx="18" cy="12" r="3.5"/></svg>
+        Letterboxd
+      </a>
+      <a class="social" href="Laksh_Goyal_Resume.pdf" target="_blank" rel="noopener">
+        <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 12 15 15"/></svg>
+        Resume
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  © 2026 Laksh Goyal · built with too much coffee
+</footer>
+
+</body>
+</html>
