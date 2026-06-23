@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Concept: Pool Break</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #060a06; overflow: hidden; height: 100vh; font-family: monospace; }
+  canvas { display: block; position: fixed; inset: 0; width: 100%; height: 100%; }
+  #light {
+    position: fixed; inset: 0; z-index: 1; pointer-events: none;
+    background: radial-gradient(ellipse 55% 50% at 50% 40%, rgba(255,240,200,.07), transparent 70%);
+  }
+  #vignette {
+    position: fixed; inset: 0; z-index: 1; pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,.82) 100%);
+  }
+  #title {
+    position: fixed; top: clamp(24px, 5vh, 50px); left: clamp(24px, 4vw, 60px);
+    z-index: 3; font-size: clamp(32px, 5vw, 56px); color: #f0f0f0;
+    letter-spacing: .12em; font-weight: bold;
+    text-shadow: 0 2px 20px rgba(0,0,0,.6);
+  }
+  #tagline {
+    position: fixed; top: calc(clamp(24px, 5vh, 50px) + clamp(36px, 5.5vw, 62px));
+    left: clamp(24px, 4vw, 60px); z-index: 3; color: #607050;
+    font-size: clamp(10px, 1.3vw, 14px); letter-spacing: .2em; text-transform: uppercase;
+  }
+  #annotation {
+    position: fixed; bottom: 20px; left: 0; right: 0; z-index: 3;
+    text-align: center; color: #2a3020; font-size: 11px; letter-spacing: .12em;
+  }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="light"></div>
+<div id="vignette"></div>
+<div id="title">LAKSH</div>
+<div id="tagline">Break to explore</div>
+<div id="annotation">CONCEPT: Pool Break &mdash; first scroll triggers the break, balls scatter to page sections</div>
+<script>
+const c = document.getElementById('c'), ctx = c.getContext('2d');
+let W, H;
+function resize() { W = c.width = innerWidth; H = c.height = innerHeight; }
+resize(); addEventListener('resize', resize);
+
+const BALL_COLORS = [
+  '#e8d44d', // 1 solid yellow
+  '#2855a0', // 2 solid blue
+  '#cc3333', // 3 solid red
+  '#5b2e7a', // 4 solid purple
+  '#e87020', // 5 solid orange
+  '#1a7a3a', // 6 solid green
+  '#7a2020', // 7 solid maroon
+  '#1a1a1a', // 8 solid black
+  '#e8d44d', // 9 stripe yellow
+  '#2855a0', // 10 stripe blue
+  '#cc3333', // 11 stripe red
+  '#5b2e7a', // 12 stripe purple
+  '#e87020', // 13 stripe orange
+  '#1a7a3a', // 14 stripe green
+  '#7a2020', // 15 stripe maroon
+];
+const LABELS = ['ABOUT','','','','PROJECTS','','CYCLING','POKER','TRAVEL','','','SOCCER','','','CONTACT'];
+const STRIPE = [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1];
+
+// Triangle rack positions (row, col) -> offset from center
+function rackPositions(cx, cy, r) {
+  const positions = [];
+  const spacing = r * 2.15;
+  const rows = [[0], [-0.5, 0.5], [-1, 0, 1], [-1.5, -0.5, 0.5, 1.5], [-2, -1, 0, 1, 2]];
+  // Specific ball order in rack: 1 at front, 8 in middle, etc.
+  const order = [0, 1,2, 3,7,4, 5,8,9,6, 10,11,12,13,14];
+  let idx = 0;
+  rows.forEach((row, ri) => {
+    row.forEach(col => {
+      const bx = cx + ri * spacing * .87;
+      const by = cy + col * spacing * .5;
+      positions[order[idx]] = { x: bx, y: by };
+      idx++;
+    });
+  });
+  return positions;
+}
+
+function drawTable() {
+  const pad = 60;
+  const tl = pad, tt = pad, tw = W - pad * 2, th = H - pad * 2;
+  // Rails
+  ctx.fillStyle = '#2a1a08';
+  ctx.beginPath();
+  ctx.roundRect(tl - 20, tt - 20, tw + 40, th + 40, 16);
+  ctx.fill();
+  // Felt
+  ctx.fillStyle = '#1a5828';
+  ctx.beginPath();
+  ctx.roundRect(tl, tt, tw, th, 6);
+  ctx.fill();
+  // Felt texture gradient
+  const g = ctx.createRadialGradient(W/2, H/2.2, 0, W/2, H/2, Math.max(W, H) * .5);
+  g.addColorStop(0, 'rgba(40,120,50,.15)');
+  g.addColorStop(1, 'rgba(0,0,0,.2)');
+  ctx.fillStyle = g;
+  ctx.fillRect(tl, tt, tw, th);
+  // Pockets
+  const pocketR = 14;
+  const pockets = [[tl,tt],[tl+tw/2,tt-4],[tl+tw,tt],[tl,tt+th],[tl+tw/2,tt+th+4],[tl+tw,tt+th]];
+  pockets.forEach(([px,py]) => {
+    ctx.fillStyle = '#0a0a0a';
+    ctx.beginPath(); ctx.arc(px, py, pocketR, 0, Math.PI * 2); ctx.fill();
+  });
+}
+
+function drawBall(x, y, r, colorIdx, t) {
+  const col = BALL_COLORS[colorIdx];
+  const isStripe = STRIPE[colorIdx];
+  // Shadow
+  ctx.fillStyle = 'rgba(0,0,0,.35)';
+  ctx.beginPath(); ctx.arc(x + 3, y + 3, r, 0, Math.PI * 2); ctx.fill();
+  // Base
+  ctx.fillStyle = isStripe ? '#f0ece0' : col;
+  ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+  // Stripe band
+  if (isStripe) {
+    ctx.save();
+    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.clip();
+    ctx.fillStyle = col;
+    ctx.fillRect(x - r, y - r * .4, r * 2, r * .8);
+    ctx.restore();
+  }
+  // Number circle
+  ctx.fillStyle = '#f0ece0';
+  ctx.beginPath(); ctx.arc(x, y, r * .35, 0, Math.PI * 2); ctx.fill();
+  // Number
+  ctx.fillStyle = '#1a1a1a';
+  ctx.font = `bold ${Math.round(r * .45)}px monospace`;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText(colorIdx + 1, x, y + 1);
+  // Glossy highlight
+  const hl = ctx.createRadialGradient(x - r * .3, y - r * .3, 0, x, y, r);
+  hl.addColorStop(0, 'rgba(255,255,255,.35)');
+  hl.addColorStop(.5, 'rgba(255,255,255,.05)');
+  hl.addColorStop(1, 'transparent');
+  ctx.fillStyle = hl;
+  ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+}
+
+function drawCue(cx, cy, t) {
+  const cueX = cx - 220, cueY = cy;
+  const angle = Math.sin(t * .8) * .02 + .01;
+  ctx.save();
+  ctx.translate(cueX - 200, cueY);
+  ctx.rotate(angle);
+  // Stick
+  const grad = ctx.createLinearGradient(0, -3, 0, 3);
+  grad.addColorStop(0, '#d4a84a');
+  grad.addColorStop(.5, '#e8c46a');
+  grad.addColorStop(1, '#a08030');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, -3, 280, 6);
+  // Tip
+  ctx.fillStyle = '#4080c0';
+  ctx.fillRect(278, -3.5, 8, 7);
+  ctx.fillStyle = '#f0e8d0';
+  ctx.fillRect(286, -2.5, 4, 5);
+  ctx.restore();
+  // Cue ball
+  ctx.fillStyle = 'rgba(0,0,0,.3)';
+  ctx.beginPath(); ctx.arc(cueX + 3, cueY + 3, 15, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = '#f0ece0';
+  ctx.beginPath(); ctx.arc(cueX, cueY, 15, 0, Math.PI * 2); ctx.fill();
+  const hl = ctx.createRadialGradient(cueX - 4, cueY - 4, 0, cueX, cueY, 15);
+  hl.addColorStop(0, 'rgba(255,255,255,.5)');
+  hl.addColorStop(1, 'transparent');
+  ctx.fillStyle = hl;
+  ctx.beginPath(); ctx.arc(cueX, cueY, 15, 0, Math.PI * 2); ctx.fill();
+}
+
+let breathePhase = 0;
+function frame(ts) {
+  const t = ts / 1000;
+  breathePhase = Math.sin(t * .5) * .15;
+  ctx.clearRect(0, 0, W, H);
+  drawTable();
+
+  const rackCX = W * .56, rackCY = H * .5;
+  const R = Math.min(W, H) * .022;
+  const positions = rackPositions(rackCX, rackCY, R);
+
+  // Draw balls with breathing (slight scatter)
+  positions.forEach((p, i) => {
+    const dx = (p.x - rackCX) * breathePhase;
+    const dy = (p.y - rackCY) * breathePhase;
+    drawBall(p.x + dx, p.y + dy, R, i, t);
+    // Labels
+    if (LABELS[i]) {
+      ctx.fillStyle = 'rgba(200,210,180,.5)';
+      ctx.font = '9px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(LABELS[i], p.x + dx, p.y + dy + R + 14);
+    }
+  });
+
+  drawCue(rackCX, rackCY, t);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

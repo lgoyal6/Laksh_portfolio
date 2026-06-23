@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Concept: Retro Overworld</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0a1a; overflow: hidden; height: 100vh; font-family: monospace; }
+  canvas { display: block; position: fixed; inset: 0; width: 100%; height: 100%; }
+  #scanlines {
+    position: fixed; inset: 0; z-index: 2; pointer-events: none; opacity: .35;
+    background: repeating-linear-gradient(to bottom,
+      rgba(255,255,255,.03) 0px, rgba(255,255,255,.03) 1px,
+      transparent 2px, transparent 3px);
+    mix-blend-mode: overlay;
+  }
+  #vignette {
+    position: fixed; inset: 0; z-index: 2; pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,.7) 100%);
+  }
+  #title {
+    position: fixed; top: 36px; left: 0; right: 0; z-index: 3;
+    text-align: center; color: #f0e060; font-size: clamp(28px, 5vw, 52px);
+    letter-spacing: .18em; text-shadow: 0 0 20px rgba(240,224,96,.5), 0 2px 0 #a08020;
+    font-weight: bold;
+  }
+  #subtitle {
+    position: fixed; top: calc(36px + clamp(34px, 5.5vw, 58px)); left: 0; right: 0;
+    z-index: 3; text-align: center; color: #8090a0; font-size: clamp(10px, 1.4vw, 14px);
+    letter-spacing: .22em; text-transform: uppercase;
+  }
+  #annotation {
+    position: fixed; bottom: 20px; left: 0; right: 0; z-index: 3;
+    text-align: center; color: #445; font-size: 11px; letter-spacing: .12em;
+  }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="scanlines"></div>
+<div id="vignette"></div>
+<div id="title">LAKSH'S WORLD</div>
+<div id="subtitle">Scroll to explore the map</div>
+<div id="annotation">CONCEPT: Retro Overworld &mdash; scroll navigates between level nodes, each node is a portfolio section</div>
+<script>
+const c = document.getElementById('c'), ctx = c.getContext('2d');
+let W, H;
+function resize() { W = c.width = innerWidth; H = c.height = innerHeight; }
+resize(); addEventListener('resize', resize);
+
+// Stars
+const stars = Array.from({length: 200}, () => ({
+  x: Math.random(), y: Math.random(), s: Math.random() * 1.5 + .5,
+  twinkle: Math.random() * Math.PI * 2, speed: Math.random() * 2 + 1
+}));
+
+// Biome tiles (simplified pixel blocks)
+const TILE = 18;
+function seededRand(x, y) { let n = Math.sin(x * 127.1 + y * 311.7) * 43758.5453; return n - Math.floor(n); }
+
+// Nodes
+const nodes = [
+  { x: .18, y: .35, label: 'HOME', icon: 'H', color: '#60d060' },
+  { x: .35, y: .22, label: 'PROJECTS', icon: '<>', color: '#60a0f0' },
+  { x: .55, y: .30, label: 'CYCLING', icon: 'O~', color: '#f0c040' },
+  { x: .70, y: .50, label: 'POKER', icon: '♠', color: '#e04040' },
+  { x: .52, y: .65, label: 'TRAVEL', icon: '✈', color: '#40d0d0' },
+  { x: .82, y: .35, label: 'CONTACT', icon: '✉', color: '#d060d0' },
+];
+
+// Path connections
+const paths = [[0,1],[1,2],[2,3],[3,5],[2,4],[4,3]];
+
+// Character position (moves along path)
+let charPathIdx = 0, charT = 0;
+
+// Biome map
+function getBiome(gx, gy) {
+  const r = seededRand(gx, gy);
+  const cx = gx / (W / TILE), cy = gy / (H / TILE);
+  // Water
+  if (cy > .55 && cy < .75 && cx > .25 && cx < .65) return '#1a2a5a';
+  if (cy > .58 && cy < .72 && cx > .28 && cx < .62) return '#1a3068';
+  // Desert
+  if (cx > .6 && cx < .85 && cy > .4 && cy < .58) return r > .5 ? '#5a4a20' : '#6a5a28';
+  // Snow
+  if (cy < .2 && cx > .4) return r > .6 ? '#8090a0' : '#708088';
+  // Forest
+  if (r > .7) return '#1a3a1a';
+  if (r > .4) return '#143014';
+  return '#0e240e';
+}
+
+function drawBiomes() {
+  const cols = Math.ceil(W / TILE), rows = Math.ceil(H / TILE);
+  for (let gy = 0; gy < rows; gy++) {
+    for (let gx = 0; gx < cols; gx++) {
+      ctx.fillStyle = getBiome(gx, gy);
+      ctx.fillRect(gx * TILE, gy * TILE, TILE, TILE);
+    }
+  }
+}
+
+function drawStars(t) {
+  stars.forEach(s => {
+    const a = (Math.sin(t * s.speed + s.twinkle) + 1) / 2 * .6 + .4;
+    ctx.fillStyle = `rgba(200,210,240,${a * .7})`;
+    ctx.fillRect(Math.floor(s.x * W), Math.floor(s.y * H), s.s > 1 ? 2 : 1, s.s > 1 ? 2 : 1);
+  });
+}
+
+function drawPaths(t) {
+  ctx.setLineDash([6, 8]);
+  ctx.lineDashOffset = -t * 30;
+  ctx.strokeStyle = '#f0e060';
+  ctx.lineWidth = 2;
+  paths.forEach(([a, b]) => {
+    ctx.beginPath();
+    ctx.moveTo(nodes[a].x * W, nodes[a].y * H);
+    ctx.lineTo(nodes[b].x * W, nodes[b].y * H);
+    ctx.stroke();
+  });
+  ctx.setLineDash([]);
+}
+
+function drawNodes(t) {
+  nodes.forEach((n, i) => {
+    const x = n.x * W, y = n.y * H;
+    const pulse = Math.sin(t * 2.5 + i * 1.2) * .3 + 1;
+    const r = 14 * pulse;
+    // Glow
+    const grd = ctx.createRadialGradient(x, y, 0, x, y, r * 2.5);
+    grd.addColorStop(0, n.color + '80');
+    grd.addColorStop(1, 'transparent');
+    ctx.fillStyle = grd;
+    ctx.fillRect(x - r * 3, y - r * 3, r * 6, r * 6);
+    // Node circle
+    ctx.fillStyle = n.color;
+    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+    // Inner
+    ctx.fillStyle = '#0a0a1a';
+    ctx.beginPath(); ctx.arc(x, y, r * .6, 0, Math.PI * 2); ctx.fill();
+    // Icon
+    ctx.fillStyle = n.color;
+    ctx.font = `bold ${Math.round(r * .9)}px monospace`;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(n.icon, x, y);
+    // Label
+    ctx.fillStyle = '#d0d8e0';
+    ctx.font = `bold 10px monospace`;
+    ctx.fillText(n.label, x, y + r + 14);
+  });
+}
+
+function drawCharacter(t) {
+  // Move along paths
+  charT += .003;
+  if (charT >= 1) { charT = 0; charPathIdx = (charPathIdx + 1) % paths.length; }
+  const [a, b] = paths[charPathIdx];
+  const x = (nodes[a].x + (nodes[b].x - nodes[a].x) * charT) * W;
+  const y = (nodes[a].y + (nodes[b].y - nodes[a].y) * charT) * H;
+  // Simple pixel character (8x8ish)
+  const s = 3;
+  ctx.fillStyle = '#f05050';
+  // Body
+  ctx.fillRect(x - s * 2, y - s * 3, s * 4, s * 4);
+  // Head
+  ctx.fillStyle = '#f0c080';
+  ctx.fillRect(x - s * 1.5, y - s * 5, s * 3, s * 2.5);
+  // Eyes
+  ctx.fillStyle = '#0a0a1a';
+  ctx.fillRect(x - s, y - s * 4, s * .8, s * .8);
+  ctx.fillRect(x + s * .3, y - s * 4, s * .8, s * .8);
+  // Legs
+  ctx.fillStyle = '#4040a0';
+  ctx.fillRect(x - s * 1.5, y + s, s * 1.2, s * 2);
+  ctx.fillRect(x + s * .3, y + s, s * 1.2, s * 2);
+}
+
+function frame(t) {
+  t /= 1000;
+  ctx.clearRect(0, 0, W, H);
+  drawBiomes();
+  drawStars(t);
+  drawPaths(t);
+  drawNodes(t);
+  drawCharacter(t);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
