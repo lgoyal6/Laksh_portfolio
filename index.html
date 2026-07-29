@@ -269,6 +269,37 @@
     margin-bottom: 2px;
   }
   .fact .v { font-size: 13px; color: var(--ink); font-weight: 500; line-height: 1.5; }
+  .hack-list { margin-top: 26px; max-width: 640px; }
+  .hack-head {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-bottom: 8px;
+  }
+  .hack {
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+    padding: 8px 0;
+    border-bottom: 1px dashed rgba(29,27,24,.12);
+  }
+  .hack:last-child { border-bottom: 0; }
+  .hack .hname { font-family: var(--heading); font-weight: 600; font-size: 14px; white-space: nowrap; }
+  .hack .hdesc { color: var(--muted); font-size: 13px; }
+
+  /* Resume embed */
+  .resume-frame {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+  }
+  .resume-frame object { width: 100%; height: min(80vh, 920px); display: block; border: 0; }
+  .resume-fallback { padding: 34px; text-align: center; color: var(--muted); font-size: 14px; }
+  .resume-fallback a { color: var(--accent); font-weight: 600; }
 
   /* ===== Experience ===== */
   .xp-list { display: flex; flex-direction: column; gap: 14px; }
@@ -514,8 +545,8 @@
       <a href="#experience">Experience</a>
       <a href="#work">Projects</a>
       <a href="#stack">Stack</a>
+      <a href="#resume">Resume</a>
       <a href="#contact">Contact</a>
-      <a href="Laksh_Resume.pdf" target="_blank" rel="noopener">Resume ↗</a>
     </div>
   </nav>
 </div>
@@ -537,7 +568,7 @@
     </div>
     <div class="hero-stats rise d3">
       <div class="hstat"><div class="n">20+</div><div class="l">projects built</div></div>
-      <div class="hstat"><div class="n">2</div><div class="l">hackathon wins</div></div>
+      <div class="hstat"><div class="n">5</div><div class="l">hackathon builds</div></div>
       <div class="hstat"><div class="n">11</div><div class="l">engineers led</div></div>
       <div class="hstat"><div class="n">1</div><div class="l">published paper</div></div>
     </div>
@@ -552,14 +583,22 @@
     <div class="bio">
       <p>I'm from Mumbai, studying CS at <strong>UC San Diego ('28)</strong> with minors in cognitive science and business economics. Right now my week splits between Mountain View and San Diego: <strong>GTM engineering at GMI Cloud</strong>, and <strong>bioacoustics ML research</strong> with Engineers for Exploration at the Qualcomm Institute. Mostly I just like to build, break, and ship fast — at the intersection of startups, medtech, and applied AI.</p>
       <p>I like owning a system end to end — the eval harness <em>and</em> the agent on top of it, the storage engine <em>and</em> the service that stresses it, the model <em>and</em> the deploy path that puts it in front of people. House rule for everything I build: <strong>publish the number, and publish what the number cost.</strong> Every benchmark on this page states its losing axis, because a result you can't interrogate is marketing, not engineering.</p>
-      <p>Some of it has worked out: Pylon won the Bow Capital Defense Hackathon and a spot in the Bow Capital incubator, Vigil took 1st at the Loop Engineering Hackathon, and GMI Cloud published my model-cascade benchmark. Off the keyboard: poker, 8-ball, F1 weekends, Lego builds, soccer, and too much sci-fi.</p>
+      <p>A lot of that starts at hackathons — five of the projects on this page were built in a weekend or less. Pylon has since landed in the <strong>Bow Capital incubator</strong>, and GMI Cloud <strong>published my model-cascade benchmark</strong>. Off the keyboard: poker, 8-ball, F1 weekends, Lego builds, soccer, and too much sci-fi.</p>
+      <div class="hack-list">
+        <div class="hack-head">Built at hackathons</div>
+        <div class="hack"><span class="hname">Pylon</span><span class="hdesc">counter-UAS RF sensor mesh — now in the Bow Capital incubator</span></div>
+        <div class="hack"><span class="hname">Vigil</span><span class="hdesc">autonomous AI on-call engineer holding zero standing credentials</span></div>
+        <div class="hack"><span class="hname">LOCUS</span><span class="hdesc">voice-driven search-and-rescue command center</span></div>
+        <div class="hack"><span class="hname">Winnow</span><span class="hdesc">real-time LLM prompt compression on two orthogonal axes</span></div>
+        <div class="hack"><span class="hname">RepoMap</span><span class="hdesc">VS Code extension mapping codebases as dependency graphs</span></div>
+      </div>
     </div>
     <div class="about-side">
       <div class="portrait"><img src="IMG_8054.jpg" alt="Laksh Goyal" loading="lazy"></div>
       <div class="facts">
         <div class="fact"><div class="k">Education</div><div class="v">UC San Diego · B.S. CS '28 · minors in CogSci &amp; Business-Econ</div></div>
         <div class="fact"><div class="k">Currently</div><div class="v">GTM Engineer Intern @ GMI Cloud · ML research @ E4E, Qualcomm Institute</div></div>
-        <div class="fact"><div class="k">Wins</div><div class="v">Bow Capital Defense Hackathon (Pylon) · 1st, Loop Engineering Hackathon (Vigil)</div></div>
+        <div class="fact"><div class="k">Startup</div><div class="v">Pylon — counter-UAS, Bow Capital incubator</div></div>
         <div class="fact"><div class="k">Published</div><div class="v">Model-cascade benchmark (GMI Cloud) · Computer-vision paper (JETIR)</div></div>
         <div class="fact"><div class="k">Open to</div><div class="v">Internships · research · ambitious teams</div></div>
       </div>
@@ -699,7 +738,7 @@
     <a class="pcard" href="https://github.com/lgoyal6/pylon" target="_blank" rel="noopener">
       <div class="pcard-num">08</div>
       <h3>Pylon — Counter-UAS Sensor Mesh</h3>
-      <p>Won the Bow Capital Defense Hackathon (UCSD); admitted to the Bow Capital incubator. Anomaly-based RF detection over dual SDR backends, a UDP gossip mesh, and a 3D operator dashboard in Next.js + deck.gl.</p>
+      <p>Built at the Bow Capital Defense Hackathon (UCSD), now part of the Bow Capital incubator. Anomaly-based RF detection over dual SDR backends, a UDP gossip mesh, and a 3D operator dashboard in Next.js + deck.gl.</p>
       <div class="stat">Catches novel emitters a signature-library baseline misses 100% of · mesh converges ~2s</div>
       <div class="tags"><span class="tag">Python</span><span class="tag">scikit-learn</span><span class="tag">SDR</span><span class="tag">deck.gl</span></div>
       <div class="go">repo ↗</div>
@@ -708,8 +747,8 @@
     <a class="pcard" href="https://github.com/lgoyal6/vigil" target="_blank" rel="noopener">
       <div class="pcard-num">09</div>
       <h3>Vigil — Autonomous AI On-Call Engineer</h3>
-      <p>Detects, diagnoses, and remediates production incidents end-to-end while holding zero standing credentials — single-use, scope-bound grants (60s TTL) behind a Pomerium identity-aware proxy, with policy-denied escalation and a full audit trail.</p>
-      <div class="stat">1st place, Loop Engineering Hackathon · best use of Akash · 5 services, zero standing creds</div>
+      <p>Built at the Loop Engineering Hackathon: detects, diagnoses, and remediates production incidents end-to-end while holding zero standing credentials — single-use, scope-bound grants behind a Pomerium identity-aware proxy, with policy-denied escalation and a full audit trail.</p>
+      <div class="stat">5 services · zero standing creds · single-use 60s-TTL grants</div>
       <div class="tags"><span class="tag">TypeScript</span><span class="tag">Pomerium</span><span class="tag">Docker</span><span class="tag">Akash</span></div>
       <div class="go">repo ↗</div>
     </a>
@@ -861,10 +900,22 @@
   </div>
 </section>
 
+<!-- ===== RESUME ===== -->
+<section id="resume" class="band wrap" data-bg1="#d3c6cc" data-bg2="#cbbfc8">
+  <div class="sec-label">05 — Resume</div>
+  <h2>The one-pager.</h2>
+  <p class="sec-intro">Prefer paper? Everything above, compressed to a page — <a href="Laksh_Resume.pdf" target="_blank" rel="noopener" style="color:var(--accent);font-weight:600;text-decoration:none;">download the PDF ↗</a></p>
+  <div class="resume-frame">
+    <object data="Laksh_Resume.pdf" type="application/pdf" aria-label="Laksh Goyal resume PDF">
+      <div class="resume-fallback">This browser can't display the PDF inline — <a href="Laksh_Resume.pdf" target="_blank" rel="noopener">open or download it ↗</a></div>
+    </object>
+  </div>
+</section>
+
 <!-- ===== CONTACT ===== -->
 <section id="contact" class="wrap" data-bg1="#cfc2cd" data-bg2="#c4bac9">
   <div class="panel">
-    <div class="sec-label">05 — Contact</div>
+    <div class="sec-label">06 — Contact</div>
     <h2>Let's build something.</h2>
     <p>Open to new opportunities — internships, research collabs, hackathons, and ambitious teams. Fastest way to reach me is email.</p>
     <a class="panel-cta" href="mailto:lakshgoyal06@gmail.com">lakshgoyal06@gmail.com →</a>
