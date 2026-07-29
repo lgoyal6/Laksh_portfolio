@@ -3,903 +3,931 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Laksh Goyal — Portfolio</title>
-<meta name="description" content="Laksh Goyal — CS @ UC San Diego. ML, agentic systems, and applied AI." />
+<title>Laksh Goyal</title>
+<meta name="description" content="Laksh Goyal — CS @ UC San Diego. Applied ML systems, agent evals, and the infrastructure underneath: storage engines, transports, gateways." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a0a0f;
-    --bg-soft: #11111a;
-    --card: #14141f;
-    --card-2: #181828;
-    --border: #23233a;
-    --border-soft: #1c1c2e;
-    --text: #e6e6f0;
-    --muted: #8b8ba7;
-    --muted-2: #6b6b87;
-    --accent: #7c5cff;
-    --accent-2: #22d3ee;
-    --accent-grad: linear-gradient(135deg, #7c5cff 0%, #22d3ee 100%);
-    --spotify: #1db954;
-    --letterboxd: #ff8000;
-    --sidebar-w: 38%;
-    --gap: 32px;
+    --ink: #1d1b18;
+    --muted: #5f5b53;
+    --faint: #8f8a80;
+    --accent: #c05621;
+    --live: #1db954;
+    --glass: rgba(255, 255, 255, 0.62);
+    --glass-border: rgba(255, 255, 255, 0.75);
+    --card-shadow: 0 2px 6px rgba(29, 27, 24, .05), 0 18px 44px rgba(29, 27, 24, .09);
+    --heading: 'Space Grotesk', 'Inter', sans-serif;
+    --sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+    --bg1: #faf7f2;
+    --bg2: #f4e9dd;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.6;
+    font-family: var(--sans);
+    color: var(--ink);
+    line-height: 1.65;
+    font-size: 15.5px;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
   }
   a { color: inherit; }
-  body::before, body::after {
-    content: '';
+
+  /* ===== Morphing gradient backdrop ===== */
+  #backdrop {
     position: fixed;
-    width: 600px;
-    height: 600px;
-    border-radius: 50%;
-    filter: blur(120px);
-    opacity: 0.18;
+    inset: 0;
     z-index: -1;
-    pointer-events: none;
+    background: linear-gradient(160deg, var(--bg1), var(--bg2));
   }
-  body::before { background: #7c5cff; top: -200px; left: -200px; }
-  body::after  { background: #22d3ee; bottom: -200px; right: -200px; }
-
-  .layout {
-    display: grid;
-    grid-template-columns: var(--sidebar-w) 1fr;
-    gap: var(--gap);
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 24px;
-  }
-
-  /* ===== SIDEBAR (left, sticky) ===== */
-  aside.sidebar {
-    position: sticky;
-    top: 24px;
-    height: calc(100vh - 48px);
-    overflow-y: auto;
-    padding-right: 6px;
-    scrollbar-width: thin;
-    scrollbar-color: var(--border) transparent;
-  }
-  aside.sidebar::-webkit-scrollbar { width: 6px; }
-  aside.sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 100px; }
-
-  .sb-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 18px;
-    margin-bottom: 14px;
-  }
-  .sb-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 14px;
-  }
-  .sb-title {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--muted);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .sb-dot {
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    background: var(--muted-2);
-    display: inline-block;
-  }
-  .sb-dot.live {
-    background: var(--spotify);
-    box-shadow: 0 0 0 0 rgba(29,185,84,0.6);
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(29,185,84,0.55); }
-    70% { box-shadow: 0 0 0 8px rgba(29,185,84,0); }
-    100% { box-shadow: 0 0 0 0 rgba(29,185,84,0); }
-  }
-  .sb-link {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    text-decoration: none;
-    transition: color .2s;
-  }
-  .sb-link:hover { color: var(--accent-2); }
-
-  /* Spotify card */
-  .spotify-body {
-    display: flex;
-    gap: 14px;
-    align-items: center;
-  }
-  .spotify-art {
-    width: 76px; height: 76px;
-    border-radius: 10px;
-    background: var(--bg-soft);
-    flex-shrink: 0;
-    overflow: hidden;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-  }
-  .spotify-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .spotify-info { min-width: 0; flex-grow: 1; }
-  .spotify-track {
-    font-weight: 700;
-    font-size: 15px;
-    color: var(--text);
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    margin-bottom: 2px;
-  }
-  .spotify-artist {
-    font-size: 13px;
-    color: var(--muted);
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-  }
-  .spotify-status {
-    margin-top: 8px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10.5px;
-    color: var(--muted-2);
-    letter-spacing: 0.5px;
-  }
-  .spotify-status .live { color: var(--spotify); }
-  .spotify-skeleton { color: var(--muted-2); font-size: 13px; }
-
-  /* Favorite films */
-  .fav-films {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-  }
-  .fav-films .spotify-skeleton { grid-column: 1 / -1; }
-  .fav-film {
-    aspect-ratio: 2/3;
-    border-radius: 8px;
-    background: var(--bg-soft);
-    border: 1px solid var(--border-soft);
-    overflow: hidden;
-    position: relative;
-    text-decoration: none;
-    transition: transform .25s, border-color .25s;
-  }
-  .fav-film:hover { transform: translateY(-2px); border-color: var(--letterboxd); }
-  .fav-film img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .fav-film img.is-broken { display: none; }
-  .fav-film .ff-title {
+  #backdrop::after {
+    content: "";
     position: absolute;
-    inset: auto 0 0 0;
-    background: linear-gradient(transparent, rgba(0,0,0,0.85));
-    padding: 18px 8px 8px;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--text);
-    line-height: 1.2;
-  }
-  .fav-film .ff-title::before {
-    content: attr(data-title);
-    position: absolute;
-    inset: auto 8px 30px 8px;
-    color: var(--muted-2);
-    font-size: 10px;
-    font-family: 'JetBrains Mono', monospace;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    opacity: 0;
-    transition: opacity .2s;
-  }
-  .fav-film:has(img.is-broken) .ff-title {
-    padding-top: 48px;
-    background: linear-gradient(transparent, rgba(0,0,0,0.92));
-  }
-  .fav-film:has(img.is-broken) .ff-title::before { opacity: 1; }
-
-  /* Diary */
-  .diary { display: flex; flex-direction: column; gap: 10px; }
-  .diary-item {
-    display: flex;
-    gap: 12px;
-    text-decoration: none;
-    align-items: center;
-    padding: 6px;
-    margin: -6px;
-    border-radius: 10px;
-    transition: background .2s;
-  }
-  .diary-item:hover { background: var(--bg-soft); }
-  .diary-poster {
-    width: 42px;
-    aspect-ratio: 2/3;
-    border-radius: 4px;
-    background: var(--bg-soft);
-    flex-shrink: 0;
-    overflow: hidden;
-  }
-  .diary-poster img { width: 100%; height: 100%; object-fit: cover; }
-  .diary-poster img.is-broken { display: none; }
-  .diary-meta { min-width: 0; flex-grow: 1; }
-  .diary-film {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text);
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-  }
-  .diary-year { color: var(--muted-2); font-weight: 400; }
-  .diary-stars {
-    font-size: 12px;
-    color: var(--letterboxd);
-    letter-spacing: 1px;
-    margin-top: 1px;
-  }
-  .diary-date {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    color: var(--muted-2);
+    inset: 0;
+    background-image: radial-gradient(rgba(29,27,24,.028) 1px, transparent 1.4px);
+    background-size: 22px 22px;
   }
 
-  /* Small "more" card */
-  .quick-links { display: flex; flex-direction: column; gap: 4px; }
-  .ql {
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 clamp(18px, 4vw, 40px); }
+
+  @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  .rise { animation: rise .7s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .rise.d1 { animation-delay: .08s; }
+  .rise.d2 { animation-delay: .16s; }
+  .rise.d3 { animation-delay: .24s; }
+  @media (prefers-reduced-motion: reduce) { .rise { animation: none; } }
+
+  /* ===== Nav ===== */
+  nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 22px 0;
+  }
+  .monogram {
+    font-family: var(--heading);
+    font-weight: 700;
+    font-size: 17px;
+    letter-spacing: -0.02em;
     text-decoration: none;
-    padding: 8px 10px;
-    margin: 0 -10px;
-    border-radius: 8px;
-    color: var(--text);
+    width: 40px; height: 40px;
+    display: grid;
+    place-items: center;
+    border: 1.5px solid var(--ink);
+    border-radius: 10px;
+  }
+  .nav-links { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+  .nav-links a {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color .15s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ===== Hero ===== */
+  .hero { max-width: 760px; padding: clamp(46px, 10vh, 110px) 0 clamp(56px, 10vh, 110px); }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 18px;
+  }
+  h1 {
+    font-family: var(--heading);
+    font-weight: 700;
+    font-size: clamp(48px, 7vw, 84px);
+    line-height: 1.0;
+    letter-spacing: -0.035em;
+    margin-bottom: 20px;
+  }
+  .hero-line {
+    font-size: clamp(16px, 1.6vw, 19px);
+    color: var(--muted);
+    max-width: 620px;
+    margin-bottom: 16px;
+  }
+  .avail {
     font-size: 14px;
     font-weight: 500;
-    transition: background .2s, color .2s;
-  }
-  .ql:hover { background: var(--bg-soft); color: var(--accent-2); }
-  .ql .arrow { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); }
-  .ql:hover .arrow { color: var(--accent-2); }
-
-  /* ===== MAIN (right, scrollable) ===== */
-  main.content { padding: 0 6px 80px; }
-
-  .hero {
-    padding: 50px 0 60px;
-  }
-  .hero-eyebrow {
-    font-family: 'JetBrains Mono', monospace;
-    color: var(--accent-2);
-    font-size: 13px;
-    margin-bottom: 16px;
-    letter-spacing: 1px;
-  }
-  .hero h1 {
-    font-size: clamp(32px, 4.6vw, 56px);
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    line-height: 1.07;
-    margin-bottom: 22px;
-  }
-  .hero h1 .grad {
-    background: var(--accent-grad);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  .hero p {
-    font-size: 16.5px;
-    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 9px;
     margin-bottom: 28px;
   }
-  .hero p strong { color: var(--text); font-weight: 600; }
-  .cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
-  .btn {
-    padding: 12px 20px;
-    border-radius: 100px;
-    font-weight: 600;
+  .avail::before {
+    content: "";
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--live);
+    box-shadow: 0 0 0 3px rgba(29,185,84,.18);
+    flex-shrink: 0;
+  }
+  .hero-links { display: flex; gap: 12px; flex-wrap: wrap; }
+  .hero-links a {
+    font-family: var(--heading);
     font-size: 14px;
+    font-weight: 600;
     text-decoration: none;
-    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
+    padding: 10px 18px;
+    border-radius: 10px;
+    transition: transform .15s, background .15s, color .15s, border-color .15s;
   }
-  .btn-primary {
-    background: var(--accent-grad);
-    color: white;
-    box-shadow: 0 8px 24px rgba(124,92,255,0.3);
-  }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(124,92,255,0.45); }
-  .btn-ghost {
-    border: 1px solid var(--border);
-    color: var(--text);
-    background: transparent;
-  }
-  .btn-ghost:hover { border-color: var(--accent); background: rgba(124,92,255,0.08); }
-
-  section.block { padding: 60px 0; border-top: 1px solid var(--border-soft); }
-  .section-label {
-    font-family: 'JetBrains Mono', monospace;
-    color: var(--accent-2);
+  .hero-links a.solid { background: var(--ink); color: #fff; }
+  .hero-links a.solid:hover { background: var(--accent); transform: translateY(-1px); }
+  .hero-links a.line { border: 1.5px solid rgba(29,27,24,.25); }
+  .hero-links a.line:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+  .hero-path {
+    font-family: var(--mono);
     font-size: 12px;
-    letter-spacing: 1.5px;
+    color: var(--muted);
+    letter-spacing: .04em;
+    margin-bottom: 14px;
+  }
+  .hero-path .sep { color: var(--accent); padding: 0 4px; }
+  .hero-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(26px, 5vw, 56px);
+    margin-top: 46px;
+    padding-top: 26px;
+    border-top: 1px solid rgba(29,27,24,.12);
+  }
+  .hstat .n {
+    font-family: var(--heading);
+    font-weight: 700;
+    font-size: 27px;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .hstat .l {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-top: 7px;
+  }
+
+  /* ===== Sections ===== */
+  section.band { padding: clamp(54px, 9vh, 100px) 0; }
+  .sec-label {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--accent);
     margin-bottom: 10px;
   }
-  .section-title {
-    font-size: clamp(26px, 3.5vw, 36px);
-    font-weight: 800;
-    letter-spacing: -0.02em;
+  h2 {
+    font-family: var(--heading);
+    font-weight: 700;
+    font-size: clamp(28px, 3.6vw, 42px);
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    margin-bottom: 22px;
+  }
+  .sec-intro { color: var(--muted); max-width: 620px; margin-bottom: 30px; font-size: 16px; }
+  .sec-intro strong { color: var(--ink); font-weight: 600; }
+
+  /* What I do */
+  .cap-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+  .cap {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 24px 24px 26px;
+    box-shadow: var(--card-shadow);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+  .cap-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--faint);
+    display: block;
+    margin-bottom: 14px;
+  }
+  .cap h3 {
+    font-family: var(--heading);
+    font-weight: 600;
+    font-size: 19px;
+    letter-spacing: -0.015em;
+    margin-bottom: 8px;
+  }
+  .cap p { color: var(--muted); font-size: 14px; }
+
+  /* About — bio + portrait + facts */
+  .about-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(260px, .7fr);
+    gap: clamp(24px, 4vw, 48px);
+    align-items: start;
     margin-bottom: 36px;
   }
-
-  /* About */
-  .about-text p { color: var(--muted); font-size: 15.5px; margin-bottom: 14px; }
-  .about-text strong { color: var(--text); font-weight: 600; }
-  .about-text a { color: var(--accent-2); text-decoration: none; }
-  .about-text a:hover { text-decoration: underline; }
-
-  /* Experience timeline */
-  .timeline { display: flex; flex-direction: column; gap: 18px; }
-  .xp-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 22px 24px;
-    transition: border-color 0.3s, transform 0.3s;
+  .bio p { color: var(--muted); font-size: 15.5px; margin-bottom: 16px; max-width: 640px; }
+  .bio p:last-child { margin-bottom: 0; }
+  .bio strong { color: var(--ink); font-weight: 600; }
+  .about-side { display: flex; flex-direction: column; gap: 14px; }
+  .portrait {
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+    background: var(--glass);
+    box-shadow: var(--card-shadow);
   }
-  .xp-card:hover { border-color: rgba(124,92,255,0.4); transform: translateX(3px); }
+  .portrait img { display: block; width: 100%; height: auto; }
+  .facts {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 18px 20px;
+    box-shadow: var(--card-shadow);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+  .fact { padding: 9px 0; border-bottom: 1px dashed rgba(29,27,24,.12); }
+  .fact:first-child { padding-top: 0; }
+  .fact:last-child { border-bottom: 0; padding-bottom: 0; }
+  .fact .k {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-bottom: 2px;
+  }
+  .fact .v { font-size: 13px; color: var(--ink); font-weight: 500; line-height: 1.5; }
+
+  /* ===== Experience ===== */
+  .xp-list { display: flex; flex-direction: column; gap: 14px; }
+  .xp {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 22px 26px;
+    box-shadow: var(--card-shadow);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
   .xp-head {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 4px;
-  }
-  .xp-role { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; }
-  .xp-company { color: var(--accent-2); }
-  .xp-meta {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-  }
-  .xp-card ul { list-style: none; margin-top: 10px; display: flex; flex-direction: column; gap: 5px; }
-  .xp-card li {
-    color: var(--muted);
-    font-size: 13.5px;
-    padding-left: 16px;
-    position: relative;
-  }
-  .xp-card li::before {
-    content: '▸';
-    position: absolute;
-    left: 0;
-    color: var(--accent);
-    font-size: 10px;
-    top: 4px;
-  }
-  .xp-card li strong { color: var(--text); font-weight: 600; }
-
-  /* Projects */
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    align-items: baseline;
     gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
   }
-  .project-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 22px;
-    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
-    text-decoration: none;
-    color: inherit;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    position: relative;
-    overflow: hidden;
+  .xp h3 {
+    font-family: var(--heading);
+    font-weight: 600;
+    font-size: 18px;
+    letter-spacing: -0.015em;
   }
-  .project-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: var(--accent-grad);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.4s;
-  }
-  .project-card:hover {
-    transform: translateY(-3px);
-    border-color: rgba(124,92,255,0.4);
-    box-shadow: 0 16px 40px rgba(0,0,0,0.4);
-  }
-  .project-card:hover::before { transform: scaleX(1); }
-  .project-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 10px;
-  }
-  .project-card h3 { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; }
-  .project-lang {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    padding: 3px 8px;
-    border: 1px solid var(--border);
-    border-radius: 100px;
+  .xp h3 .role { color: var(--accent); }
+  .xp-date {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--faint);
+    letter-spacing: .04em;
     white-space: nowrap;
   }
-  .project-card p { color: var(--muted); font-size: 13px; flex-grow: 1; }
-  .project-card p code {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    background: rgba(124,92,255,0.12);
-    color: var(--text);
-    padding: 1px 5px;
-    border-radius: 4px;
+  .xp p { color: var(--muted); font-size: 14px; max-width: 720px; }
+  .xp .xp-prev {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(29,27,24,.14);
+    font-size: 13px;
   }
-  .project-card p strong { color: var(--text); font-weight: 600; }
-  .project-link {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    color: var(--accent-2);
-    margin-top: 4px;
-  }
+  .xp .xp-prev strong { color: var(--ink); font-weight: 600; }
 
-  /* Links / contact */
-  .link-grid {
+  /* ===== Projects ===== */
+  .pgrid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 12px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
   }
-  .big-link {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  .pcard {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
+    padding: 26px;
+    box-shadow: var(--card-shadow);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
     text-decoration: none;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 18px 20px;
-    color: var(--text);
-    transition: transform .25s, border-color .25s, background .25s;
+    display: flex;
+    flex-direction: column;
+    transition: transform .25s, border-color .25s;
   }
-  .big-link:hover {
-    transform: translateY(-2px);
-    border-color: var(--accent);
-    background: rgba(124,92,255,0.08);
+  a.pcard:hover { transform: translateY(-5px); border-color: var(--accent); }
+  .pcard-num { font-family: var(--mono); font-size: 11px; color: var(--faint); margin-bottom: 16px; }
+  .pcard h3 {
+    font-family: var(--heading);
+    font-weight: 600;
+    font-size: 21px;
+    letter-spacing: -0.02em;
+    line-height: 1.12;
+    margin-bottom: 10px;
   }
-  .big-link strong { font-weight: 700; font-size: 16px; display: block; }
-  .big-link span { display: block; color: var(--muted); font-size: 12px; font-family: 'JetBrains Mono', monospace; margin-top: 2px; }
-  .big-link .arrow { font-size: 18px; color: var(--muted); }
-  .big-link:hover .arrow { color: var(--accent-2); }
+  a.pcard:hover h3 { color: var(--accent); }
+  .pcard p { color: var(--muted); font-size: 13.5px; flex-grow: 1; }
+  .pcard .stat {
+    font-family: var(--heading);
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--ink);
+    margin: 14px 0 12px;
+    padding-left: 10px;
+    border-left: 3px solid var(--accent);
+  }
+  .pcard .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .pcard .tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    padding: 3px 9px;
+    border: 1px solid rgba(29,27,24,.14);
+    border-radius: 999px;
+  }
+  .pcard .go {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    margin-top: 14px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+  .pcard .go.dim { color: var(--faint); }
 
-  footer {
-    margin-top: 60px;
-    padding-top: 24px;
-    border-top: 1px solid var(--border-soft);
+  /* More builds — compact rows */
+  .more-head {
+    font-family: var(--heading);
+    font-weight: 600;
+    font-size: 20px;
+    letter-spacing: -0.015em;
+    margin: 44px 0 16px;
+  }
+  .mini-list { display: flex; flex-direction: column; gap: 8px; }
+  .mini {
+    display: grid;
+    grid-template-columns: 200px minmax(0, 1fr) auto 20px;
+    gap: 16px;
+    align-items: baseline;
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 13px 18px;
+    box-shadow: 0 2px 8px rgba(29,27,24,.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    text-decoration: none;
+    transition: transform .15s, border-color .15s;
+  }
+  a.mini:hover { transform: translateX(3px); border-color: var(--accent); }
+  .mini-name { font-family: var(--heading); font-weight: 600; font-size: 14.5px; }
+  a.mini:hover .mini-name { color: var(--accent); }
+  .mini-desc { color: var(--muted); font-size: 13px; }
+  .mini-stat {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  .mini-go { font-family: var(--mono); font-size: 12px; color: var(--accent); text-align: right; }
+  .mini-go.dim { color: var(--faint); }
+
+  /* Tech stack */
+  .stack-group { margin-bottom: 22px; }
+  .stack-group:last-child { margin-bottom: 0; }
+  .stack-name {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-bottom: 10px;
+  }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    font-family: var(--heading);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 2px 8px rgba(29,27,24,.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .chip.hot {
+    background: var(--ink);
+    color: #fff;
+    border-color: var(--ink);
+  }
+
+  /* ===== Contact panel ===== */
+  #contact { padding: clamp(40px, 8vh, 90px) 0 30px; }
+  .panel {
+    background: #171512;
+    color: #f3efe7;
+    border-radius: 26px;
+    padding: clamp(38px, 6vw, 70px);
+    box-shadow: 0 30px 80px rgba(29,27,24,.28);
+  }
+  .panel .sec-label { color: #e8985c; }
+  .panel h2 { color: #fff; max-width: 16ch; }
+  .panel p { color: #b5aea1; max-width: 520px; margin-bottom: 30px; }
+  .panel-cta {
+    display: inline-flex;
+    font-family: var(--heading);
+    font-weight: 600;
+    font-size: clamp(17px, 2.4vw, 26px);
+    color: #fff;
+    text-decoration: none;
+    border-bottom: 2px solid #e8985c;
+    padding-bottom: 3px;
+    margin-bottom: 38px;
+    transition: color .15s;
+    word-break: break-all;
+  }
+  .panel-cta:hover { color: #e8985c; }
+  .panel-links { display: flex; gap: 16px; flex-wrap: wrap; }
+  .panel-links a {
+    font-size: 13.5px;
+    color: #b5aea1;
+    text-decoration: none;
+    transition: color .15s;
+  }
+  .panel-links a:hover { color: #fff; }
+  .panel-elsewhere {
+    margin-top: 22px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: #6f695e;
+    letter-spacing: .04em;
+  }
+  .panel-elsewhere a { color: #6f695e; text-decoration: none; transition: color .15s; }
+  .panel-elsewhere a:hover { color: #b5aea1; }
+  .copyright {
     text-align: center;
-    color: var(--muted-2);
-    font-size: 12px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--faint);
+    padding: 26px 0 30px;
   }
 
   /* ===== Responsive ===== */
-  @media (max-width: 960px) {
-    .layout {
-      grid-template-columns: 1fr;
-      padding: 16px;
-    }
-    aside.sidebar {
-      position: static;
-      height: auto;
-      max-height: none;
-      overflow: visible;
-    }
-    main.content { padding: 0; }
-    .hero { padding: 30px 0 40px; }
+  @media (max-width: 860px) {
+    .pgrid { grid-template-columns: 1fr; }
+    .cap-grid { grid-template-columns: 1fr; }
+    .about-grid { grid-template-columns: 1fr; }
+    .portrait { max-width: 320px; }
+    .mini { grid-template-columns: 1fr 20px; row-gap: 3px; }
+    .mini-desc { grid-column: 1 / -1; }
+    .mini-stat { grid-column: 1 / -1; white-space: normal; }
+    .mini-go { grid-row: 1; grid-column: 2; }
+    .xp-head { flex-direction: column; gap: 2px; }
   }
 </style>
 </head>
 <body>
+<div id="backdrop" aria-hidden="true"></div>
 
-<div class="layout">
-
-  <!-- =========================================================
-       LEFT SIDEBAR — live feeds (Spotify, Letterboxd, Devpost)
-       ========================================================= -->
-  <aside class="sidebar">
-
-    <!-- SPOTIFY -->
-    <div class="sb-card">
-      <div class="sb-head">
-        <div class="sb-title">
-          <span class="sb-dot" id="spotify-dot"></span>
-          <span id="spotify-label">music</span>
-        </div>
-        <a class="sb-link" href="https://open.spotify.com/user/317m7wxlsb353dh5t7kn5wuds4ri" target="_blank" rel="noopener">spotify ↗</a>
-      </div>
-      <div id="spotify-body">
-        <div class="spotify-skeleton">loading…</div>
-      </div>
+<div class="wrap">
+  <nav class="rise">
+    <a class="monogram" href="#">LG</a>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#work">Projects</a>
+      <a href="#stack">Stack</a>
+      <a href="#contact">Contact</a>
+      <a href="Laksh_Resume.pdf" target="_blank" rel="noopener">Resume ↗</a>
     </div>
-
-    <!-- LETTERBOXD — FAVORITES -->
-    <div class="sb-card">
-      <div class="sb-head">
-        <div class="sb-title"><span class="sb-dot"></span>favorite films</div>
-        <a class="sb-link" href="https://letterboxd.com/spockur/" target="_blank" rel="noopener">letterboxd ↗</a>
-      </div>
-      <div id="fav-films" class="fav-films">
-        <div class="spotify-skeleton">loading…</div>
-      </div>
-    </div>
-
-    <!-- LETTERBOXD — DIARY -->
-    <div class="sb-card">
-      <div class="sb-head">
-        <div class="sb-title"><span class="sb-dot"></span>recently watched</div>
-        <a class="sb-link" href="https://letterboxd.com/spockur/films/diary/" target="_blank" rel="noopener">diary ↗</a>
-      </div>
-      <div id="diary" class="diary">
-        <div class="spotify-skeleton">loading…</div>
-      </div>
-    </div>
-
-    <!-- QUICK LINKS -->
-    <div class="sb-card">
-      <div class="sb-head">
-        <div class="sb-title"><span class="sb-dot"></span>elsewhere</div>
-      </div>
-      <div class="quick-links">
-        <a class="ql" href="https://devpost.com/Spockerson" target="_blank" rel="noopener">
-          <span>Devpost — hackathons</span><span class="arrow">↗</span>
-        </a>
-        <a class="ql" href="https://github.com/lgoyal6" target="_blank" rel="noopener">
-          <span>GitHub</span><span class="arrow">↗</span>
-        </a>
-        <a class="ql" href="https://linkedin.com/in/lakshgoyal" target="_blank" rel="noopener">
-          <span>LinkedIn</span><span class="arrow">↗</span>
-        </a>
-        <a class="ql" href="https://instagram.com/lakshgoyall" target="_blank" rel="noopener">
-          <span>Instagram</span><span class="arrow">↗</span>
-        </a>
-        <a class="ql" href="mailto:lgoyal@ucsd.edu">
-          <span>Email</span><span class="arrow">→</span>
-        </a>
-      </div>
-    </div>
-
-  </aside>
-
-  <!-- =========================================================
-       RIGHT — scrollable content
-       ========================================================= -->
-  <main class="content">
-
-    <section class="hero">
-      <div class="hero-eyebrow">// CS @ UC San Diego · Class of 2028</div>
-      <h1>Hi, I'm <span class="grad">Laksh Goyal</span> — I build ML, agents, and the systems they live in.</h1>
-      <p>Currently shipping ML pipelines at <strong>Inovasity</strong> and bioacoustic ML systems at the <strong>Qualcomm Institute / Engineers for Exploration</strong>. Previously LLM systems at <strong>Xyntopia</strong>.</p>
-      <div class="cta-row">
-        <a href="#projects" class="btn btn-primary">See my work →</a>
-        <a href="Laksh_Goyal_Resume.pdf" target="_blank" rel="noopener" class="btn btn-ghost">Resume ↗</a>
-        <a href="https://github.com/lgoyal6" target="_blank" rel="noopener" class="btn btn-ghost">GitHub</a>
-      </div>
-    </section>
-
-    <section id="about" class="block">
-      <div class="section-label">// 01 — ABOUT</div>
-      <h2 class="section-title">About me</h2>
-      <div class="about-text">
-        <p>I'm a CS student at UC San Diego (minor in Cognitive Science &amp; Business-Economics) who likes to <strong>build, break, and ship fast</strong>. My focus is at the intersection of machine learning, agentic systems, and the infrastructure that lets both run reliably in the real world.</p>
-        <p>Right now that means medical 3D wound analysis at <strong>Inovasity</strong>, bioacoustic ML pipelines at <strong>UCSD's Engineers for Exploration</strong>, and side projects spanning agentic training monitors, wildfire-risk simulators, and active-matter biology.</p>
-        <p>Off the keyboard: a lot of movies (logged on <a href="https://letterboxd.com/spockur/" target="_blank" rel="noopener">Letterboxd</a>), poker, 8-ball, cycling, and the kind of caffeine intake that should probably worry someone.</p>
-      </div>
-    </section>
-
-    <section id="experience" class="block">
-      <div class="section-label">// 02 — EXPERIENCE</div>
-      <h2 class="section-title">Where I've worked</h2>
-      <div class="timeline">
-
-        <div class="xp-card">
-          <div class="xp-head">
-            <div class="xp-role">Applied Machine Learning Intern · <span class="xp-company">Inovasity</span></div>
-            <div class="xp-meta">Mar 2026 — Present · San Diego, CA</div>
-          </div>
-          <ul>
-            <li>Building Python/PyTorch ML pipelines for <strong>3D wound analysis</strong> with MedSAM2, DINOv2, and MONAI</li>
-            <li>Generating synthetic wound datasets with ground-truth depth maps and tissue labels for pre-clinical training</li>
-            <li>Fine-tuning depth-estimation and segmentation models to improve wound accuracy and model confidence</li>
-            <li>Developing MAE / RMSE / IoU validation workflows on 50+ samples for pre-clinical evaluation</li>
-          </ul>
-        </div>
-
-        <div class="xp-card">
-          <div class="xp-head">
-            <div class="xp-role">Software Engineer, ML Systems · <span class="xp-company">Qualcomm Institute — Engineers For Exploration</span></div>
-            <div class="xp-meta">Jan 2026 — Present · San Diego, CA</div>
-          </div>
-          <ul>
-            <li>Built Python ingestion + indexing pipelines for <strong>multi-terabyte acoustic datasets</strong> feeding CNN and EfficientNet training</li>
-            <li>Increased usable audio segments by <strong>15%</strong> via automated QC and corrupted-file filtering</li>
-            <li>Cut preprocessing time <strong>10%</strong> through faster batch throughput, metadata indexing, and NAS handling</li>
-            <li>Analyzing focal-to-soundscape domain shift in bioacoustics via STFT, MFCC, PANNs, and WST</li>
-          </ul>
-        </div>
-
-        <div class="xp-card">
-          <div class="xp-head">
-            <div class="xp-role">Research Engineer, Computer Vision · <span class="xp-company">Qualcomm Institute — E4E</span></div>
-            <div class="xp-meta">Oct 2025 — Jan 2026 · San Diego, CA</div>
-          </div>
-          <ul>
-            <li>Improved boundary accuracy <strong>9%</strong> by adding a boundary-aware IoU metric for mangrove canopy segmentation</li>
-            <li>Refactored evaluation into a metric registry, decoupling metrics from the training loop</li>
-          </ul>
-        </div>
-
-        <div class="xp-card">
-          <div class="xp-head">
-            <div class="xp-role">LLM Systems Engineer Intern · <span class="xp-company">Xyntopia — Taskyon</span></div>
-            <div class="xp-meta">Jun 2025 — Oct 2025 · San Diego, CA</div>
-          </div>
-          <ul>
-            <li>Built a <strong>30+ stage LLM task orchestration framework</strong> in Python powering a VS Code chat extension</li>
-            <li>Built a token-based E2E encrypted proxy server routing LLM and third-party API requests</li>
-            <li>Implemented server-side token verification with automated credit reporting to a Supabase payment backend</li>
-            <li>Reduced task retries <strong>35%</strong> via validation checks and state-aware partial retries</li>
-          </ul>
-        </div>
-
-        <div class="xp-card">
-          <div class="xp-head">
-            <div class="xp-role">iOS/Android Developer · <span class="xp-company">CSES @ UCSD</span></div>
-            <div class="xp-meta">Jun 2025 — Mar 2026 · San Diego, CA</div>
-          </div>
-          <ul>
-            <li>Improved skin-lesion classification <strong>7%</strong> by fine-tuning MedGemma-1.5-4B-IT on a 25K+ image dataset</li>
-            <li>Trained a CNN on HAM10000 with augmentation + preprocessing for high-accuracy lesion classification</li>
-            <li>Shipped a cross-platform mobile app for real-time skin-lesion detection, tested on 200+ images</li>
-            <li>Deployed lightweight TFLite/Core ML models for offline use on iOS and Android</li>
-          </ul>
-        </div>
-
-        <div class="xp-card">
-          <div class="xp-head">
-            <div class="xp-role">Web &amp; Software Developer · <span class="xp-company">HealthLink @ UCSD</span></div>
-            <div class="xp-meta">Jun 2025 — Present · San Diego, CA</div>
-          </div>
-          <ul>
-            <li>Led migration of website components from Webflow to React, reducing page load time <strong>20%</strong></li>
-            <li>Built a membership tracker (React + Supabase) logging events and updating status for 100+ members</li>
-            <li>Coordinated dev tasks across the team to support a more scalable platform</li>
-          </ul>
-        </div>
-
-      </div>
-    </section>
-
-    <section id="projects" class="block">
-      <div class="section-label">// 03 — WORK</div>
-      <h2 class="section-title">Selected projects</h2>
-      <div class="projects-grid">
-
-        <a href="https://github.com/lgoyal6/Argus" target="_blank" rel="noopener" class="project-card">
-          <div class="project-head"><h3>Argus — Agentic Training Monitor</h3><span class="project-lang">Python · React</span></div>
-          <p>Autonomous ML training agent (<code>claude-sonnet-4-5</code>) polling live JSONL every 10s to self-correct training. <strong>49% of detected anomalies</strong> resolved autonomously across 4 failure modes via SPC + 12-rule system prompt. AWS EC2 + live React dashboard.</p>
-          <span class="project-link">view repo →</span>
-        </a>
-
-        <a href="https://github.com/lgoyal6/BowCapital-hackathon" target="_blank" rel="noopener" class="project-card">
-          <div class="project-head"><h3>Open-world RF Drone Detection</h3><span class="project-lang">Python</span></div>
-          <p>BowCapital Defense Hackathon 2026. IsolationForest anomaly detector trained only on ambient RF catches <strong>100% of held-out novel emitters</strong> vs. 0% for baseline.</p>
-          <span class="project-link">view repo →</span>
-        </a>
-
-        <a href="https://github.com/lgoyal6/AgriShield" target="_blank" rel="noopener" class="project-card">
-          <div class="project-head"><h3>AgriShield — Wildfire Optimizer</h3><span class="project-lang">Python · JS</span></div>
-          <p>7-stage geospatial pipeline (4.6K lines) turning farm polygons into 11 ELMFIRE-ready rasters on a canonical 30m EPSG:5070 grid. 8-bearing ensembles, 24 firebreak layouts, <strong>92 tests, mypy-strict clean</strong>.</p>
-          <span class="project-link">view repo →</span>
-        </a>
-
-        <a href="https://github.com/lgoyal6/IBM_BOB" target="_blank" rel="noopener" class="project-card">
-          <div class="project-head"><h3>Repomap (IBM BOB)</h3><span class="project-lang">TypeScript</span></div>
-          <p>AI-powered codebase visualizer as a VS Code extension. Interactive SVG graph, two-sentence AI file summaries, and an IBM-Bob-powered chat that applies suggested edits with one click.</p>
-          <span class="project-link">view repo →</span>
-        </a>
-
-        <a href="https://github.com/lgoyal6/internship-apply-tool" target="_blank" rel="noopener" class="project-card">
-          <div class="project-head"><h3>Internship Apply Tool</h3><span class="project-lang">Python</span></div>
-          <p>Aggregates postings from cvrve / SimplifyJobs feeds, filters to F-1-friendly SWE / ML / Research roles from the last 7 days, auto-publishes a daily shortlist via GitHub Actions.</p>
-          <span class="project-link">view repo →</span>
-        </a>
-
-        <a href="https://github.com/lgoyal6/UrbanSound8k-classification" target="_blank" rel="noopener" class="project-card">
-          <div class="project-head"><h3>UrbanSound8K Classifier</h3><span class="project-lang">Jupyter</span></div>
-          <p>CNN-free audio classification — <strong>72.9% top-1 / 86.8% top-2</strong> with LightGBM under strict 10-fold CV. 487-dim feature vector (MFCC + WST via Kymatio). <strong>0.51ms inference</strong>.</p>
-          <span class="project-link">view repo →</span>
-        </a>
-
-        <a href="https://github.com/lgoyal6/Dependency_Graph" target="_blank" rel="noopener" class="project-card">
-          <div class="project-head"><h3>Tool Dependency Graph</h3><span class="project-lang">TypeScript</span></div>
-          <p>Precursor-action graph over Composio toolkits so agents know what info to fetch <em>before</em> an action — e.g. <code>list_threads</code> → <code>reply_to_thread</code>. Interactive node graph.</p>
-          <span class="project-link">view repo →</span>
-        </a>
-
-        <a href="https://github.com/tijilchhabra1729/active-matter" target="_blank" rel="noopener" class="project-card">
-          <div class="project-head"><h3>T-cell Swarming · Active Matter</h3><span class="project-lang">Python</span></div>
-          <p>UCSD Vibe Coding Active Matter Hackathon. 2D SPP model — ABP + Vicsek alignment + chemotaxis + desensitization + drift-with-memory. Interactive slider explorer.</p>
-          <span class="project-link">view repo →</span>
-        </a>
-
-        <a href="https://github.com/anirudh9280/ChainSense" target="_blank" rel="noopener" class="project-card">
-          <div class="project-head"><h3>ChainSense</h3><span class="project-lang">Jupyter</span></div>
-          <p>Behavioral clustering of Ethereum wallets from on-chain patterns. Alchemy → ETL → HDBSCAN/UMAP → Streamlit. Surfaces 4 stable archetypes &amp; flags pre-crash anomalies.</p>
-          <span class="project-link">view repo →</span>
-        </a>
-
-        <a href="https://github.com/Startup-Incubator-UCSD/project-liftoff" target="_blank" rel="noopener" class="project-card">
-          <div class="project-head"><h3>Project Liftoff</h3><span class="project-lang">React · Supabase</span></div>
-          <p>Full-stack platform for UCSD's Startup Incubator. <strong>6-tier RBAC</strong> via Supabase RLS over 13 tables. Multi-stage application pipeline, 100+ users onboarded, points engine, Resend email.</p>
-          <span class="project-link">view repo →</span>
-        </a>
-
-      </div>
-    </section>
-
-    <section id="links" class="block">
-      <div class="section-label">// 04 — ELSEWHERE</div>
-      <h2 class="section-title">Find me</h2>
-      <div class="link-grid">
-        <a class="big-link" href="Laksh_Goyal_Resume.pdf" target="_blank" rel="noopener">
-          <div><strong>Resume</strong><span>PDF · 1 page</span></div><div class="arrow">↗</div>
-        </a>
-        <a class="big-link" href="https://linkedin.com/in/lakshgoyal" target="_blank" rel="noopener">
-          <div><strong>LinkedIn</strong><span>/in/lakshgoyal</span></div><div class="arrow">↗</div>
-        </a>
-        <a class="big-link" href="https://github.com/lgoyal6" target="_blank" rel="noopener">
-          <div><strong>GitHub</strong><span>@lgoyal6</span></div><div class="arrow">↗</div>
-        </a>
-        <a class="big-link" href="https://devpost.com/Spockerson" target="_blank" rel="noopener">
-          <div><strong>Devpost</strong><span>@Spockerson</span></div><div class="arrow">↗</div>
-        </a>
-        <a class="big-link" href="mailto:lgoyal@ucsd.edu">
-          <div><strong>Email</strong><span>lgoyal@ucsd.edu</span></div><div class="arrow">→</div>
-        </a>
-        <a class="big-link" href="https://letterboxd.com/spockur/" target="_blank" rel="noopener">
-          <div><strong>Letterboxd</strong><span>@spockur</span></div><div class="arrow">↗</div>
-        </a>
-      </div>
-    </section>
-
-    <footer>© 2026 Laksh Goyal · built with too much coffee</footer>
-
-  </main>
-
+  </nav>
 </div>
 
+<!-- ===== HERO ===== -->
+<header class="wrap" data-bg1="#faf7f2" data-bg2="#f4e9dd">
+  <div class="hero">
+    <div class="eyebrow rise d1">CS @ UC San Diego '28 · GTM Engineer Intern @ GMI Cloud · ML @ Qualcomm Institute</div>
+    <h1 class="rise d1">Laksh Goyal</h1>
+    <p class="hero-line rise d2">I build applied ML systems and the infrastructure under them — agent evals, storage engines, network transports, and API gateways that have to survive outside notebooks.</p>
+    <div class="hero-path rise d2">Mumbai <span class="sep">→</span> San Diego <span class="sep">→</span> Mountain View</div>
+    <div class="avail rise d2">Open to new opportunities — internships, research, ambitious teams.</div>
+    <div class="hero-links rise d3">
+      <a class="solid" href="mailto:lakshgoyal06@gmail.com">lakshgoyal06@gmail.com</a>
+      <a class="line" href="https://github.com/lgoyal6" target="_blank" rel="noopener">GitHub</a>
+      <a class="line" href="https://linkedin.com/in/lakshgoyal" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="line" href="https://x.com/Lgoyal6" target="_blank" rel="noopener">X</a>
+      <a class="line" href="Laksh_Resume.pdf" target="_blank" rel="noopener">Resume</a>
+    </div>
+    <div class="hero-stats rise d3">
+      <div class="hstat"><div class="n">20+</div><div class="l">projects built</div></div>
+      <div class="hstat"><div class="n">2</div><div class="l">hackathon wins</div></div>
+      <div class="hstat"><div class="n">11</div><div class="l">engineers led</div></div>
+      <div class="hstat"><div class="n">1</div><div class="l">published paper</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- ===== WHAT I DO ===== -->
+<section id="about" class="band wrap" data-bg1="#f6efe3" data-bg2="#efdfc9">
+  <div class="sec-label">01 — About</div>
+  <h2>Build it, measure it, ship it.</h2>
+  <div class="about-grid">
+    <div class="bio">
+      <p>I'm from Mumbai, studying CS at <strong>UC San Diego ('28)</strong> with minors in cognitive science and business economics. Right now my week splits between Mountain View and San Diego: <strong>GTM engineering at GMI Cloud</strong>, and <strong>bioacoustics ML research</strong> with Engineers for Exploration at the Qualcomm Institute. Mostly I just like to build, break, and ship fast — at the intersection of startups, medtech, and applied AI.</p>
+      <p>I like owning a system end to end — the eval harness <em>and</em> the agent on top of it, the storage engine <em>and</em> the service that stresses it, the model <em>and</em> the deploy path that puts it in front of people. House rule for everything I build: <strong>publish the number, and publish what the number cost.</strong> Every benchmark on this page states its losing axis, because a result you can't interrogate is marketing, not engineering.</p>
+      <p>Some of it has worked out: Pylon won the Bow Capital Defense Hackathon and a spot in the Bow Capital incubator, Vigil took 1st at the Loop Engineering Hackathon, and GMI Cloud published my model-cascade benchmark. Off the keyboard: poker, 8-ball, F1 weekends, Lego builds, soccer, and too much sci-fi.</p>
+    </div>
+    <div class="about-side">
+      <div class="portrait"><img src="IMG_8054.jpg" alt="Laksh Goyal" loading="lazy"></div>
+      <div class="facts">
+        <div class="fact"><div class="k">Education</div><div class="v">UC San Diego · B.S. CS '28 · minors in CogSci &amp; Business-Econ</div></div>
+        <div class="fact"><div class="k">Currently</div><div class="v">GTM Engineer Intern @ GMI Cloud · ML research @ E4E, Qualcomm Institute</div></div>
+        <div class="fact"><div class="k">Wins</div><div class="v">Bow Capital Defense Hackathon (Pylon) · 1st, Loop Engineering Hackathon (Vigil)</div></div>
+        <div class="fact"><div class="k">Published</div><div class="v">Model-cascade benchmark (GMI Cloud) · Computer-vision paper (JETIR)</div></div>
+        <div class="fact"><div class="k">Open to</div><div class="v">Internships · research · ambitious teams</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="cap-grid">
+    <div class="cap">
+      <span class="cap-num">/01</span>
+      <h3>Agentic AI &amp; evals</h3>
+      <p>Orchestration frameworks, eval harnesses, and self-correcting agents — measured on accuracy, cost, and latency, not vibes.</p>
+    </div>
+    <div class="cap">
+      <span class="cap-num">/02</span>
+      <h3>ML systems</h3>
+      <p>Vision and audio pipelines for messy real-world data — medical imagery, bioacoustics, RF signals, geospatial rasters.</p>
+    </div>
+    <div class="cap">
+      <span class="cap-num">/03</span>
+      <h3>Systems &amp; infra</h3>
+      <p>Storage engines, transports, and gateways in C++ and Go — benchmarked head-to-head, with the losing axes published, not hidden.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== EXPERIENCE ===== -->
+<section id="experience" class="band wrap" data-bg1="#f3e6d8" data-bg2="#e9d9d2">
+  <div class="sec-label">02 — Experience</div>
+  <h2>Where I've worked.</h2>
+  <div class="xp-list">
+
+    <div class="xp">
+      <div class="xp-head">
+        <h3>GMI Cloud · <span class="role">GTM Engineer Intern</span></h3>
+        <span class="xp-date">Jun 2026 – Present · Mountain View, CA</span>
+      </div>
+      <p>Built Mint, an internal lead-intelligence platform that turns event guest lists into evidence-backed, reviewable sales leads — and designed the verify-then-escalate model cascade benchmark GMI Cloud published.</p>
+    </div>
+
+    <div class="xp">
+      <div class="xp-head">
+        <h3>Inovasity · <span class="role">Applied Machine Learning Intern</span></h3>
+        <span class="xp-date">Mar 2026 – Aug 2026 · San Diego, CA</span>
+      </div>
+      <p>Worked across the ML core, LLM agent layer, and backend of a medical wound-imaging pipeline — MedSAM2 segmentation, clinical-documentation agents, and the persistence and deploy path behind a 3D viewer.</p>
+    </div>
+
+    <div class="xp">
+      <div class="xp-head">
+        <h3>Qualcomm Institute — Engineers for Exploration · <span class="role">Software Engineer, ML Systems</span></h3>
+        <span class="xp-date">Jan 2026 – Present · San Diego, CA</span>
+      </div>
+      <p>Build ingestion and indexing pipelines for multi-terabyte bioacoustic datasets and study focal-to-soundscape domain shift for bird-call classifiers.</p>
+      <p class="xp-prev"><strong>Previously — Research Engineer, Computer Vision</strong> (Oct 2025 – Jan 2026): boundary-aware evaluation for mangrove canopy segmentation, exposing errors standard IoU masked.</p>
+    </div>
+
+    <div class="xp">
+      <div class="xp-head">
+        <h3>Xyntopia — Taskyon · <span class="role">LLM Systems Engineer Intern</span></h3>
+        <span class="xp-date">Jun 2025 – Oct 2025 · San Diego, CA</span>
+      </div>
+      <p>Built an LLM task-orchestration framework powering a VS Code chat extension, plus an end-to-end-encrypted proxy routing LLM and third-party API requests with server-side credit accounting.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== PROJECTS ===== -->
+<section id="work" class="band wrap" data-bg1="#e5d5d5" data-bg2="#d4c7cf">
+  <div class="sec-label">03 — Projects</div>
+  <h2>Selected projects.</h2>
+  <p class="sec-intro">Every number below traces to a committed benchmark, test run, or published result — losing axes included.</p>
+  <div class="pgrid">
+
+    <a class="pcard" href="https://github.com/lgoyal6/strata" target="_blank" rel="noopener">
+      <div class="pcard-num">01</div>
+      <h3>strata — LSM-Tree Storage Engine</h3>
+      <p>A leveled LSM-tree key-value store from scratch: checksummed WAL, MVCC snapshots, Bloom-filtered SSTables, group commit. Durability verified by a harness that tears writes and SIGKILLs the engine mid-flight — the same matrix gates every push in CI.</p>
+      <div class="stat">11,149 SIGKILLs · 2.22M acked writes, 0 lost · 50× RocksDB on sync commits</div>
+      <div class="tags"><span class="tag">C++20</span><span class="tag">libFuzzer</span><span class="tag">TSan</span><span class="tag">YCSB</span></div>
+      <div class="go">repo ↗</div>
+    </a>
+
+    <a class="pcard" href="https://github.com/lgoyal6/taut" target="_blank" rel="noopener">
+      <div class="pcard-num">02</div>
+      <h3>taut — Reliable-UDP Transport + SWIM</h3>
+      <p>Transport library for small messages on lossy links: SACK-based ARQ, adaptive RTO, SWIM failure detection on a lock-free epoll loop. Trades bulk throughput for tail latency — and publishes the losing axis (kernel TCP wins clean-link throughput ~27×).</p>
+      <div class="stat">p99 ~6× below kernel TCP at 5% loss · ~12× at 20% loss</div>
+      <div class="tags"><span class="tag">C++20</span><span class="tag">epoll</span><span class="tag">netem</span><span class="tag">libFuzzer</span></div>
+      <div class="go">repo ↗</div>
+    </a>
+
+    <a class="pcard" href="https://github.com/lgoyal6/tautq" target="_blank" rel="noopener">
+      <div class="pcard-num">03</div>
+      <h3>tautq — Distributed Webhook Delivery</h3>
+      <p>Built on taut: a coordinator-less delivery service replicating a write-ahead log by majority commit under epoch-fenced leases — no ZooKeeper, no etcd. Building it surfaced two SWIM protocol bugs, fixed upstream. A chaos suite gates every PR.</p>
+      <div class="stat">800 jobs/s · p99 107ms · 100% completion at 0–20% UDP loss</div>
+      <div class="tags"><span class="tag">C++20</span><span class="tag">WAL replication</span><span class="tag">chaos testing</span></div>
+      <div class="go">repo ↗</div>
+    </a>
+
+    <a class="pcard" href="https://github.com/lgoyal6/tollgate" target="_blank" rel="noopener">
+      <div class="pcard-num">04</div>
+      <h3>Tollgate — Multi-Tenant LLM API Gateway</h3>
+      <p>Lets a team share one LLM provider key safely: personal revocable keys with rate budgets, the real credential injected server-side. Atomic Redis rate limits hold a global ceiling across replicas where per-replica limiters admit 3× the limit.</p>
+      <div class="stat">2,000 req/s, 0 errors, p99 46ms · 300 req/s global limit held across 3 replicas</div>
+      <div class="tags"><span class="tag">Go</span><span class="tag">Redis</span><span class="tag">Kubernetes</span><span class="tag">Terraform</span><span class="tag">OTel</span></div>
+      <div class="go">repo ↗</div>
+    </a>
+
+    <a class="pcard" href="https://x.com/gmi_cloud/status/2077124979397947824" target="_blank" rel="noopener">
+      <div class="pcard-num">05</div>
+      <h3>Verify-then-Escalate Model Cascade</h3>
+      <p>Two-stage routing — Opus 4.8 primary, GLM 5.2 FP8 rescue on verifier failure — over 100 frozen EvalPlus tasks, ranked by $/solved-task. Beat every single-model baseline; the gain traced to complementary failure modes, not a uniformly better model.</p>
+      <div class="stat">94/100 vs best single model's 90 · 47.1% cheaper · published by GMI Cloud</div>
+      <div class="tags"><span class="tag">Python</span><span class="tag">EvalPlus</span><span class="tag">cost accounting</span></div>
+      <div class="go">published result ↗</div>
+    </a>
+
+    <div class="pcard">
+      <div class="pcard-num">06</div>
+      <h3>Mint — Lead Intelligence Platform</h3>
+      <p>End-to-end lead intelligence at GMI Cloud: identity resolution across Apollo and Exa evidence chains, LLM ICP tiering with human-review gates and audit trails, and a 16-tool conversational agent over the lead database.</p>
+      <div class="stat">18K LOC · 45 endpoints · 251 tests · 51 qualified leads from a 367-person triage set</div>
+      <div class="tags"><span class="tag">FastAPI</span><span class="tag">PostgreSQL</span><span class="tag">React</span><span class="tag">LLM classification</span></div>
+      <div class="go dim">internal @ GMI Cloud · demo coming soon</div>
+    </div>
+
+    <a class="pcard" href="https://github.com/TC960/winnow" target="_blank" rel="noopener">
+      <div class="pcard-num">07</div>
+      <h3>Winnow — LLM Prompt Compression</h3>
+      <p>Voice-first compression on two orthogonal axes: token-space (LLMLingua + self-implemented AttentionRAG behind an order-preserving merge) and model-space (~4-bit TurboQuant KV cache + LCLM latent compression), so the savings multiply.</p>
+      <div class="stat">~60× KV cache reduction · F1 0.437 vs 0.376 fp16 baseline on LongBench</div>
+      <div class="tags"><span class="tag">PyTorch</span><span class="tag">Modal</span><span class="tag">Deepgram</span></div>
+      <div class="go">repo ↗</div>
+    </a>
+
+    <a class="pcard" href="https://github.com/lgoyal6/pylon" target="_blank" rel="noopener">
+      <div class="pcard-num">08</div>
+      <h3>Pylon — Counter-UAS Sensor Mesh</h3>
+      <p>Won the Bow Capital Defense Hackathon (UCSD); admitted to the Bow Capital incubator. Anomaly-based RF detection over dual SDR backends, a UDP gossip mesh, and a 3D operator dashboard in Next.js + deck.gl.</p>
+      <div class="stat">Catches novel emitters a signature-library baseline misses 100% of · mesh converges ~2s</div>
+      <div class="tags"><span class="tag">Python</span><span class="tag">scikit-learn</span><span class="tag">SDR</span><span class="tag">deck.gl</span></div>
+      <div class="go">repo ↗</div>
+    </a>
+
+    <a class="pcard" href="https://github.com/lgoyal6/vigil" target="_blank" rel="noopener">
+      <div class="pcard-num">09</div>
+      <h3>Vigil — Autonomous AI On-Call Engineer</h3>
+      <p>Detects, diagnoses, and remediates production incidents end-to-end while holding zero standing credentials — single-use, scope-bound grants (60s TTL) behind a Pomerium identity-aware proxy, with policy-denied escalation and a full audit trail.</p>
+      <div class="stat">1st place, Loop Engineering Hackathon · best use of Akash · 5 services, zero standing creds</div>
+      <div class="tags"><span class="tag">TypeScript</span><span class="tag">Pomerium</span><span class="tag">Docker</span><span class="tag">Akash</span></div>
+      <div class="go">repo ↗</div>
+    </a>
+
+    <a class="pcard" href="https://github.com/lgoyal6/Locus" target="_blank" rel="noopener">
+      <div class="pcard-num">10</div>
+      <h3>LOCUS — Voice-Driven SAR Command Center</h3>
+      <p>Search-and-rescue ops: LLM agents profile the missing person, a Monte Carlo engine turns hypotheses into a live probability heatmap and team assignments, and the coordinator drives it all hands-free by voice.</p>
+      <div class="stat">150 walks/hypothesis × 4 ISRID profiles · 1.5s sim tick with zero LLM calls in-loop</div>
+      <div class="tags"><span class="tag">TypeScript</span><span class="tag">Convex</span><span class="tag">Mapbox GL</span><span class="tag">Web Speech</span></div>
+      <div class="go">repo ↗</div>
+    </a>
+
+  </div>
+
+  <div class="more-head">More builds.</div>
+  <div class="mini-list">
+
+    <a class="mini" href="https://github.com/lgoyal6/agentbench" target="_blank" rel="noopener">
+      <span class="mini-name">AgentBench</span>
+      <span class="mini-desc">Eval framework for LangGraph agents — cost-adjusted accuracy, async-safe usage attribution, Ray Tune HPO</span>
+      <span class="mini-stat">0.964 acc · n=55 · $0.042 spend</span>
+      <span class="mini-go">↗</span>
+    </a>
+
+    <a class="mini" href="https://github.com/lgoyal6/checkit_health" target="_blank" rel="noopener">
+      <span class="mini-name">Checkit Health</span>
+      <span class="mini-desc">7-stage misinformation-detection pipeline over 4 live social APIs with a cost-tiered LLM path</span>
+      <span class="mini-stat">64 tests · 15 req/min free tier held</span>
+      <span class="mini-go">↗</span>
+    </a>
+
+    <a class="mini" href="https://github.com/lgoyal6/argus" target="_blank" rel="noopener">
+      <span class="mini-name">Argus</span>
+      <span class="mini-desc">Agentic training monitor — SPC detection across 4 failure modes, bounded tool calls to self-correct runs</span>
+      <span class="mini-stat">49% of anomalies auto-resolved</span>
+      <span class="mini-go">↗</span>
+    </a>
+
+    <a class="mini" href="https://cse110-sp26-group15.pages.dev/" target="_blank" rel="noopener">
+      <span class="mini-name">SitRep</span>
+      <span class="mini-desc">Led an 11-engineer team through a 10-week Agile SDLC to ship a Scrum/Kanban/XP app on Cloudflare</span>
+      <span class="mini-stat">11 engineers · 5 sprints · live</span>
+      <span class="mini-go">↗</span>
+    </a>
+
+    <a class="mini" href="https://github.com/anirudh9280/ChainSense" target="_blank" rel="noopener">
+      <span class="mini-name">ChainSense</span>
+      <span class="mini-desc">Ethereum behavioral analytics — 16-feature wallet matrix clustered into 9 archetypes with anomaly flags</span>
+      <span class="mini-stat">403K txns · 59K wallets · 591 anomalies</span>
+      <span class="mini-go">↗</span>
+    </a>
+
+    <a class="mini" href="https://github.com/lgoyal6/RepoMap" target="_blank" rel="noopener">
+      <span class="mini-name">RepoMap</span>
+      <span class="mini-desc">VS Code extension mapping any repo as an interactive dependency graph with AI file explanations</span>
+      <span class="mini-stat">6 languages parsed</span>
+      <span class="mini-go">↗</span>
+    </a>
+
+    <a class="mini" href="https://github.com/pynay/agrishield" target="_blank" rel="noopener">
+      <span class="mini-name">AgriShield</span>
+      <span class="mini-desc">Wildfire risk pipeline — ELMFIRE fire-spread ensembles score 24 candidate firebreak layouts</span>
+      <span class="mini-stat">92 tests · mypy-strict clean</span>
+      <span class="mini-go">↗</span>
+    </a>
+
+    <a class="mini" href="https://github.com/lgoyal6/UrbanSound8k-classification" target="_blank" rel="noopener">
+      <span class="mini-name">UrbanSound8K</span>
+      <span class="mini-desc">CNN-free audio classification — 487-dim engineered features incl. wavelet scattering, leak-free CV</span>
+      <span class="mini-stat">72.9% top-1 · 0.51ms/clip inference</span>
+      <span class="mini-go">↗</span>
+    </a>
+
+    <a class="mini" href="https://www.jetir.org/papers/JETIR2303781.pdf" target="_blank" rel="noopener">
+      <span class="mini-name">Helmet Identification</span>
+      <span class="mini-desc">ResNet-50 pipeline detecting riders and classifying helmet use — published via Lumiere, top 10% of ~200</span>
+      <span class="mini-stat">94% acc · 0.92 mAP · &lt;50ms inference</span>
+      <span class="mini-go">paper ↗</span>
+    </a>
+
+    <div class="mini">
+      <span class="mini-name">Project Liftoff</span>
+      <span class="mini-desc">Incubator management platform — 6-tier RBAC via Supabase row-level security across 13 tables</span>
+      <span class="mini-stat">100+ users onboarded</span>
+      <span class="mini-go dim">private</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== STACK ===== -->
+<section id="stack" class="band wrap" data-bg1="#dccdd0" data-bg2="#cfc2cd">
+  <div class="sec-label">04 — Stack</div>
+  <h2>Tools I reach for.</h2>
+  <div class="stack-group">
+    <div class="stack-name">Languages</div>
+    <div class="chips">
+      <span class="chip hot">Python</span>
+      <span class="chip hot">C++20</span>
+      <span class="chip hot">TypeScript</span>
+      <span class="chip">Go</span>
+      <span class="chip">JavaScript</span>
+      <span class="chip">Java</span>
+      <span class="chip">SQL</span>
+    </div>
+  </div>
+  <div class="stack-group">
+    <div class="stack-name">ML &amp; Data</div>
+    <div class="chips">
+      <span class="chip hot">PyTorch</span>
+      <span class="chip">scikit-learn</span>
+      <span class="chip">LangGraph</span>
+      <span class="chip">Anthropic / OpenAI APIs</span>
+      <span class="chip">HuggingFace</span>
+      <span class="chip">Ray Tune</span>
+      <span class="chip">OpenCV</span>
+      <span class="chip">MONAI</span>
+      <span class="chip">LightGBM</span>
+      <span class="chip">NumPy / pandas</span>
+    </div>
+  </div>
+  <div class="stack-group">
+    <div class="stack-name">Web &amp; Backend</div>
+    <div class="chips">
+      <span class="chip hot">React / Next.js</span>
+      <span class="chip hot">FastAPI</span>
+      <span class="chip">Supabase / PostgreSQL</span>
+      <span class="chip">Redis</span>
+      <span class="chip">Node</span>
+      <span class="chip">Tailwind</span>
+    </div>
+  </div>
+  <div class="stack-group">
+    <div class="stack-name">Systems &amp; Infra</div>
+    <div class="chips">
+      <span class="chip hot">Docker</span>
+      <span class="chip hot">Kubernetes</span>
+      <span class="chip">Terraform</span>
+      <span class="chip">AWS</span>
+      <span class="chip">Modal</span>
+      <span class="chip">Vercel</span>
+      <span class="chip">Cloudflare</span>
+      <span class="chip">GitHub Actions</span>
+      <span class="chip">OpenTelemetry / Prometheus</span>
+      <span class="chip">libFuzzer / ASan / TSan</span>
+      <span class="chip">k6</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section id="contact" class="wrap" data-bg1="#cfc2cd" data-bg2="#c4bac9">
+  <div class="panel">
+    <div class="sec-label">05 — Contact</div>
+    <h2>Let's build something.</h2>
+    <p>Open to new opportunities — internships, research collabs, hackathons, and ambitious teams. Fastest way to reach me is email.</p>
+    <a class="panel-cta" href="mailto:lakshgoyal06@gmail.com">lakshgoyal06@gmail.com →</a>
+    <div class="panel-links">
+      <a href="https://github.com/lgoyal6" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://linkedin.com/in/lakshgoyal" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://x.com/Lgoyal6" target="_blank" rel="noopener">X (@Lgoyal6)</a>
+      <a href="https://instagram.com/lakshgoyall" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://devpost.com/Spockerson" target="_blank" rel="noopener">Devpost</a>
+      <a href="Laksh_Resume.pdf" target="_blank" rel="noopener">Resume</a>
+    </div>
+    <div class="panel-elsewhere">elsewhere → <a href="https://open.spotify.com/user/317m7wxlsb353dh5t7kn5wuds4ri" target="_blank" rel="noopener">spotify</a> · <a href="https://letterboxd.com/spockur/" target="_blank" rel="noopener">letterboxd</a></div>
+  </div>
+</section>
+
+<div class="copyright">© 2026 Laksh Goyal</div>
+
 <script>
-  /* ---------- Spotify ---------- */
-  function fmtTimeAgo(iso) {
-    if (!iso) return '';
-    const diff = (Date.now() - new Date(iso).getTime()) / 1000;
-    if (diff < 60) return 'just now';
-    if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
-    if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
-    return Math.floor(diff / 86400) + 'd ago';
-  }
-  function escapeHtml(s) {
-    return String(s || '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
-  }
+  /* ---------- Scroll-morphing background ---------- */
+  (function initBackdrop() {
+    const backdrop = document.getElementById('backdrop');
+    const bands = Array.from(document.querySelectorAll('[data-bg1]'));
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  async function loadSpotify() {
-    const body = document.getElementById('spotify-body');
-    const dot = document.getElementById('spotify-dot');
-    const label = document.getElementById('spotify-label');
-    try {
-      const r = await fetch('/api/spotify');
-      const d = await r.json();
-      if (d.empty || !d.title) {
-        body.innerHTML = '<div class="spotify-skeleton">no recent listening data</div>';
-        return;
-      }
-      const isLive = d.playing;
-      label.textContent = isLive ? 'now playing' : 'last played';
-      dot.classList.toggle('live', isLive);
-
-      const status = isLive
-        ? '<span class="live">● playing now</span>'
-        : ('played ' + fmtTimeAgo(d.playedAt));
-
-      body.innerHTML = `
-        <a class="spotify-body" href="${escapeHtml(d.url)}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;">
-          <div class="spotify-art">${d.image ? `<img src="${escapeHtml(d.image)}" alt="">` : ''}</div>
-          <div class="spotify-info">
-            <div class="spotify-track">${escapeHtml(d.title)}</div>
-            <div class="spotify-artist">${escapeHtml(d.artist)}</div>
-            <div class="spotify-status">${status}</div>
-          </div>
-        </a>`;
-    } catch (e) {
-      body.innerHTML = '<div class="spotify-skeleton">couldn\'t reach spotify</div>';
+    function hexToRgb(h) {
+      const n = parseInt(h.slice(1), 16);
+      return [n >> 16 & 255, n >> 8 & 255, n & 255];
     }
-  }
-
-  /* ---------- Letterboxd diary ---------- */
-  function starString(r) {
-    if (r == null) return '';
-    const full = Math.floor(r);
-    const half = r - full >= 0.5;
-    return '★'.repeat(full) + (half ? '½' : '');
-  }
-  function fmtDate(iso) {
-    if (!iso) return '';
-    const d = new Date(iso);
-    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-  }
-
-  async function loadLetterboxd() {
-    const favEl = document.getElementById('fav-films');
-    const diaryEl = document.getElementById('diary');
-    try {
-      const r = await fetch('/api/letterboxd');
-      const d = await r.json();
-      const favorites = (d.favorites || []).slice(0, 4);
-      const items = (d.items || []).slice(0, 5);
-
-      if (favorites.length) {
-        favEl.innerHTML = favorites.map(it => `
-          <a class="fav-film" href="${escapeHtml(it.link)}" target="_blank" rel="noopener">
-            ${it.poster ? `<img src="${escapeHtml(it.poster)}" alt="${escapeHtml(it.title)}" loading="lazy" onerror="this.classList.add('is-broken')">` : ''}
-            <div class="ff-title" data-title="poster unavailable">${escapeHtml(it.title)}</div>
-          </a>`).join('');
-      } else {
-        favEl.innerHTML = '<div class="spotify-skeleton">no favorites found</div>';
-      }
-
-      if (!items.length) {
-        diaryEl.innerHTML = '<div class="spotify-skeleton">no recent entries</div>';
-        return;
-      }
-      diaryEl.innerHTML = items.map(it => `
-        <a class="diary-item" href="${escapeHtml(it.link)}" target="_blank" rel="noopener">
-          <div class="diary-poster">${it.poster ? `<img src="${escapeHtml(it.poster)}" alt="" loading="lazy" onerror="this.classList.add('is-broken')">` : ''}</div>
-          <div class="diary-meta">
-            <div class="diary-film">${escapeHtml(it.film || it.title)} <span class="diary-year">${it.year ? '· ' + escapeHtml(it.year) : ''}</span></div>
-            <div class="diary-stars">${starString(it.rating)}</div>
-          </div>
-          <div class="diary-date">${fmtDate(it.watchedDate || it.pubDate)}</div>
-        </a>`).join('');
-    } catch (e) {
-      favEl.innerHTML = '<div class="spotify-skeleton">couldn\'t reach letterboxd</div>';
-      diaryEl.innerHTML = '<div class="spotify-skeleton">couldn\'t reach letterboxd</div>';
+    function mix(a, b, t) {
+      return 'rgb(' + a.map((v, i) => Math.round(v + (b[i] - v) * t)).join(',') + ')';
     }
-  }
+    const stops = bands.map(el => ({
+      el,
+      c1: hexToRgb(el.dataset.bg1),
+      c2: hexToRgb(el.dataset.bg2),
+    }));
 
-  loadSpotify();
-  loadLetterboxd();
-  setInterval(loadSpotify, 60000);
+    let ticking = false;
+    function update() {
+      ticking = false;
+      const mid = window.scrollY + window.innerHeight * 0.5;
+      let i = 0;
+      for (let k = 0; k < stops.length; k++) {
+        const top = stops[k].el.offsetTop;
+        if (mid >= top) i = k;
+      }
+      const cur = stops[i];
+      const next = stops[Math.min(i + 1, stops.length - 1)];
+      let t = 0;
+      if (next !== cur) {
+        const span = Math.max(1, next.el.offsetTop - cur.el.offsetTop);
+        t = Math.max(0, Math.min(1, (mid - cur.el.offsetTop) / span));
+      }
+      if (reduced) t = Math.round(t);
+      backdrop.style.setProperty('--bg1', mix(cur.c1, next.c1, t));
+      backdrop.style.setProperty('--bg2', mix(cur.c2, next.c2, t));
+    }
+    window.addEventListener('scroll', () => {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    window.addEventListener('resize', update, { passive: true });
+    update();
+  })();
 </script>
 
 </body>
