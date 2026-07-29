@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Laksh Goyal</title>
-<meta name="description" content="Laksh Goyal — CS @ UC San Diego. Applied ML systems, agent evals, and the infrastructure underneath: storage engines, transports, gateways." />
+<meta name="description" content="Laksh Goyal, CS @ UC San Diego. Applied ML systems, agent evals, and the infrastructure underneath: storage engines, transports, gateways." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -64,25 +64,13 @@
   /* ===== Nav ===== */
   nav {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
-    padding: 22px 0;
+    padding: 26px 0;
   }
-  .monogram {
-    font-family: var(--heading);
-    font-weight: 700;
-    font-size: 17px;
-    letter-spacing: -0.02em;
-    text-decoration: none;
-    width: 40px; height: 40px;
-    display: grid;
-    place-items: center;
-    border: 1.5px solid var(--ink);
-    border-radius: 10px;
-  }
-  .nav-links { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+  .nav-links { display: flex; gap: 28px; align-items: center; flex-wrap: wrap; }
   .nav-links a {
-    font-size: 13.5px;
+    font-size: 15.5px;
     font-weight: 500;
     color: var(--muted);
     text-decoration: none;
@@ -91,7 +79,14 @@
   .nav-links a:hover { color: var(--accent); }
 
   /* ===== Hero ===== */
-  .hero { max-width: 760px; padding: clamp(46px, 10vh, 110px) 0 clamp(56px, 10vh, 110px); }
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr);
+    gap: clamp(28px, 5vw, 64px);
+    align-items: start;
+    padding: clamp(24px, 5vh, 52px) 0 0;
+  }
+  .hero-side { display: flex; flex-direction: column; gap: 14px; }
   .eyebrow {
     font-family: var(--mono);
     font-size: 11.5px;
@@ -103,16 +98,16 @@
   h1 {
     font-family: var(--heading);
     font-weight: 700;
-    font-size: clamp(48px, 7vw, 84px);
-    line-height: 1.0;
-    letter-spacing: -0.035em;
-    margin-bottom: 20px;
+    font-size: clamp(38px, 5vw, 58px);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    margin-bottom: 16px;
   }
   .hero-line {
-    font-size: clamp(16px, 1.6vw, 19px);
+    font-size: clamp(15px, 1.4vw, 17px);
     color: var(--muted);
-    max-width: 620px;
-    margin-bottom: 16px;
+    max-width: 560px;
+    margin-bottom: 14px;
   }
   .avail {
     font-size: 14px;
@@ -156,8 +151,8 @@
     display: flex;
     flex-wrap: wrap;
     gap: clamp(26px, 5vw, 56px);
-    margin-top: 46px;
-    padding-top: 26px;
+    margin: 34px 0 clamp(30px, 5vh, 48px);
+    padding-top: 22px;
     border-top: 1px solid rgba(29,27,24,.12);
   }
   .hstat .n {
@@ -177,7 +172,7 @@
   }
 
   /* ===== Sections ===== */
-  section.band { padding: clamp(54px, 9vh, 100px) 0; }
+  section.band { padding: clamp(44px, 7vh, 78px) 0; }
   .sec-label {
     font-family: var(--mono);
     font-size: 11.5px;
@@ -228,18 +223,11 @@
   }
   .cap p { color: var(--muted); font-size: 14px; }
 
-  /* About — bio + portrait + facts */
-  .about-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1.3fr) minmax(260px, .7fr);
-    gap: clamp(24px, 4vw, 48px);
-    align-items: start;
-    margin-bottom: 36px;
-  }
-  .bio p { color: var(--muted); font-size: 15.5px; margin-bottom: 16px; max-width: 640px; }
+  /* About: bio + hackathon list */
+  .bio { margin-bottom: 36px; }
+  .bio p { color: var(--muted); font-size: 15.5px; margin-bottom: 16px; max-width: 700px; }
   .bio p:last-child { margin-bottom: 0; }
   .bio strong { color: var(--ink); font-weight: 600; }
-  .about-side { display: flex; flex-direction: column; gap: 14px; }
   .portrait {
     border-radius: 18px;
     overflow: hidden;
@@ -286,7 +274,9 @@
     border-bottom: 1px dashed rgba(29,27,24,.12);
   }
   .hack:last-child { border-bottom: 0; }
-  .hack .hname { font-family: var(--heading); font-weight: 600; font-size: 14px; white-space: nowrap; }
+  .hack .hname { font-family: var(--heading); font-weight: 600; font-size: 14px; white-space: nowrap; text-decoration: none; color: inherit; transition: color .15s; }
+  a.hname:hover { color: var(--accent); }
+  .hack .hgo { font-family: var(--mono); font-size: 10px; color: var(--accent); }
   .hack .hdesc { color: var(--muted); font-size: 13px; }
 
   /* Resume embed */
@@ -402,7 +392,7 @@
   }
   .pcard .go.dim { color: var(--faint); }
 
-  /* More builds — compact rows */
+  /* More builds: compact rows */
   .more-head {
     font-family: var(--heading);
     font-weight: 600;
@@ -522,9 +512,9 @@
 
   /* ===== Responsive ===== */
   @media (max-width: 860px) {
+    .hero { grid-template-columns: 1fr; }
     .pgrid { grid-template-columns: 1fr; }
     .cap-grid { grid-template-columns: 1fr; }
-    .about-grid { grid-template-columns: 1fr; }
     .portrait { max-width: 320px; }
     .mini { grid-template-columns: 1fr 20px; row-gap: 3px; }
     .mini-desc { grid-column: 1 / -1; }
@@ -539,7 +529,6 @@
 
 <div class="wrap">
   <nav class="rise">
-    <a class="monogram" href="#">LG</a>
     <div class="nav-links">
       <a href="#about">About</a>
       <a href="#experience">Experience</a>
@@ -554,78 +543,75 @@
 <!-- ===== HERO ===== -->
 <header class="wrap" data-bg1="#faf7f2" data-bg2="#f4e9dd">
   <div class="hero">
-    <div class="eyebrow rise d1">CS @ UC San Diego '28 · GTM Engineer Intern @ GMI Cloud · ML @ Qualcomm Institute</div>
-    <h1 class="rise d1">Laksh Goyal</h1>
-    <p class="hero-line rise d2">I build applied ML systems and the infrastructure under them — agent evals, storage engines, network transports, and API gateways that have to survive outside notebooks.</p>
-    <div class="hero-path rise d2">Mumbai <span class="sep">→</span> San Diego <span class="sep">→</span> Mountain View</div>
-    <div class="avail rise d2">Open to new opportunities — internships, research, ambitious teams.</div>
-    <div class="hero-links rise d3">
-      <a class="solid" href="mailto:lakshgoyal06@gmail.com">lakshgoyal06@gmail.com</a>
-      <a class="line" href="https://github.com/lgoyal6" target="_blank" rel="noopener">GitHub</a>
-      <a class="line" href="https://linkedin.com/in/lakshgoyal" target="_blank" rel="noopener">LinkedIn</a>
-      <a class="line" href="https://x.com/Lgoyal6" target="_blank" rel="noopener">X</a>
-      <a class="line" href="Laksh_Resume.pdf" target="_blank" rel="noopener">Resume</a>
+    <div>
+      <div class="eyebrow rise d1">CS @ UC San Diego '28 · GTM Engineer Intern @ GMI Cloud · ML @ Qualcomm Institute</div>
+      <h1 class="rise d1">Laksh Goyal</h1>
+      <p class="hero-line rise d2">I build applied ML systems and the infrastructure under them: agent evals, storage engines, network transports, and API gateways that have to survive outside notebooks.</p>
+      <div class="hero-path rise d2">Mumbai <span class="sep">→</span> San Diego <span class="sep">→</span> Mountain View</div>
+      <div class="avail rise d2">Open to new opportunities: internships, research, ambitious teams.</div>
+      <div class="hero-links rise d3">
+        <a class="solid" href="mailto:lakshgoyal06@gmail.com">lakshgoyal06@gmail.com</a>
+        <a class="line" href="https://github.com/lgoyal6" target="_blank" rel="noopener">GitHub</a>
+        <a class="line" href="https://linkedin.com/in/lakshgoyal" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="line" href="https://x.com/Lgoyal6" target="_blank" rel="noopener">X</a>
+        <a class="line" href="Laksh_Resume.pdf" target="_blank" rel="noopener">Resume</a>
+      </div>
     </div>
-    <div class="hero-stats rise d3">
-      <div class="hstat"><div class="n">20+</div><div class="l">projects built</div></div>
-      <div class="hstat"><div class="n">5</div><div class="l">hackathon builds</div></div>
-      <div class="hstat"><div class="n">11</div><div class="l">engineers led</div></div>
-      <div class="hstat"><div class="n">1</div><div class="l">published paper</div></div>
+    <div class="hero-side rise d2">
+      <div class="portrait"><img src="IMG_8054.jpg" alt="Laksh Goyal"></div>
+      <div class="facts">
+        <div class="fact"><div class="k">Education</div><div class="v">UC San Diego · B.S. CS '28 · minors in CogSci &amp; Business-Econ</div></div>
+        <div class="fact"><div class="k">Currently</div><div class="v">GTM Engineer Intern @ GMI Cloud · ML research @ E4E, Qualcomm Institute</div></div>
+      </div>
     </div>
+  </div>
+  <div class="hero-stats rise d3">
+    <div class="hstat"><div class="n">20+</div><div class="l">projects built</div></div>
+    <div class="hstat"><div class="n">5</div><div class="l">hackathon wins</div></div>
+    <div class="hstat"><div class="n">11</div><div class="l">engineers led</div></div>
+    <div class="hstat"><div class="n">1</div><div class="l">published paper</div></div>
   </div>
 </header>
 
 <!-- ===== WHAT I DO ===== -->
 <section id="about" class="band wrap" data-bg1="#f6efe3" data-bg2="#efdfc9">
-  <div class="sec-label">01 — About</div>
+  <div class="sec-label">01 · About</div>
   <h2>Build it, measure it, ship it.</h2>
-  <div class="about-grid">
-    <div class="bio">
-      <p>I'm from Mumbai, studying CS at <strong>UC San Diego ('28)</strong> with minors in cognitive science and business economics. Right now my week splits between Mountain View and San Diego: <strong>GTM engineering at GMI Cloud</strong>, and <strong>bioacoustics ML research</strong> with Engineers for Exploration at the Qualcomm Institute. Mostly I just like to build, break, and ship fast — at the intersection of startups, medtech, and applied AI.</p>
-      <p>I like owning a system end to end — the eval harness <em>and</em> the agent on top of it, the storage engine <em>and</em> the service that stresses it, the model <em>and</em> the deploy path that puts it in front of people. House rule for everything I build: <strong>publish the number, and publish what the number cost.</strong> Every benchmark on this page states its losing axis, because a result you can't interrogate is marketing, not engineering.</p>
-      <p>A lot of that starts at hackathons — five of the projects on this page were built in a weekend or less. Pylon has since landed in the <strong>Bow Capital incubator</strong>, and GMI Cloud <strong>published my model-cascade benchmark</strong>. Off the keyboard: poker, 8-ball, F1 weekends, Lego builds, soccer, and too much sci-fi.</p>
-      <div class="hack-list">
-        <div class="hack-head">Built at hackathons</div>
-        <div class="hack"><span class="hname">Pylon</span><span class="hdesc">counter-UAS RF sensor mesh — now in the Bow Capital incubator</span></div>
-        <div class="hack"><span class="hname">Vigil</span><span class="hdesc">autonomous AI on-call engineer holding zero standing credentials</span></div>
-        <div class="hack"><span class="hname">LOCUS</span><span class="hdesc">voice-driven search-and-rescue command center</span></div>
-        <div class="hack"><span class="hname">Winnow</span><span class="hdesc">real-time LLM prompt compression on two orthogonal axes</span></div>
-        <div class="hack"><span class="hname">RepoMap</span><span class="hdesc">VS Code extension mapping codebases as dependency graphs</span></div>
-      </div>
-    </div>
-    <div class="about-side">
-      <div class="portrait"><img src="IMG_8054.jpg" alt="Laksh Goyal" loading="lazy"></div>
-      <div class="facts">
-        <div class="fact"><div class="k">Education</div><div class="v">UC San Diego · B.S. CS '28 · minors in CogSci &amp; Business-Econ</div></div>
-        <div class="fact"><div class="k">Currently</div><div class="v">GTM Engineer Intern @ GMI Cloud · ML research @ E4E, Qualcomm Institute</div></div>
-        <div class="fact"><div class="k">Startup</div><div class="v">Pylon — counter-UAS, Bow Capital incubator</div></div>
-        <div class="fact"><div class="k">Published</div><div class="v">Model-cascade benchmark (GMI Cloud) · Computer-vision paper (JETIR)</div></div>
-        <div class="fact"><div class="k">Open to</div><div class="v">Internships · research · ambitious teams</div></div>
-      </div>
+  <div class="bio">
+    <p>I'm from Mumbai, studying CS at <strong>UC San Diego ('28)</strong> with minors in cognitive science and business economics. Right now my week splits between Mountain View and San Diego: <strong>GTM engineering at GMI Cloud</strong>, and <strong>bioacoustics ML research</strong> with Engineers for Exploration at the Qualcomm Institute. I like to build, break, and ship fast, mostly at the intersection of startups, medtech, and applied AI.</p>
+    <p>I like owning a system end to end: the eval harness <em>and</em> the agent on top of it, the storage engine <em>and</em> the service that stresses it, the model <em>and</em> the deploy path that puts it in front of people. House rule for everything I build: <strong>publish the number, and publish what the number cost.</strong> Every benchmark on this page states its losing axis, because a result you can't interrogate is marketing, not engineering.</p>
+    <p>A lot of that starts at hackathons: five of the projects on this page were built in a weekend or less. Pylon has since landed in the <strong>Bow Capital incubator</strong>, and GMI Cloud <strong>published my model-cascade benchmark</strong>. Off the keyboard: poker, 8-ball, F1 weekends, Lego builds, soccer, and too much sci-fi.</p>
+    <div class="hack-list">
+      <div class="hack-head">Built at hackathons</div>
+      <div class="hack"><a class="hname" href="https://github.com/lgoyal6/pylon" target="_blank" rel="noopener">Pylon <span class="hgo">↗</span></a><span class="hdesc">counter-UAS RF sensor mesh, now in the Bow Capital incubator</span></div>
+      <div class="hack"><a class="hname" href="https://github.com/lgoyal6/vigil" target="_blank" rel="noopener">Vigil <span class="hgo">↗</span></a><span class="hdesc">autonomous AI on-call engineer holding zero standing credentials</span></div>
+      <div class="hack"><a class="hname" href="https://github.com/lgoyal6/Locus" target="_blank" rel="noopener">LOCUS <span class="hgo">↗</span></a><span class="hdesc">voice-driven search-and-rescue command center</span></div>
+      <div class="hack"><a class="hname" href="https://github.com/TC960/winnow" target="_blank" rel="noopener">Winnow <span class="hgo">↗</span></a><span class="hdesc">real-time LLM prompt compression on two orthogonal axes</span></div>
+      <div class="hack"><a class="hname" href="https://github.com/lgoyal6/RepoMap" target="_blank" rel="noopener">RepoMap <span class="hgo">↗</span></a><span class="hdesc">VS Code extension mapping codebases as dependency graphs</span></div>
     </div>
   </div>
   <div class="cap-grid">
     <div class="cap">
       <span class="cap-num">/01</span>
       <h3>Agentic AI &amp; evals</h3>
-      <p>Orchestration frameworks, eval harnesses, and self-correcting agents — measured on accuracy, cost, and latency, not vibes.</p>
+      <p>Orchestration frameworks, eval harnesses, and self-correcting agents, measured on accuracy, cost, and latency, not vibes.</p>
     </div>
     <div class="cap">
       <span class="cap-num">/02</span>
       <h3>ML systems</h3>
-      <p>Vision and audio pipelines for messy real-world data — medical imagery, bioacoustics, RF signals, geospatial rasters.</p>
+      <p>Vision and audio pipelines for messy real-world data: medical imagery, bioacoustics, RF signals, geospatial rasters.</p>
     </div>
     <div class="cap">
       <span class="cap-num">/03</span>
       <h3>Systems &amp; infra</h3>
-      <p>Storage engines, transports, and gateways in C++ and Go — benchmarked head-to-head, with the losing axes published, not hidden.</p>
+      <p>Storage engines, transports, and gateways in C++ and Go, benchmarked head-to-head, with the losing axes published, not hidden.</p>
     </div>
   </div>
 </section>
 
 <!-- ===== EXPERIENCE ===== -->
 <section id="experience" class="band wrap" data-bg1="#f3e6d8" data-bg2="#e9d9d2">
-  <div class="sec-label">02 — Experience</div>
+  <div class="sec-label">02 · Experience</div>
   <h2>Where I've worked.</h2>
   <div class="xp-list">
 
@@ -634,7 +620,7 @@
         <h3>GMI Cloud · <span class="role">GTM Engineer Intern</span></h3>
         <span class="xp-date">Jun 2026 – Present · Mountain View, CA</span>
       </div>
-      <p>Built Mint, an internal lead-intelligence platform that turns event guest lists into evidence-backed, reviewable sales leads — and designed the verify-then-escalate model cascade benchmark GMI Cloud published.</p>
+      <p>Built Mint, an internal lead-intelligence platform that turns event guest lists into evidence-backed, reviewable sales leads, and designed the verify-then-escalate model cascade benchmark GMI Cloud published.</p>
     </div>
 
     <div class="xp">
@@ -642,21 +628,21 @@
         <h3>Inovasity · <span class="role">Applied Machine Learning Intern</span></h3>
         <span class="xp-date">Mar 2026 – Aug 2026 · San Diego, CA</span>
       </div>
-      <p>Worked across the ML core, LLM agent layer, and backend of a medical wound-imaging pipeline — MedSAM2 segmentation, clinical-documentation agents, and the persistence and deploy path behind a 3D viewer.</p>
+      <p>Worked across the ML core, LLM agent layer, and backend of a medical wound-imaging pipeline: MedSAM2 segmentation, clinical-documentation agents, and the persistence and deploy path behind a 3D viewer.</p>
     </div>
 
     <div class="xp">
       <div class="xp-head">
-        <h3>Qualcomm Institute — Engineers for Exploration · <span class="role">Software Engineer, ML Systems</span></h3>
+        <h3>Engineers for Exploration, Qualcomm Institute · <span class="role">Software Engineer, ML Systems</span></h3>
         <span class="xp-date">Jan 2026 – Present · San Diego, CA</span>
       </div>
       <p>Build ingestion and indexing pipelines for multi-terabyte bioacoustic datasets and study focal-to-soundscape domain shift for bird-call classifiers.</p>
-      <p class="xp-prev"><strong>Previously — Research Engineer, Computer Vision</strong> (Oct 2025 – Jan 2026): boundary-aware evaluation for mangrove canopy segmentation, exposing errors standard IoU masked.</p>
+      <p class="xp-prev"><strong>Previously: Research Engineer, Computer Vision</strong> (Oct 2025 – Jan 2026): boundary-aware evaluation for mangrove canopy segmentation, exposing errors standard IoU masked.</p>
     </div>
 
     <div class="xp">
       <div class="xp-head">
-        <h3>Xyntopia — Taskyon · <span class="role">LLM Systems Engineer Intern</span></h3>
+        <h3>Xyntopia (Taskyon) · <span class="role">LLM Systems Engineer Intern</span></h3>
         <span class="xp-date">Jun 2025 – Oct 2025 · San Diego, CA</span>
       </div>
       <p>Built an LLM task-orchestration framework powering a VS Code chat extension, plus an end-to-end-encrypted proxy routing LLM and third-party API requests with server-side credit accounting.</p>
@@ -667,15 +653,15 @@
 
 <!-- ===== PROJECTS ===== -->
 <section id="work" class="band wrap" data-bg1="#e5d5d5" data-bg2="#d4c7cf">
-  <div class="sec-label">03 — Projects</div>
+  <div class="sec-label">03 · Projects</div>
   <h2>Selected projects.</h2>
-  <p class="sec-intro">Every number below traces to a committed benchmark, test run, or published result — losing axes included.</p>
+  <p class="sec-intro">Every number below traces to a committed benchmark, test run, or published result, losing axes included.</p>
   <div class="pgrid">
 
     <a class="pcard" href="https://github.com/lgoyal6/strata" target="_blank" rel="noopener">
       <div class="pcard-num">01</div>
-      <h3>strata — LSM-Tree Storage Engine</h3>
-      <p>A leveled LSM-tree key-value store from scratch: checksummed WAL, MVCC snapshots, Bloom-filtered SSTables, group commit. Durability verified by a harness that tears writes and SIGKILLs the engine mid-flight — the same matrix gates every push in CI.</p>
+      <h3>strata · LSM-Tree Storage Engine</h3>
+      <p>A leveled LSM-tree key-value store from scratch: checksummed WAL, MVCC snapshots, Bloom-filtered SSTables, group commit. Durability verified by a harness that tears writes and SIGKILLs the engine mid-flight; the same matrix gates every push in CI.</p>
       <div class="stat">11,149 SIGKILLs · 2.22M acked writes, 0 lost · 50× RocksDB on sync commits</div>
       <div class="tags"><span class="tag">C++20</span><span class="tag">libFuzzer</span><span class="tag">TSan</span><span class="tag">YCSB</span></div>
       <div class="go">repo ↗</div>
@@ -683,8 +669,8 @@
 
     <a class="pcard" href="https://github.com/lgoyal6/taut" target="_blank" rel="noopener">
       <div class="pcard-num">02</div>
-      <h3>taut — Reliable-UDP Transport + SWIM</h3>
-      <p>Transport library for small messages on lossy links: SACK-based ARQ, adaptive RTO, SWIM failure detection on a lock-free epoll loop. Trades bulk throughput for tail latency — and publishes the losing axis (kernel TCP wins clean-link throughput ~27×).</p>
+      <h3>taut · Reliable-UDP Transport + SWIM</h3>
+      <p>Transport library for small messages on lossy links: SACK-based ARQ, adaptive RTO, SWIM failure detection on a lock-free epoll loop. Trades bulk throughput for tail latency, and publishes the losing axis (kernel TCP wins clean-link throughput ~27×).</p>
       <div class="stat">p99 ~6× below kernel TCP at 5% loss · ~12× at 20% loss</div>
       <div class="tags"><span class="tag">C++20</span><span class="tag">epoll</span><span class="tag">netem</span><span class="tag">libFuzzer</span></div>
       <div class="go">repo ↗</div>
@@ -692,8 +678,8 @@
 
     <a class="pcard" href="https://github.com/lgoyal6/tautq" target="_blank" rel="noopener">
       <div class="pcard-num">03</div>
-      <h3>tautq — Distributed Webhook Delivery</h3>
-      <p>Built on taut: a coordinator-less delivery service replicating a write-ahead log by majority commit under epoch-fenced leases — no ZooKeeper, no etcd. Building it surfaced two SWIM protocol bugs, fixed upstream. A chaos suite gates every PR.</p>
+      <h3>tautq · Distributed Webhook Delivery</h3>
+      <p>Built on taut: a coordinator-less delivery service replicating a write-ahead log by majority commit under epoch-fenced leases, with no ZooKeeper and no etcd. Building it surfaced two SWIM protocol bugs, fixed upstream. A chaos suite gates every PR.</p>
       <div class="stat">800 jobs/s · p99 107ms · 100% completion at 0–20% UDP loss</div>
       <div class="tags"><span class="tag">C++20</span><span class="tag">WAL replication</span><span class="tag">chaos testing</span></div>
       <div class="go">repo ↗</div>
@@ -701,7 +687,7 @@
 
     <a class="pcard" href="https://github.com/lgoyal6/tollgate" target="_blank" rel="noopener">
       <div class="pcard-num">04</div>
-      <h3>Tollgate — Multi-Tenant LLM API Gateway</h3>
+      <h3>Tollgate · Multi-Tenant LLM API Gateway</h3>
       <p>Lets a team share one LLM provider key safely: personal revocable keys with rate budgets, the real credential injected server-side. Atomic Redis rate limits hold a global ceiling across replicas where per-replica limiters admit 3× the limit.</p>
       <div class="stat">2,000 req/s, 0 errors, p99 46ms · 300 req/s global limit held across 3 replicas</div>
       <div class="tags"><span class="tag">Go</span><span class="tag">Redis</span><span class="tag">Kubernetes</span><span class="tag">Terraform</span><span class="tag">OTel</span></div>
@@ -711,7 +697,7 @@
     <a class="pcard" href="https://x.com/gmi_cloud/status/2077124979397947824" target="_blank" rel="noopener">
       <div class="pcard-num">05</div>
       <h3>Verify-then-Escalate Model Cascade</h3>
-      <p>Two-stage routing — Opus 4.8 primary, GLM 5.2 FP8 rescue on verifier failure — over 100 frozen EvalPlus tasks, ranked by $/solved-task. Beat every single-model baseline; the gain traced to complementary failure modes, not a uniformly better model.</p>
+      <p>Two-stage routing (Opus 4.8 primary, GLM 5.2 FP8 rescue on verifier failure) over 100 frozen EvalPlus tasks, ranked by $/solved-task. Beat every single-model baseline; the gain traced to complementary failure modes, not a uniformly better model.</p>
       <div class="stat">94/100 vs best single model's 90 · 47.1% cheaper · published by GMI Cloud</div>
       <div class="tags"><span class="tag">Python</span><span class="tag">EvalPlus</span><span class="tag">cost accounting</span></div>
       <div class="go">published result ↗</div>
@@ -719,7 +705,7 @@
 
     <div class="pcard">
       <div class="pcard-num">06</div>
-      <h3>Mint — Lead Intelligence Platform</h3>
+      <h3>Mint · Lead Intelligence Platform</h3>
       <p>End-to-end lead intelligence at GMI Cloud: identity resolution across Apollo and Exa evidence chains, LLM ICP tiering with human-review gates and audit trails, and a 16-tool conversational agent over the lead database.</p>
       <div class="stat">18K LOC · 45 endpoints · 251 tests · 51 qualified leads from a 367-person triage set</div>
       <div class="tags"><span class="tag">FastAPI</span><span class="tag">PostgreSQL</span><span class="tag">React</span><span class="tag">LLM classification</span></div>
@@ -728,7 +714,7 @@
 
     <a class="pcard" href="https://github.com/TC960/winnow" target="_blank" rel="noopener">
       <div class="pcard-num">07</div>
-      <h3>Winnow — LLM Prompt Compression</h3>
+      <h3>Winnow · LLM Prompt Compression</h3>
       <p>Voice-first compression on two orthogonal axes: token-space (LLMLingua + self-implemented AttentionRAG behind an order-preserving merge) and model-space (~4-bit TurboQuant KV cache + LCLM latent compression), so the savings multiply.</p>
       <div class="stat">~60× KV cache reduction · F1 0.437 vs 0.376 fp16 baseline on LongBench</div>
       <div class="tags"><span class="tag">PyTorch</span><span class="tag">Modal</span><span class="tag">Deepgram</span></div>
@@ -737,7 +723,7 @@
 
     <a class="pcard" href="https://github.com/lgoyal6/pylon" target="_blank" rel="noopener">
       <div class="pcard-num">08</div>
-      <h3>Pylon — Counter-UAS Sensor Mesh</h3>
+      <h3>Pylon · Counter-UAS Sensor Mesh</h3>
       <p>Built at the Bow Capital Defense Hackathon (UCSD), now part of the Bow Capital incubator. Anomaly-based RF detection over dual SDR backends, a UDP gossip mesh, and a 3D operator dashboard in Next.js + deck.gl.</p>
       <div class="stat">Catches novel emitters a signature-library baseline misses 100% of · mesh converges ~2s</div>
       <div class="tags"><span class="tag">Python</span><span class="tag">scikit-learn</span><span class="tag">SDR</span><span class="tag">deck.gl</span></div>
@@ -746,8 +732,8 @@
 
     <a class="pcard" href="https://github.com/lgoyal6/vigil" target="_blank" rel="noopener">
       <div class="pcard-num">09</div>
-      <h3>Vigil — Autonomous AI On-Call Engineer</h3>
-      <p>Built at the Loop Engineering Hackathon: detects, diagnoses, and remediates production incidents end-to-end while holding zero standing credentials — single-use, scope-bound grants behind a Pomerium identity-aware proxy, with policy-denied escalation and a full audit trail.</p>
+      <h3>Vigil · Autonomous AI On-Call Engineer</h3>
+      <p>Built at the Loop Engineering Hackathon: detects, diagnoses, and remediates production incidents end-to-end while holding zero standing credentials: single-use, scope-bound grants behind a Pomerium identity-aware proxy, with policy-denied escalation and a full audit trail.</p>
       <div class="stat">5 services · zero standing creds · single-use 60s-TTL grants</div>
       <div class="tags"><span class="tag">TypeScript</span><span class="tag">Pomerium</span><span class="tag">Docker</span><span class="tag">Akash</span></div>
       <div class="go">repo ↗</div>
@@ -755,7 +741,7 @@
 
     <a class="pcard" href="https://github.com/lgoyal6/Locus" target="_blank" rel="noopener">
       <div class="pcard-num">10</div>
-      <h3>LOCUS — Voice-Driven SAR Command Center</h3>
+      <h3>LOCUS · Voice-Driven SAR Command Center</h3>
       <p>Search-and-rescue ops: LLM agents profile the missing person, a Monte Carlo engine turns hypotheses into a live probability heatmap and team assignments, and the coordinator drives it all hands-free by voice.</p>
       <div class="stat">150 walks/hypothesis × 4 ISRID profiles · 1.5s sim tick with zero LLM calls in-loop</div>
       <div class="tags"><span class="tag">TypeScript</span><span class="tag">Convex</span><span class="tag">Mapbox GL</span><span class="tag">Web Speech</span></div>
@@ -769,7 +755,7 @@
 
     <a class="mini" href="https://github.com/lgoyal6/agentbench" target="_blank" rel="noopener">
       <span class="mini-name">AgentBench</span>
-      <span class="mini-desc">Eval framework for LangGraph agents — cost-adjusted accuracy, async-safe usage attribution, Ray Tune HPO</span>
+      <span class="mini-desc">Eval framework for LangGraph agents: cost-adjusted accuracy, async-safe usage attribution, Ray Tune HPO</span>
       <span class="mini-stat">0.964 acc · n=55 · $0.042 spend</span>
       <span class="mini-go">↗</span>
     </a>
@@ -783,7 +769,7 @@
 
     <a class="mini" href="https://github.com/lgoyal6/argus" target="_blank" rel="noopener">
       <span class="mini-name">Argus</span>
-      <span class="mini-desc">Agentic training monitor — SPC detection across 4 failure modes, bounded tool calls to self-correct runs</span>
+      <span class="mini-desc">Agentic training monitor: SPC detection across 4 failure modes, bounded tool calls to self-correct runs</span>
       <span class="mini-stat">49% of anomalies auto-resolved</span>
       <span class="mini-go">↗</span>
     </a>
@@ -797,7 +783,7 @@
 
     <a class="mini" href="https://github.com/anirudh9280/ChainSense" target="_blank" rel="noopener">
       <span class="mini-name">ChainSense</span>
-      <span class="mini-desc">Ethereum behavioral analytics — 16-feature wallet matrix clustered into 9 archetypes with anomaly flags</span>
+      <span class="mini-desc">Ethereum behavioral analytics: 16-feature wallet matrix clustered into 9 archetypes with anomaly flags</span>
       <span class="mini-stat">403K txns · 59K wallets · 591 anomalies</span>
       <span class="mini-go">↗</span>
     </a>
@@ -811,28 +797,28 @@
 
     <a class="mini" href="https://github.com/pynay/agrishield" target="_blank" rel="noopener">
       <span class="mini-name">AgriShield</span>
-      <span class="mini-desc">Wildfire risk pipeline — ELMFIRE fire-spread ensembles score 24 candidate firebreak layouts</span>
+      <span class="mini-desc">Wildfire risk pipeline: ELMFIRE fire-spread ensembles score 24 candidate firebreak layouts</span>
       <span class="mini-stat">92 tests · mypy-strict clean</span>
       <span class="mini-go">↗</span>
     </a>
 
     <a class="mini" href="https://github.com/lgoyal6/UrbanSound8k-classification" target="_blank" rel="noopener">
       <span class="mini-name">UrbanSound8K</span>
-      <span class="mini-desc">CNN-free audio classification — 487-dim engineered features incl. wavelet scattering, leak-free CV</span>
+      <span class="mini-desc">CNN-free audio classification: 487-dim engineered features incl. wavelet scattering, leak-free CV</span>
       <span class="mini-stat">72.9% top-1 · 0.51ms/clip inference</span>
       <span class="mini-go">↗</span>
     </a>
 
     <a class="mini" href="https://www.jetir.org/papers/JETIR2303781.pdf" target="_blank" rel="noopener">
       <span class="mini-name">Helmet Identification</span>
-      <span class="mini-desc">ResNet-50 pipeline detecting riders and classifying helmet use — published via Lumiere, top 10% of ~200</span>
+      <span class="mini-desc">ResNet-50 pipeline detecting riders and classifying helmet use; published via Lumiere, top 10% of ~200</span>
       <span class="mini-stat">94% acc · 0.92 mAP · &lt;50ms inference</span>
       <span class="mini-go">paper ↗</span>
     </a>
 
     <div class="mini">
       <span class="mini-name">Project Liftoff</span>
-      <span class="mini-desc">Incubator management platform — 6-tier RBAC via Supabase row-level security across 13 tables</span>
+      <span class="mini-desc">Incubator management platform: 6-tier RBAC via Supabase row-level security across 13 tables</span>
       <span class="mini-stat">100+ users onboarded</span>
       <span class="mini-go dim">private</span>
     </div>
@@ -842,7 +828,7 @@
 
 <!-- ===== STACK ===== -->
 <section id="stack" class="band wrap" data-bg1="#dccdd0" data-bg2="#cfc2cd">
-  <div class="sec-label">04 — Stack</div>
+  <div class="sec-label">04 · Stack</div>
   <h2>Tools I reach for.</h2>
   <div class="stack-group">
     <div class="stack-name">Languages</div>
@@ -902,12 +888,12 @@
 
 <!-- ===== RESUME ===== -->
 <section id="resume" class="band wrap" data-bg1="#d3c6cc" data-bg2="#cbbfc8">
-  <div class="sec-label">05 — Resume</div>
+  <div class="sec-label">05 · Resume</div>
   <h2>The one-pager.</h2>
-  <p class="sec-intro">Prefer paper? Everything above, compressed to a page — <a href="Laksh_Resume.pdf" target="_blank" rel="noopener" style="color:var(--accent);font-weight:600;text-decoration:none;">download the PDF ↗</a></p>
+  <p class="sec-intro">Prefer paper? Everything above, compressed to a page. <a href="Laksh_Resume.pdf" target="_blank" rel="noopener" style="color:var(--accent);font-weight:600;text-decoration:none;">Download the PDF ↗</a></p>
   <div class="resume-frame">
     <object data="Laksh_Resume.pdf" type="application/pdf" aria-label="Laksh Goyal resume PDF">
-      <div class="resume-fallback">This browser can't display the PDF inline — <a href="Laksh_Resume.pdf" target="_blank" rel="noopener">open or download it ↗</a></div>
+      <div class="resume-fallback">This browser can't display the PDF inline. <a href="Laksh_Resume.pdf" target="_blank" rel="noopener">Open or download it ↗</a></div>
     </object>
   </div>
 </section>
@@ -915,9 +901,9 @@
 <!-- ===== CONTACT ===== -->
 <section id="contact" class="wrap" data-bg1="#cfc2cd" data-bg2="#c4bac9">
   <div class="panel">
-    <div class="sec-label">06 — Contact</div>
+    <div class="sec-label">06 · Contact</div>
     <h2>Let's build something.</h2>
-    <p>Open to new opportunities — internships, research collabs, hackathons, and ambitious teams. Fastest way to reach me is email.</p>
+    <p>Open to new opportunities: internships, research collabs, hackathons, and ambitious teams. Fastest way to reach me is email.</p>
     <a class="panel-cta" href="mailto:lakshgoyal06@gmail.com">lakshgoyal06@gmail.com →</a>
     <div class="panel-links">
       <a href="https://github.com/lgoyal6" target="_blank" rel="noopener">GitHub</a>
