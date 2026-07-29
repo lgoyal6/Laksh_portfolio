@@ -52,7 +52,7 @@
     background-size: 22px 22px;
   }
 
-  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 clamp(18px, 4vw, 40px); }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 clamp(16px, 3vw, 32px); }
 
   @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
   .rise { animation: rise .7s cubic-bezier(0.16, 1, 0.3, 1) both; }
@@ -87,11 +87,11 @@
     transition: color .15s;
   }
   .nav-social a:hover { color: var(--accent); }
-  .nav-links { display: flex; gap: 22px; align-items: center; flex-wrap: wrap; }
+  .nav-links { display: flex; gap: 22px; align-items: center; flex-wrap: nowrap; flex-shrink: 0; white-space: nowrap; }
   .nav-links a {
     font-size: 15px;
-    font-weight: 500;
-    color: var(--muted);
+    font-weight: 600;
+    color: var(--ink);
     text-decoration: none;
     transition: color .15s;
   }
@@ -100,12 +100,13 @@
   /* ===== Hero ===== */
   .hero {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 340px;
-    gap: clamp(28px, 5vw, 60px);
-    align-items: center;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: clamp(28px, 5vw, 64px);
+    align-items: start;
     padding: clamp(10px, 2.5vh, 26px) 0 clamp(26px, 4vh, 44px);
   }
   .hero-side { display: flex; flex-direction: column; gap: 14px; }
+  .hero .bio { margin-top: 28px; }
   h1 {
     font-family: var(--heading);
     font-weight: 700;
@@ -234,14 +235,7 @@
   }
   .cap p { color: var(--muted); font-size: 14px; }
 
-  /* About: bio left, hackathon list right */
-  .about-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1.15fr) minmax(280px, .85fr);
-    gap: clamp(24px, 4vw, 52px);
-    align-items: start;
-    margin-bottom: 30px;
-  }
+  /* Bio (inside hero) + hackathon list */
   .bio p { color: var(--muted); font-size: 15.5px; margin-bottom: 16px; max-width: 700px; }
   .bio p:last-child { margin-bottom: 0; }
   .bio strong { color: var(--ink); font-weight: 600; }
@@ -305,17 +299,41 @@
   .hack .hgo { font-family: var(--mono); font-size: 10px; color: var(--accent); }
   .hack .hdesc { color: var(--muted); font-size: 13px; }
 
-  /* Resume embed */
-  .resume-frame {
-    background: var(--glass);
-    border: 1px solid var(--glass-border);
-    border-radius: 18px;
-    box-shadow: var(--card-shadow);
+  /* Resume: paper-sized preview, click to open */
+  .resume-paper {
+    position: relative;
+    width: min(100%, 540px);
+    aspect-ratio: 8.5 / 11;
+    border-radius: 12px;
     overflow: hidden;
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--card-shadow);
+    background: #fff;
   }
-  .resume-frame object { width: 100%; height: min(70vh, 800px); display: block; border: 0; }
+  .resume-paper object { width: 100%; height: 100%; display: block; border: 0; pointer-events: none; }
   .resume-fallback { padding: 34px; text-align: center; color: var(--muted); font-size: 14px; }
   .resume-fallback a { color: var(--accent); font-weight: 600; }
+  .resume-open {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 16px;
+    text-decoration: none;
+  }
+  .resume-open span {
+    background: var(--ink);
+    color: #fff;
+    font-family: var(--heading);
+    font-weight: 600;
+    font-size: 13px;
+    padding: 9px 18px;
+    border-radius: 999px;
+    box-shadow: 0 6px 18px rgba(29,27,24,.3);
+    transition: background .15s, transform .15s;
+  }
+  .resume-open:hover span { background: var(--accent); transform: translateY(-2px); }
 
   /* ===== Experience ===== */
   .xp-list { display: flex; flex-direction: column; gap: 12px; }
@@ -359,14 +377,13 @@
   }
   .xp .xp-prev strong { color: var(--ink); font-weight: 600; }
 
-  /* ===== Projects: conveyor belt ===== */
-  .belt-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    gap: 20px;
+  /* ===== Projects ===== */
+  .pgrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
   }
-  .belt-nav { display: flex; gap: 8px; margin-bottom: 24px; flex-shrink: 0; }
+  .belt-nav { display: flex; gap: 8px; flex-shrink: 0; }
   .belt-btn {
     width: 40px; height: 40px;
     border-radius: 50%;
@@ -390,7 +407,46 @@
   .belt::-webkit-scrollbar { height: 7px; }
   .belt::-webkit-scrollbar-thumb { background: rgba(29,27,24,.22); border-radius: 999px; }
   .belt::-webkit-scrollbar-track { background: transparent; }
-  .belt .pcard { flex: 0 0 var(--card-w, 380px); scroll-snap-align: start; }
+  .mcard {
+    flex: 0 0 260px;
+    scroll-snap-align: start;
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    padding: 18px 20px;
+    box-shadow: 0 2px 8px rgba(29,27,24,.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    transition: transform .2s, border-color .2s;
+  }
+  a.mcard:hover { transform: translateY(-3px); border-color: var(--accent); }
+  .mcard h3 { font-family: var(--heading); font-weight: 600; font-size: 15.5px; letter-spacing: -0.01em; margin-bottom: 6px; }
+  a.mcard:hover h3 { color: var(--accent); }
+  .mcard p { color: var(--muted); font-size: 12.5px; line-height: 1.5; flex-grow: 1; }
+  .mcard .mstat { font-family: var(--mono); font-size: 10.5px; color: var(--ink); margin-top: 12px; }
+  .mcard .go { font-family: var(--mono); font-size: 10.5px; color: var(--accent); margin-top: 8px; letter-spacing: .06em; text-transform: uppercase; }
+  .mcard .go.dim { color: var(--faint); }
+  .more-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 18px;
+    margin: 36px 0 14px;
+    flex-wrap: wrap;
+  }
+  .more-head { font-family: var(--heading); font-weight: 600; font-size: 20px; letter-spacing: -0.015em; }
+  .all-link {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .all-link:hover { text-decoration: underline; }
   .pcard {
     background: var(--glass);
     border: 1px solid var(--glass-border);
@@ -443,43 +499,6 @@
     text-transform: uppercase;
   }
   .pcard .go.dim { color: var(--faint); }
-
-  /* More builds: compact rows */
-  .more-head {
-    font-family: var(--heading);
-    font-weight: 600;
-    font-size: 20px;
-    letter-spacing: -0.015em;
-    margin: 34px 0 14px;
-  }
-  .mini-list { display: flex; flex-direction: column; gap: 8px; }
-  .mini {
-    display: grid;
-    grid-template-columns: 200px minmax(0, 1fr) auto 20px;
-    gap: 16px;
-    align-items: baseline;
-    background: var(--glass);
-    border: 1px solid var(--glass-border);
-    border-radius: 12px;
-    padding: 13px 18px;
-    box-shadow: 0 2px 8px rgba(29,27,24,.05);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    text-decoration: none;
-    transition: transform .15s, border-color .15s;
-  }
-  a.mini:hover { transform: translateX(3px); border-color: var(--accent); }
-  .mini-name { font-family: var(--heading); font-weight: 600; font-size: 14.5px; }
-  a.mini:hover .mini-name { color: var(--accent); }
-  .mini-desc { color: var(--muted); font-size: 13px; }
-  .mini-stat {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--ink);
-    white-space: nowrap;
-  }
-  .mini-go { font-family: var(--mono); font-size: 12px; color: var(--accent); text-align: right; }
-  .mini-go.dim { color: var(--faint); }
 
   /* Tech stack */
   .stack-group { margin-bottom: 18px; }
@@ -565,15 +584,11 @@
   /* ===== Responsive ===== */
   @media (max-width: 860px) {
     nav { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .nav-links { flex-wrap: wrap; white-space: normal; }
     .hero { grid-template-columns: 1fr; }
-    .about-grid { grid-template-columns: 1fr; }
+    .pgrid { grid-template-columns: 1fr; }
     .cap-grid { grid-template-columns: 1fr; }
     .portrait { max-width: 320px; }
-    .belt .pcard { --card-w: 300px; }
-    .mini { grid-template-columns: 1fr 20px; row-gap: 3px; }
-    .mini-desc { grid-column: 1 / -1; }
-    .mini-stat { grid-column: 1 / -1; white-space: normal; }
-    .mini-go { grid-row: 1; grid-column: 2; }
     .xp-head { flex-direction: column; gap: 2px; }
   }
 </style>
@@ -584,7 +599,7 @@
 <div class="wrap">
   <nav class="rise">
     <div class="nav-id">
-      <div class="nav-roles">CS @ UC San Diego '28 · GTM Engineer Intern @ GMI Cloud · ML @ Qualcomm Institute</div>
+      <div class="nav-roles">CS @ UC San Diego '28 · GTM/AI Engineer Intern @ GMI Cloud · ML @ Qualcomm Institute</div>
       <div class="nav-social">
         <a href="https://github.com/lgoyal6" target="_blank" rel="noopener">GitHub ↗</a>
         <a href="https://linkedin.com/in/lakshgoyal" target="_blank" rel="noopener">LinkedIn ↗</a>
@@ -621,12 +636,25 @@
         <div class="hstat"><div class="n">11</div><div class="l">engineers led</div></div>
         <div class="hstat"><div class="n">1</div><div class="l">published paper</div></div>
       </div>
+      <div class="bio rise d3">
+        <p>I'm from Mumbai, studying CS at <strong>UC San Diego ('28)</strong> with minors in cognitive science and business economics. Right now my week splits between Mountain View and San Diego: <strong>GTM/AI engineering at GMI Cloud</strong>, and <strong>bioacoustics ML research</strong> with Engineers for Exploration at the Qualcomm Institute. I like to build, break, and ship fast, mostly at the intersection of startups, medtech, and applied AI.</p>
+        <p>I like owning a system end to end: the eval harness <em>and</em> the agent on top of it, the storage engine <em>and</em> the service that stresses it, the model <em>and</em> the deploy path that puts it in front of people. House rule for everything I build: <strong>publish the number, and publish what the number cost.</strong> Every benchmark on this page states its losing axis, because a result you can't interrogate is marketing, not engineering.</p>
+        <p>A lot of that starts at hackathons: five of the projects on this page were built in a weekend or less. Pylon has since landed in the <strong>Bow Capital incubator</strong>, and GMI Cloud <strong>published my model-cascade benchmark</strong>. Off the keyboard: poker, 8-ball, F1 weekends, Lego builds, soccer, and too much sci-fi.</p>
+      </div>
     </div>
     <div class="hero-side rise d2">
       <div class="portrait"><img src="IMG_8054.jpg" alt="Laksh Goyal"></div>
       <div class="facts">
         <div class="fact"><div class="k">Education</div><div class="v">UC San Diego · B.S. CS '28 · minors in CogSci &amp; Business-Econ</div></div>
-        <div class="fact"><div class="k">Currently</div><div class="v">GTM Engineer Intern @ GMI Cloud · ML research @ E4E, Qualcomm Institute</div></div>
+        <div class="fact"><div class="k">Currently</div><div class="v">GTM/AI Engineer Intern @ GMI Cloud · ML research @ E4E, Qualcomm Institute</div></div>
+      </div>
+      <div class="hack-list">
+        <div class="hack-head">Built at hackathons</div>
+        <div class="hack"><a class="hname" href="https://github.com/lgoyal6/pylon" target="_blank" rel="noopener">Pylon <span class="hgo">↗</span></a><span class="hdesc">counter-UAS RF sensor mesh, now in the Bow Capital incubator</span></div>
+        <div class="hack"><a class="hname" href="https://github.com/lgoyal6/vigil" target="_blank" rel="noopener">Vigil <span class="hgo">↗</span></a><span class="hdesc">autonomous AI on-call engineer holding zero standing credentials</span></div>
+        <div class="hack"><a class="hname" href="https://github.com/lgoyal6/Locus" target="_blank" rel="noopener">LOCUS <span class="hgo">↗</span></a><span class="hdesc">voice-driven search-and-rescue command center</span></div>
+        <div class="hack"><a class="hname" href="https://github.com/TC960/winnow" target="_blank" rel="noopener">Winnow <span class="hgo">↗</span></a><span class="hdesc">real-time LLM prompt compression on two orthogonal axes</span></div>
+        <div class="hack"><a class="hname" href="https://github.com/lgoyal6/RepoMap" target="_blank" rel="noopener">RepoMap <span class="hgo">↗</span></a><span class="hdesc">VS Code extension mapping codebases as dependency graphs</span></div>
       </div>
     </div>
   </div>
@@ -634,23 +662,8 @@
 
 <!-- ===== WHAT I DO ===== -->
 <section id="about" class="band wrap" data-bg1="#f6efe3" data-bg2="#efdfc9">
-  <div class="sec-label">01 · About</div>
+  <div class="sec-label">01 · What I do</div>
   <h2>Build it, measure it, ship it.</h2>
-  <div class="about-grid">
-    <div class="bio">
-      <p>I'm from Mumbai, studying CS at <strong>UC San Diego ('28)</strong> with minors in cognitive science and business economics. Right now my week splits between Mountain View and San Diego: <strong>GTM engineering at GMI Cloud</strong>, and <strong>bioacoustics ML research</strong> with Engineers for Exploration at the Qualcomm Institute. I like to build, break, and ship fast, mostly at the intersection of startups, medtech, and applied AI.</p>
-      <p>I like owning a system end to end: the eval harness <em>and</em> the agent on top of it, the storage engine <em>and</em> the service that stresses it, the model <em>and</em> the deploy path that puts it in front of people. House rule for everything I build: <strong>publish the number, and publish what the number cost.</strong> Every benchmark on this page states its losing axis, because a result you can't interrogate is marketing, not engineering.</p>
-      <p>A lot of that starts at hackathons: five of the projects on this page were built in a weekend or less. Pylon has since landed in the <strong>Bow Capital incubator</strong>, and GMI Cloud <strong>published my model-cascade benchmark</strong>. Off the keyboard: poker, 8-ball, F1 weekends, Lego builds, soccer, and too much sci-fi.</p>
-    </div>
-    <div class="hack-list">
-      <div class="hack-head">Built at hackathons</div>
-      <div class="hack"><a class="hname" href="https://github.com/lgoyal6/pylon" target="_blank" rel="noopener">Pylon <span class="hgo">↗</span></a><span class="hdesc">counter-UAS RF sensor mesh, now in the Bow Capital incubator</span></div>
-      <div class="hack"><a class="hname" href="https://github.com/lgoyal6/vigil" target="_blank" rel="noopener">Vigil <span class="hgo">↗</span></a><span class="hdesc">autonomous AI on-call engineer holding zero standing credentials</span></div>
-      <div class="hack"><a class="hname" href="https://github.com/lgoyal6/Locus" target="_blank" rel="noopener">LOCUS <span class="hgo">↗</span></a><span class="hdesc">voice-driven search-and-rescue command center</span></div>
-      <div class="hack"><a class="hname" href="https://github.com/TC960/winnow" target="_blank" rel="noopener">Winnow <span class="hgo">↗</span></a><span class="hdesc">real-time LLM prompt compression on two orthogonal axes</span></div>
-      <div class="hack"><a class="hname" href="https://github.com/lgoyal6/RepoMap" target="_blank" rel="noopener">RepoMap <span class="hgo">↗</span></a><span class="hdesc">VS Code extension mapping codebases as dependency graphs</span></div>
-    </div>
-  </div>
   <div class="cap-grid">
     <div class="cap">
       <span class="cap-num">/01</span>
@@ -678,7 +691,7 @@
 
     <div class="xp">
       <div class="xp-head">
-        <h3>GMI Cloud · <span class="role">GTM Engineer Intern</span></h3>
+        <h3>GMI Cloud · <span class="role">GTM/AI Engineer Intern</span></h3>
         <span class="xp-date">Jun 2026 – Present · Mountain View, CA</span>
       </div>
       <p>Built Mint, an internal lead-intelligence platform that turns event guest lists into evidence-backed, reviewable sales leads, and designed the verify-then-escalate model cascade benchmark GMI Cloud published.</p>
@@ -716,14 +729,8 @@
 <section id="work" class="band wrap" data-bg1="#e5d5d5" data-bg2="#d4c7cf">
   <div class="sec-label">03 · Projects</div>
   <h2>Selected projects.</h2>
-  <div class="belt-top">
-    <p class="sec-intro">Every number below traces to a committed benchmark, test run, or published result, losing axes included.</p>
-    <div class="belt-nav">
-      <button class="belt-btn" data-dir="-1" aria-label="Scroll projects left">←</button>
-      <button class="belt-btn" data-dir="1" aria-label="Scroll projects right">→</button>
-    </div>
-  </div>
-  <div class="belt" id="belt">
+  <p class="sec-intro">Every number below traces to a committed benchmark, test run, or published result, losing axes included.</p>
+  <div class="pgrid">
 
     <a class="pcard" href="https://github.com/lgoyal6/strata" target="_blank" rel="noopener">
       <div class="pcard-num">01</div>
@@ -817,77 +824,84 @@
 
   </div>
 
-  <div class="more-head">More builds.</div>
-  <div class="mini-list">
+  <div class="more-top">
+    <div class="more-head">More builds.</div>
+    <a class="all-link" href="projects.html">All 20 projects ↗</a>
+    <div class="belt-nav">
+      <button class="belt-btn" data-dir="-1" aria-label="Scroll more builds left">←</button>
+      <button class="belt-btn" data-dir="1" aria-label="Scroll more builds right">→</button>
+    </div>
+  </div>
+  <div class="belt" id="belt">
 
-    <a class="mini" href="https://github.com/lgoyal6/agentbench" target="_blank" rel="noopener">
-      <span class="mini-name">AgentBench</span>
-      <span class="mini-desc">Eval framework for LangGraph agents: cost-adjusted accuracy, async-safe usage attribution, Ray Tune HPO</span>
-      <span class="mini-stat">0.964 acc · n=55 · $0.042 spend</span>
-      <span class="mini-go">↗</span>
+    <a class="mcard" href="https://github.com/lgoyal6/agentbench" target="_blank" rel="noopener">
+      <h3>AgentBench</h3>
+      <p>Eval framework for LangGraph agents: cost-adjusted accuracy, async-safe usage attribution, Ray Tune HPO</p>
+      <div class="mstat">0.964 acc · n=55 · $0.042</div>
+      <div class="go">repo ↗</div>
     </a>
 
-    <a class="mini" href="https://github.com/lgoyal6/checkit_health" target="_blank" rel="noopener">
-      <span class="mini-name">Checkit Health</span>
-      <span class="mini-desc">7-stage misinformation-detection pipeline over 4 live social APIs with a cost-tiered LLM path</span>
-      <span class="mini-stat">64 tests · 15 req/min free tier held</span>
-      <span class="mini-go">↗</span>
+    <a class="mcard" href="https://github.com/lgoyal6/checkit_health" target="_blank" rel="noopener">
+      <h3>Checkit Health</h3>
+      <p>7-stage misinformation-detection pipeline over 4 live social APIs with a cost-tiered LLM path</p>
+      <div class="mstat">64 tests · free tier held</div>
+      <div class="go">repo ↗</div>
     </a>
 
-    <a class="mini" href="https://github.com/lgoyal6/argus" target="_blank" rel="noopener">
-      <span class="mini-name">Argus</span>
-      <span class="mini-desc">Agentic training monitor: SPC detection across 4 failure modes, bounded tool calls to self-correct runs</span>
-      <span class="mini-stat">49% of anomalies auto-resolved</span>
-      <span class="mini-go">↗</span>
+    <a class="mcard" href="https://github.com/lgoyal6/argus" target="_blank" rel="noopener">
+      <h3>Argus</h3>
+      <p>Agentic training monitor: SPC detection across 4 failure modes, bounded tool calls to self-correct runs</p>
+      <div class="mstat">49% anomalies auto-resolved</div>
+      <div class="go">repo ↗</div>
     </a>
 
-    <a class="mini" href="https://cse110-sp26-group15.pages.dev/" target="_blank" rel="noopener">
-      <span class="mini-name">SitRep</span>
-      <span class="mini-desc">Led an 11-engineer team through a 10-week Agile SDLC to ship a Scrum/Kanban/XP app on Cloudflare</span>
-      <span class="mini-stat">11 engineers · 5 sprints · live</span>
-      <span class="mini-go">↗</span>
+    <a class="mcard" href="https://cse110-sp26-group15.pages.dev/" target="_blank" rel="noopener">
+      <h3>SitRep</h3>
+      <p>Led an 11-engineer team through a 10-week Agile SDLC to ship a Scrum/Kanban/XP app on Cloudflare</p>
+      <div class="mstat">11 engineers · 5 sprints</div>
+      <div class="go">live ↗</div>
     </a>
 
-    <a class="mini" href="https://github.com/anirudh9280/ChainSense" target="_blank" rel="noopener">
-      <span class="mini-name">ChainSense</span>
-      <span class="mini-desc">Ethereum behavioral analytics: 16-feature wallet matrix clustered into 9 archetypes with anomaly flags</span>
-      <span class="mini-stat">403K txns · 59K wallets · 591 anomalies</span>
-      <span class="mini-go">↗</span>
+    <a class="mcard" href="https://github.com/anirudh9280/ChainSense" target="_blank" rel="noopener">
+      <h3>ChainSense</h3>
+      <p>Ethereum behavioral analytics: 16-feature wallet matrix clustered into 9 archetypes with anomaly flags</p>
+      <div class="mstat">403K txns · 59K wallets</div>
+      <div class="go">repo ↗</div>
     </a>
 
-    <a class="mini" href="https://github.com/lgoyal6/RepoMap" target="_blank" rel="noopener">
-      <span class="mini-name">RepoMap</span>
-      <span class="mini-desc">VS Code extension mapping any repo as an interactive dependency graph with AI file explanations</span>
-      <span class="mini-stat">6 languages parsed</span>
-      <span class="mini-go">↗</span>
+    <a class="mcard" href="https://github.com/lgoyal6/RepoMap" target="_blank" rel="noopener">
+      <h3>RepoMap</h3>
+      <p>VS Code extension mapping any repo as an interactive dependency graph with AI file explanations</p>
+      <div class="mstat">6 languages parsed</div>
+      <div class="go">repo ↗</div>
     </a>
 
-    <a class="mini" href="https://github.com/pynay/agrishield" target="_blank" rel="noopener">
-      <span class="mini-name">AgriShield</span>
-      <span class="mini-desc">Wildfire risk pipeline: ELMFIRE fire-spread ensembles score 24 candidate firebreak layouts</span>
-      <span class="mini-stat">92 tests · mypy-strict clean</span>
-      <span class="mini-go">↗</span>
+    <a class="mcard" href="https://github.com/pynay/agrishield" target="_blank" rel="noopener">
+      <h3>AgriShield</h3>
+      <p>Wildfire risk pipeline: ELMFIRE fire-spread ensembles score 24 candidate firebreak layouts</p>
+      <div class="mstat">92 tests · mypy-strict</div>
+      <div class="go">repo ↗</div>
     </a>
 
-    <a class="mini" href="https://github.com/lgoyal6/UrbanSound8k-classification" target="_blank" rel="noopener">
-      <span class="mini-name">UrbanSound8K</span>
-      <span class="mini-desc">CNN-free audio classification: 487-dim engineered features incl. wavelet scattering, leak-free CV</span>
-      <span class="mini-stat">72.9% top-1 · 0.51ms/clip inference</span>
-      <span class="mini-go">↗</span>
+    <a class="mcard" href="https://github.com/lgoyal6/UrbanSound8k-classification" target="_blank" rel="noopener">
+      <h3>UrbanSound8K</h3>
+      <p>CNN-free audio classification: 487-dim engineered features incl. wavelet scattering, leak-free CV</p>
+      <div class="mstat">72.9% top-1 · 0.51ms/clip</div>
+      <div class="go">repo ↗</div>
     </a>
 
-    <a class="mini" href="https://www.jetir.org/papers/JETIR2303781.pdf" target="_blank" rel="noopener">
-      <span class="mini-name">Helmet Identification</span>
-      <span class="mini-desc">ResNet-50 pipeline detecting riders and classifying helmet use; published via Lumiere, top 10% of ~200</span>
-      <span class="mini-stat">94% acc · 0.92 mAP · &lt;50ms inference</span>
-      <span class="mini-go">paper ↗</span>
+    <a class="mcard" href="https://www.jetir.org/papers/JETIR2303781.pdf" target="_blank" rel="noopener">
+      <h3>Helmet Identification</h3>
+      <p>ResNet-50 pipeline detecting riders and classifying helmet use; published via Lumiere, top 10% of ~200</p>
+      <div class="mstat">94% acc · 0.92 mAP</div>
+      <div class="go">paper ↗</div>
     </a>
 
-    <div class="mini">
-      <span class="mini-name">Project Liftoff</span>
-      <span class="mini-desc">Incubator management platform: 6-tier RBAC via Supabase row-level security across 13 tables</span>
-      <span class="mini-stat">100+ users onboarded</span>
-      <span class="mini-go dim">private</span>
+    <div class="mcard">
+      <h3>Project Liftoff</h3>
+      <p>Incubator management platform: 6-tier RBAC via Supabase row-level security across 13 tables</p>
+      <div class="mstat">100+ users onboarded</div>
+      <div class="go dim">private</div>
     </div>
 
   </div>
@@ -957,11 +971,12 @@
 <section id="resume" class="band wrap" data-bg1="#d3c6cc" data-bg2="#cbbfc8">
   <div class="sec-label">05 · Resume</div>
   <h2>The one-pager.</h2>
-  <p class="sec-intro">Prefer paper? Everything above, compressed to a page. <a href="Laksh_Resume.pdf" target="_blank" rel="noopener" style="color:var(--accent);font-weight:600;text-decoration:none;">Download the PDF ↗</a></p>
-  <div class="resume-frame">
-    <object data="Laksh_Resume.pdf" type="application/pdf" aria-label="Laksh Goyal resume PDF">
+  <p class="sec-intro">Prefer paper? Everything above, compressed to a page. Click it to open the full PDF, or <a href="Laksh_Resume.pdf" download style="color:var(--accent);font-weight:600;text-decoration:none;">download it ↗</a></p>
+  <div class="resume-paper">
+    <object data="Laksh_Resume.pdf#toolbar=0&navpanes=0&scrollbar=0&view=Fit" type="application/pdf" aria-label="Laksh Goyal resume PDF preview">
       <div class="resume-fallback">This browser can't display the PDF inline. <a href="Laksh_Resume.pdf" target="_blank" rel="noopener">Open or download it ↗</a></div>
     </object>
+    <a class="resume-open" href="Laksh_Resume.pdf" target="_blank" rel="noopener" aria-label="Open resume PDF"><span>Open resume ↗</span></a>
   </div>
 </section>
 

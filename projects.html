@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>All Projects · Laksh Goyal</title>
+<meta name="description" content="Every project Laksh Goyal has built, with metrics and links." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1d1b18;
+    --muted: #5f5b53;
+    --faint: #8f8a80;
+    --accent: #c05621;
+    --glass: rgba(255, 255, 255, 0.62);
+    --glass-border: rgba(255, 255, 255, 0.75);
+    --heading: 'Space Grotesk', 'Inter', sans-serif;
+    --sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    line-height: 1.6;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+    background: linear-gradient(160deg, #faf7f2, #f4e9dd) fixed;
+  }
+  a { color: inherit; }
+  .wrap { max-width: 1000px; margin: 0 auto; padding: 0 clamp(16px, 3vw, 32px); }
+  nav { display: flex; justify-content: space-between; align-items: center; padding: 24px 0; }
+  .back {
+    font-family: var(--heading);
+    font-weight: 600;
+    font-size: 14.5px;
+    text-decoration: none;
+    color: var(--muted);
+    transition: color .15s;
+  }
+  .back:hover { color: var(--accent); }
+  .nav-social { display: flex; gap: 16px; }
+  .nav-social a { font-size: 13px; font-weight: 600; color: var(--muted); text-decoration: none; transition: color .15s; }
+  .nav-social a:hover { color: var(--accent); }
+  .head { padding: clamp(18px, 4vh, 40px) 0 clamp(20px, 3vh, 30px); }
+  .sec-label {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  h1 {
+    font-family: var(--heading);
+    font-weight: 700;
+    font-size: clamp(30px, 4vw, 44px);
+    letter-spacing: -0.025em;
+    margin-bottom: 10px;
+  }
+  .head p { color: var(--muted); max-width: 620px; }
+  .list { display: flex; flex-direction: column; gap: 10px; padding-bottom: 60px; }
+  .row {
+    display: grid;
+    grid-template-columns: 190px minmax(0, 1fr) auto;
+    gap: 18px;
+    align-items: baseline;
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    padding: 16px 20px;
+    text-decoration: none;
+    transition: transform .15s, border-color .15s;
+  }
+  a.row:hover { transform: translateX(4px); border-color: var(--accent); }
+  .rname { font-family: var(--heading); font-weight: 600; font-size: 15.5px; }
+  a.row:hover .rname { color: var(--accent); }
+  .rbody .rdesc { color: var(--muted); font-size: 13.5px; }
+  .rbody .rstat { font-family: var(--mono); font-size: 11px; color: var(--ink); margin-top: 4px; }
+  .rgo { font-family: var(--mono); font-size: 11.5px; color: var(--accent); letter-spacing: .05em; text-transform: uppercase; white-space: nowrap; }
+  .rgo.dim { color: var(--faint); }
+  .copyright { text-align: center; font-family: var(--mono); font-size: 11px; color: var(--faint); padding: 0 0 30px; }
+  @media (max-width: 720px) {
+    .row { grid-template-columns: 1fr auto; }
+    .rbody { grid-column: 1 / -1; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <a class="back" href="index.html">← Laksh Goyal</a>
+    <div class="nav-social">
+      <a href="https://github.com/lgoyal6" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://linkedin.com/in/lakshgoyal" target="_blank" rel="noopener">LinkedIn ↗</a>
+      <a href="mailto:lakshgoyal06@gmail.com">lakshgoyal06@gmail.com</a>
+    </div>
+  </nav>
+
+  <div class="head">
+    <div class="sec-label">The full list</div>
+    <h1>All projects.</h1>
+    <p>Everything, in one place: systems, ML, agents, and hackathon builds. Every number traces to a committed benchmark, test run, or published result.</p>
+  </div>
+
+  <div class="list">
+
+    <a class="row" href="https://github.com/lgoyal6/strata" target="_blank" rel="noopener">
+      <span class="rname">strata</span>
+      <span class="rbody"><span class="rdesc">LSM-tree storage engine in C++20: WAL, MVCC, group commit, crash-verified durability</span><br><span class="rstat">11,149 SIGKILLs · 2.22M acked writes, 0 lost · 50× RocksDB on sync commits</span></span>
+      <span class="rgo">repo ↗</span>
+    </a>
+
+    <a class="row" href="https://github.com/lgoyal6/taut" target="_blank" rel="noopener">
+      <span class="rname">taut</span>
+      <span class="rbody"><span class="rdesc">Reliable-UDP transport + SWIM membership for lossy links, losing axis published</span><br><span class="rstat">p99 ~6× below kernel TCP at 5% loss, ~12× at 20%</span></span>
+      <span class="rgo">repo ↗</span>
+    </a>
+
+    <a class="row" href="https://github.com/lgoyal6/tautq" target="_blank" rel="noopener">
+      <span class="rname">tautq</span>
+      <span class="rbody"><span class="rdesc">Coordinator-less distributed webhook delivery on taut: WAL replication, epoch-fenced leases</span><br><span class="rstat">800 jobs/s · p99 107ms · 100% completion at 0-20% loss</span></span>
+      <span class="rgo">repo ↗</span>
+    </a>
+
+    <a class="row" href="https://github.com/lgoyal6/tollgate" target="_blank" rel="noopener">
+      <span class="rname">Tollgate</span>
+      <span class="rbody"><span class="rdesc">Multi-tenant API gateway for shared LLM keys: atomic Redis limits, OTel, Kubernetes</span><br><span class="rstat">2,000 req/s, 0 errors, p99 46ms · global limit held across 3 replicas</span></span>
+      <span class="rgo">repo ↗</span>
+    </a>
+
+    <a class="row" href="https://x.com/gmi_cloud/status/2077124979397947824" target="_blank" rel="noopener">
+      <span class="rname">Model Cascade</span>
+      <span class="rbody"><span class="rdesc">Verify-then-escalate routing over 100 frozen EvalPlus tasks, published by GMI Cloud</span><br><span class="rstat">94/100 vs best single model's 90 · 47.1% cheaper</span></span>
+      <span class="rgo">post ↗</span>
+    </a>
+
+    <div class="row">
+      <span class="rname">Mint</span>
+      <span class="rbody"><span class="rdesc">Lead-intelligence platform at GMI Cloud: identity resolution, LLM ICP tiering, 16-tool agent</span><br><span class="rstat">18K LOC · 45 endpoints · 251 tests · 51 qualified leads</span></span>
+      <span class="rgo dim">internal</span>
+    </div>
+
+    <a class="row" href="https://github.com/TC960/winnow" target="_blank" rel="noopener">
+      <span class="rname">Winnow</span>
+      <span class="rbody"><span class="rdesc">Voice-first LLM prompt compression on two orthogonal axes (token-space + model-space)</span><br><span class="rstat">~60× KV reduction · F1 0.437 vs 0.376 fp16 on LongBench</span></span>
+      <span class="rgo">repo ↗</span>
+    </a>
+
+    <a class="row" href="https://github.com/lgoyal6/pylon" target="_blank" rel="noopener">
+      <span class="rname">Pylon</span>
+      <span class="rbody"><span class="rdesc">Counter-UAS RF sensor mesh: anomaly detection, dual SDR backends, 3D operator dashboard</span><br><span class="rstat">catches novel emitters signature baselines miss · mesh converges ~2s</span></span>
+      <span class="rgo">repo ↗</span>
+    </a>
+
+    <a class="row" href="https://github.com/lgoyal6/vigil" target="_blank" rel="noopener">
+      <span class="rname">Vigil</span>
+      <span class="rbody"><span class="rdesc">Autonomous AI on-call engineer: zero standing credentials, single-use scope-bound grants</span><br><span class="rstat">5 services · 60s-TTL grants · full audit trail</span></span>
+      <span class="rgo">repo ↗</span>
+    </a>
+
+    <a class="row" href="https://github.com/lgoyal6/Locus" target="_blank" rel="noopener">
+      <span class="rname">LOCUS</span>
+      <span class="rbody"><span class="rdesc">Voice-driven search-and-rescue command center: Monte Carlo heatmap, LLM tip reweighting</span><br><span class="rstat">150 walks/hypothesis × 4 ISRID profiles · 1.5s tick, zero LLM in-loop</span></span>
+      <span class="rgo">repo ↗</span>
+    </a>
+
+    <a class="row" href="https://github.com/lgoyal6/agentbench" target="_blank" rel="noopener">
+      <span class="rname">AgentBench</span>
+      <span class="rbody"><span class="rdesc">Eval framework for LangGraph agents: cost-adjusted accuracy, Ray Tune HPO, CLI + leaderboard</span><br><span class="rstat">0.964 acc · n=55 · $0.042 total spend</span></span>
+      <span class="rgo">repo ↗</span>
+    </a>
+
+    <a class="row" href="https://github.com/lgoyal6/checkit_health" target="_blank" rel="noopener">
+      <span class="rname">Checkit Health</span>
+      <span class="rbody"><span class="rdesc">7-stage misinformation-detection pipeline over 4 live social APIs, cost-tiered LLM path</span><br><span class="rstat">64 tests · 15 req/min free tier held</span></span>
+      <span class="rgo">repo ↗</span>
+    </a>
+
+    <a class="row" href="https://github.com/lgoyal6/argus" target="_blank" rel="noopener">
+      <span class="rname">Argus</span>
+      <span class="rbody"><span class="rdesc">Agentic training monitor: SPC detection across 4 failure modes, bounded self-correction</span><br><span class="rstat">49% of anomalies auto-resolved</span></span>
+      <span class="rgo">repo ↗</span>
+    </a>
+
+    <a class="row" href="https://cse110-sp26-group15.pages.dev/" target="_blank" rel="noopener">
+      <span class="rname">SitRep</span>
+      <span class="rbody"><span class="rdesc">Team project-management app: led 11 engineers through a 10-week Agile SDLC on Cloudflare</span><br><span class="rstat">11 engineers · 5 sprints · shipped live</span></span>
+      <span class="rgo">live ↗</span>
+    </a>
+
+    <a class="row" href="https://github.com/anirudh9280/ChainSense" target="_blank" rel="noopener">
+      <span class="rname">ChainSense</span>
+      <span class="rbody"><span class="rdesc">Ethereum behavioral analytics: 16-feature wallet matrix, 9 archetypes, anomaly flagging</span><br><span class="rstat">403K txns · 59K wallets · 591 anomalies</span></span>
+      <span class="rgo">repo ↗</span>
+    </a>
+
+    <a class="row" href="https://github.com/lgoyal6/RepoMap" target="_blank" rel="noopener">
+      <span class="rname">RepoMap</span>
+      <span class="rbody"><span class="rdesc">VS Code extension mapping any repo as an interactive dependency graph with AI explanations</span><br><span class="rstat">6 languages parsed</span></span>
+      <span class="rgo">repo ↗</span>
+    </a>
+
+    <a class="row" href="https://github.com/pynay/agrishield" target="_blank" rel="noopener">
+      <span class="rname">AgriShield</span>
+      <span class="rbody"><span class="rdesc">Wildfire risk + firebreak optimizer: ELMFIRE ensembles score 24 candidate layouts</span><br><span class="rstat">92 tests · mypy-strict clean</span></span>
+      <span class="rgo">repo ↗</span>
+    </a>
+
+    <a class="row" href="https://github.com/lgoyal6/UrbanSound8k-classification" target="_blank" rel="noopener">
+      <span class="rname">UrbanSound8K</span>
+      <span class="rbody"><span class="rdesc">CNN-free audio classification: 487-dim engineered features, wavelet scattering, leak-free CV</span><br><span class="rstat">72.9% top-1 · 0.51ms/clip inference</span></span>
+      <span class="rgo">repo ↗</span>
+    </a>
+
+    <a class="row" href="https://www.jetir.org/papers/JETIR2303781.pdf" target="_blank" rel="noopener">
+      <span class="rname">Helmet Identification</span>
+      <span class="rbody"><span class="rdesc">ResNet-50 pipeline detecting riders and classifying helmet use; published via Lumiere</span><br><span class="rstat">94% acc · 0.92 mAP · &lt;50ms inference · top 10% of ~200 papers</span></span>
+      <span class="rgo">paper ↗</span>
+    </a>
+
+    <div class="row">
+      <span class="rname">Project Liftoff</span>
+      <span class="rbody"><span class="rdesc">Incubator management platform: 6-tier RBAC via Supabase row-level security, 13 tables</span><br><span class="rstat">100+ users onboarded</span></span>
+      <span class="rgo dim">private</span>
+    </div>
+
+  </div>
+</div>
+<div class="copyright">© 2026 Laksh Goyal</div>
+</body>
+</html>
