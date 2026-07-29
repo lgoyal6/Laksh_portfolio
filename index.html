@@ -537,6 +537,10 @@
     gap: clamp(24px, 3.5vw, 48px);
     align-items: start;
   }
+  /* Match the panel's internal padding so both column headings sit on the same line */
+  .rc-grid > div:first-child { padding-top: clamp(28px, 3.5vw, 46px); }
+  .rc-grid .sec-intro { min-height: 78px; margin-bottom: 0; }
+  .rc-grid .resume-paper { margin-top: 24px; }
   .panel {
     background: #171512;
     color: #f3efe7;
@@ -618,6 +622,8 @@
     .portrait { max-width: 320px; }
     .xp-head { flex-direction: column; gap: 2px; }
     .rc-grid { grid-template-columns: 1fr; }
+    .rc-grid > div:first-child { padding-top: 0; }
+    .rc-grid .sec-intro { min-height: 0; }
     .form-grid { grid-template-columns: 1fr; }
   }
 </style>
