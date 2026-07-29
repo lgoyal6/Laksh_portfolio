@@ -64,13 +64,32 @@
   /* ===== Nav ===== */
   nav {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
-    padding: 26px 0;
+    gap: 20px;
+    padding: 22px 0;
   }
-  .nav-links { display: flex; gap: 28px; align-items: center; flex-wrap: wrap; }
+  .nav-id { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+  .nav-roles {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .nav-social { display: flex; gap: 14px; flex-wrap: wrap; }
+  .nav-social a {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color .15s;
+  }
+  .nav-social a:hover { color: var(--accent); }
+  .nav-links { display: flex; gap: 22px; align-items: center; flex-wrap: wrap; }
   .nav-links a {
-    font-size: 15.5px;
+    font-size: 15px;
     font-weight: 500;
     color: var(--muted);
     text-decoration: none;
@@ -81,20 +100,12 @@
   /* ===== Hero ===== */
   .hero {
     display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr);
-    gap: clamp(28px, 5vw, 64px);
-    align-items: start;
-    padding: clamp(24px, 5vh, 52px) 0 0;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: clamp(28px, 5vw, 60px);
+    align-items: center;
+    padding: clamp(10px, 2.5vh, 26px) 0 clamp(26px, 4vh, 44px);
   }
   .hero-side { display: flex; flex-direction: column; gap: 14px; }
-  .eyebrow {
-    font-family: var(--mono);
-    font-size: 11.5px;
-    letter-spacing: .09em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 18px;
-  }
   h1 {
     font-family: var(--heading);
     font-weight: 700;
@@ -150,9 +161,9 @@
   .hero-stats {
     display: flex;
     flex-wrap: wrap;
-    gap: clamp(26px, 5vw, 56px);
-    margin: 34px 0 clamp(30px, 5vh, 48px);
-    padding-top: 22px;
+    gap: clamp(22px, 4vw, 44px);
+    margin-top: 30px;
+    padding-top: 20px;
     border-top: 1px solid rgba(29,27,24,.12);
   }
   .hstat .n {
@@ -172,7 +183,7 @@
   }
 
   /* ===== Sections ===== */
-  section.band { padding: clamp(44px, 7vh, 78px) 0; }
+  section.band { padding: clamp(34px, 5.5vh, 60px) 0; }
   .sec-label {
     font-family: var(--mono);
     font-size: 11.5px;
@@ -187,9 +198,9 @@
     font-size: clamp(28px, 3.6vw, 42px);
     letter-spacing: -0.025em;
     line-height: 1.05;
-    margin-bottom: 22px;
+    margin-bottom: 18px;
   }
-  .sec-intro { color: var(--muted); max-width: 620px; margin-bottom: 30px; font-size: 16px; }
+  .sec-intro { color: var(--muted); max-width: 620px; margin-bottom: 24px; font-size: 16px; }
   .sec-intro strong { color: var(--ink); font-weight: 600; }
 
   /* What I do */
@@ -223,8 +234,14 @@
   }
   .cap p { color: var(--muted); font-size: 14px; }
 
-  /* About: bio + hackathon list */
-  .bio { margin-bottom: 36px; }
+  /* About: bio left, hackathon list right */
+  .about-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(280px, .85fr);
+    gap: clamp(24px, 4vw, 52px);
+    align-items: start;
+    margin-bottom: 30px;
+  }
   .bio p { color: var(--muted); font-size: 15.5px; margin-bottom: 16px; max-width: 700px; }
   .bio p:last-child { margin-bottom: 0; }
   .bio strong { color: var(--ink); font-weight: 600; }
@@ -234,8 +251,9 @@
     border: 1px solid var(--glass-border);
     background: var(--glass);
     box-shadow: var(--card-shadow);
+    aspect-ratio: 1 / 1;
   }
-  .portrait img { display: block; width: 100%; height: auto; }
+  .portrait img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 22%; }
   .facts {
     background: var(--glass);
     border: 1px solid var(--glass-border);
@@ -257,7 +275,15 @@
     margin-bottom: 2px;
   }
   .fact .v { font-size: 13px; color: var(--ink); font-weight: 500; line-height: 1.5; }
-  .hack-list { margin-top: 26px; max-width: 640px; }
+  .hack-list {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 18px 20px;
+    box-shadow: var(--card-shadow);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
   .hack-head {
     font-family: var(--mono);
     font-size: 10.5px;
@@ -287,17 +313,17 @@
     box-shadow: var(--card-shadow);
     overflow: hidden;
   }
-  .resume-frame object { width: 100%; height: min(80vh, 920px); display: block; border: 0; }
+  .resume-frame object { width: 100%; height: min(70vh, 800px); display: block; border: 0; }
   .resume-fallback { padding: 34px; text-align: center; color: var(--muted); font-size: 14px; }
   .resume-fallback a { color: var(--accent); font-weight: 600; }
 
   /* ===== Experience ===== */
-  .xp-list { display: flex; flex-direction: column; gap: 14px; }
+  .xp-list { display: flex; flex-direction: column; gap: 12px; }
   .xp {
     background: var(--glass);
     border: 1px solid var(--glass-border);
     border-radius: 16px;
-    padding: 22px 26px;
+    padding: 20px 24px;
     box-shadow: var(--card-shadow);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
@@ -333,12 +359,38 @@
   }
   .xp .xp-prev strong { color: var(--ink); font-weight: 600; }
 
-  /* ===== Projects ===== */
-  .pgrid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
+  /* ===== Projects: conveyor belt ===== */
+  .belt-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 20px;
   }
+  .belt-nav { display: flex; gap: 8px; margin-bottom: 24px; flex-shrink: 0; }
+  .belt-btn {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(29,27,24,.25);
+    background: transparent;
+    color: var(--ink);
+    font-size: 16px;
+    cursor: pointer;
+    transition: border-color .15s, color .15s, transform .15s;
+  }
+  .belt-btn:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+  .belt {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 4px 4px 16px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(29,27,24,.25) transparent;
+  }
+  .belt::-webkit-scrollbar { height: 7px; }
+  .belt::-webkit-scrollbar-thumb { background: rgba(29,27,24,.22); border-radius: 999px; }
+  .belt::-webkit-scrollbar-track { background: transparent; }
+  .belt .pcard { flex: 0 0 var(--card-w, 380px); scroll-snap-align: start; }
   .pcard {
     background: var(--glass);
     border: 1px solid var(--glass-border);
@@ -398,7 +450,7 @@
     font-weight: 600;
     font-size: 20px;
     letter-spacing: -0.015em;
-    margin: 44px 0 16px;
+    margin: 34px 0 14px;
   }
   .mini-list { display: flex; flex-direction: column; gap: 8px; }
   .mini {
@@ -430,7 +482,7 @@
   .mini-go.dim { color: var(--faint); }
 
   /* Tech stack */
-  .stack-group { margin-bottom: 22px; }
+  .stack-group { margin-bottom: 18px; }
   .stack-group:last-child { margin-bottom: 0; }
   .stack-name {
     font-family: var(--mono);
@@ -460,7 +512,7 @@
   }
 
   /* ===== Contact panel ===== */
-  #contact { padding: clamp(40px, 8vh, 90px) 0 30px; }
+  #contact { padding: clamp(30px, 5vh, 60px) 0 24px; }
   .panel {
     background: #171512;
     color: #f3efe7;
@@ -512,10 +564,12 @@
 
   /* ===== Responsive ===== */
   @media (max-width: 860px) {
+    nav { flex-direction: column; align-items: flex-start; gap: 12px; }
     .hero { grid-template-columns: 1fr; }
-    .pgrid { grid-template-columns: 1fr; }
+    .about-grid { grid-template-columns: 1fr; }
     .cap-grid { grid-template-columns: 1fr; }
     .portrait { max-width: 320px; }
+    .belt .pcard { --card-w: 300px; }
     .mini { grid-template-columns: 1fr 20px; row-gap: 3px; }
     .mini-desc { grid-column: 1 / -1; }
     .mini-stat { grid-column: 1 / -1; white-space: normal; }
@@ -529,6 +583,15 @@
 
 <div class="wrap">
   <nav class="rise">
+    <div class="nav-id">
+      <div class="nav-roles">CS @ UC San Diego '28 · GTM Engineer Intern @ GMI Cloud · ML @ Qualcomm Institute</div>
+      <div class="nav-social">
+        <a href="https://github.com/lgoyal6" target="_blank" rel="noopener">GitHub ↗</a>
+        <a href="https://linkedin.com/in/lakshgoyal" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a href="https://x.com/Lgoyal6" target="_blank" rel="noopener">X ↗</a>
+        <a href="mailto:lakshgoyal06@gmail.com">lakshgoyal06@gmail.com</a>
+      </div>
+    </div>
     <div class="nav-links">
       <a href="#about">About</a>
       <a href="#experience">Experience</a>
@@ -544,17 +607,19 @@
 <header class="wrap" data-bg1="#faf7f2" data-bg2="#f4e9dd">
   <div class="hero">
     <div>
-      <div class="eyebrow rise d1">CS @ UC San Diego '28 · GTM Engineer Intern @ GMI Cloud · ML @ Qualcomm Institute</div>
       <h1 class="rise d1">Laksh Goyal</h1>
       <p class="hero-line rise d2">I build applied ML systems and the infrastructure under them: agent evals, storage engines, network transports, and API gateways that have to survive outside notebooks.</p>
       <div class="hero-path rise d2">Mumbai <span class="sep">→</span> San Diego <span class="sep">→</span> Mountain View</div>
       <div class="avail rise d2">Open to new opportunities: internships, research, ambitious teams.</div>
       <div class="hero-links rise d3">
         <a class="solid" href="mailto:lakshgoyal06@gmail.com">lakshgoyal06@gmail.com</a>
-        <a class="line" href="https://github.com/lgoyal6" target="_blank" rel="noopener">GitHub</a>
-        <a class="line" href="https://linkedin.com/in/lakshgoyal" target="_blank" rel="noopener">LinkedIn</a>
-        <a class="line" href="https://x.com/Lgoyal6" target="_blank" rel="noopener">X</a>
-        <a class="line" href="Laksh_Resume.pdf" target="_blank" rel="noopener">Resume</a>
+        <a class="line" href="Laksh_Resume.pdf" target="_blank" rel="noopener">Resume ↗</a>
+      </div>
+      <div class="hero-stats rise d3">
+        <div class="hstat"><div class="n">20+</div><div class="l">projects built</div></div>
+        <div class="hstat"><div class="n">5</div><div class="l">hackathon wins</div></div>
+        <div class="hstat"><div class="n">11</div><div class="l">engineers led</div></div>
+        <div class="hstat"><div class="n">1</div><div class="l">published paper</div></div>
       </div>
     </div>
     <div class="hero-side rise d2">
@@ -565,22 +630,18 @@
       </div>
     </div>
   </div>
-  <div class="hero-stats rise d3">
-    <div class="hstat"><div class="n">20+</div><div class="l">projects built</div></div>
-    <div class="hstat"><div class="n">5</div><div class="l">hackathon wins</div></div>
-    <div class="hstat"><div class="n">11</div><div class="l">engineers led</div></div>
-    <div class="hstat"><div class="n">1</div><div class="l">published paper</div></div>
-  </div>
 </header>
 
 <!-- ===== WHAT I DO ===== -->
 <section id="about" class="band wrap" data-bg1="#f6efe3" data-bg2="#efdfc9">
   <div class="sec-label">01 · About</div>
   <h2>Build it, measure it, ship it.</h2>
-  <div class="bio">
-    <p>I'm from Mumbai, studying CS at <strong>UC San Diego ('28)</strong> with minors in cognitive science and business economics. Right now my week splits between Mountain View and San Diego: <strong>GTM engineering at GMI Cloud</strong>, and <strong>bioacoustics ML research</strong> with Engineers for Exploration at the Qualcomm Institute. I like to build, break, and ship fast, mostly at the intersection of startups, medtech, and applied AI.</p>
-    <p>I like owning a system end to end: the eval harness <em>and</em> the agent on top of it, the storage engine <em>and</em> the service that stresses it, the model <em>and</em> the deploy path that puts it in front of people. House rule for everything I build: <strong>publish the number, and publish what the number cost.</strong> Every benchmark on this page states its losing axis, because a result you can't interrogate is marketing, not engineering.</p>
-    <p>A lot of that starts at hackathons: five of the projects on this page were built in a weekend or less. Pylon has since landed in the <strong>Bow Capital incubator</strong>, and GMI Cloud <strong>published my model-cascade benchmark</strong>. Off the keyboard: poker, 8-ball, F1 weekends, Lego builds, soccer, and too much sci-fi.</p>
+  <div class="about-grid">
+    <div class="bio">
+      <p>I'm from Mumbai, studying CS at <strong>UC San Diego ('28)</strong> with minors in cognitive science and business economics. Right now my week splits between Mountain View and San Diego: <strong>GTM engineering at GMI Cloud</strong>, and <strong>bioacoustics ML research</strong> with Engineers for Exploration at the Qualcomm Institute. I like to build, break, and ship fast, mostly at the intersection of startups, medtech, and applied AI.</p>
+      <p>I like owning a system end to end: the eval harness <em>and</em> the agent on top of it, the storage engine <em>and</em> the service that stresses it, the model <em>and</em> the deploy path that puts it in front of people. House rule for everything I build: <strong>publish the number, and publish what the number cost.</strong> Every benchmark on this page states its losing axis, because a result you can't interrogate is marketing, not engineering.</p>
+      <p>A lot of that starts at hackathons: five of the projects on this page were built in a weekend or less. Pylon has since landed in the <strong>Bow Capital incubator</strong>, and GMI Cloud <strong>published my model-cascade benchmark</strong>. Off the keyboard: poker, 8-ball, F1 weekends, Lego builds, soccer, and too much sci-fi.</p>
+    </div>
     <div class="hack-list">
       <div class="hack-head">Built at hackathons</div>
       <div class="hack"><a class="hname" href="https://github.com/lgoyal6/pylon" target="_blank" rel="noopener">Pylon <span class="hgo">↗</span></a><span class="hdesc">counter-UAS RF sensor mesh, now in the Bow Capital incubator</span></div>
@@ -655,8 +716,14 @@
 <section id="work" class="band wrap" data-bg1="#e5d5d5" data-bg2="#d4c7cf">
   <div class="sec-label">03 · Projects</div>
   <h2>Selected projects.</h2>
-  <p class="sec-intro">Every number below traces to a committed benchmark, test run, or published result, losing axes included.</p>
-  <div class="pgrid">
+  <div class="belt-top">
+    <p class="sec-intro">Every number below traces to a committed benchmark, test run, or published result, losing axes included.</p>
+    <div class="belt-nav">
+      <button class="belt-btn" data-dir="-1" aria-label="Scroll projects left">←</button>
+      <button class="belt-btn" data-dir="1" aria-label="Scroll projects right">→</button>
+    </div>
+  </div>
+  <div class="belt" id="belt">
 
     <a class="pcard" href="https://github.com/lgoyal6/strata" target="_blank" rel="noopener">
       <div class="pcard-num">01</div>
@@ -964,6 +1031,17 @@
     }, { passive: true });
     window.addEventListener('resize', update, { passive: true });
     update();
+  })();
+
+  /* ---------- Project belt ---------- */
+  (function initBelt() {
+    const belt = document.getElementById('belt');
+    if (!belt) return;
+    document.querySelectorAll('.belt-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        belt.scrollBy({ left: Number(btn.dataset.dir) * 800, behavior: 'smooth' });
+      });
+    });
   })();
 </script>
 
