@@ -69,7 +69,6 @@
     gap: 20px;
     padding: 22px 0;
   }
-  .nav-id { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
   .nav-roles {
     font-family: var(--mono);
     font-size: 12px;
@@ -77,16 +76,8 @@
     text-transform: uppercase;
     color: var(--ink);
     font-weight: 500;
+    min-width: 0;
   }
-  .nav-social { display: flex; gap: 14px; flex-wrap: wrap; }
-  .nav-social a {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--muted);
-    text-decoration: none;
-    transition: color .15s;
-  }
-  .nav-social a:hover { color: var(--accent); }
   .nav-links { display: flex; gap: 22px; align-items: center; flex-wrap: nowrap; flex-shrink: 0; white-space: nowrap; }
   .nav-links a {
     font-size: 15px;
@@ -107,6 +98,17 @@
   }
   .hero-side { display: flex; flex-direction: column; gap: 14px; }
   .hero .bio { margin-top: 28px; }
+  .h1-row { display: flex; align-items: baseline; gap: 20px; flex-wrap: wrap; margin-bottom: 16px; }
+  .h1-row h1 { margin-bottom: 0; }
+  .h1-social { display: flex; gap: 14px; }
+  .h1-social a {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color .15s;
+  }
+  .h1-social a:hover { color: var(--accent); }
   h1 {
     font-family: var(--heading);
     font-weight: 700;
@@ -537,10 +539,7 @@
     gap: clamp(24px, 3.5vw, 48px);
     align-items: start;
   }
-  /* Match the panel's internal padding so both column headings sit on the same line */
-  .rc-grid > div:first-child { padding-top: clamp(28px, 3.5vw, 46px); }
-  .rc-grid .sec-intro { min-height: 78px; margin-bottom: 0; }
-  .rc-grid .resume-paper { margin-top: 24px; }
+  .rc-grid .resume-paper { width: 100%; }
   .panel {
     background: #171512;
     color: #f3efe7;
@@ -633,15 +632,7 @@
 
 <div class="wrap">
   <nav class="rise">
-    <div class="nav-id">
-      <div class="nav-roles">CS @ UC San Diego '28 · GTM/AI Engineer Intern @ GMI Cloud · ML @ Qualcomm Institute</div>
-      <div class="nav-social">
-        <a href="https://github.com/lgoyal6" target="_blank" rel="noopener">GitHub ↗</a>
-        <a href="https://linkedin.com/in/lakshgoyal" target="_blank" rel="noopener">LinkedIn ↗</a>
-        <a href="https://x.com/Lgoyal6" target="_blank" rel="noopener">X ↗</a>
-        <a href="mailto:lakshgoyal06@gmail.com">lakshgoyal06@gmail.com</a>
-      </div>
-    </div>
+    <div class="nav-roles">CS @ UC San Diego '28 · GTM/AI Engineer Intern @ GMI Cloud · ML @ Qualcomm Institute</div>
     <div class="nav-links">
       <a href="#about">About</a>
       <a href="#experience">Experience</a>
@@ -657,7 +648,14 @@
 <header class="wrap" data-bg1="#faf7f2" data-bg2="#f4e9dd">
   <div class="hero">
     <div>
-      <h1 class="rise d1">Laksh Goyal</h1>
+      <div class="h1-row rise d1">
+        <h1>Laksh Goyal</h1>
+        <div class="h1-social">
+          <a href="https://github.com/lgoyal6" target="_blank" rel="noopener">GitHub ↗</a>
+          <a href="https://linkedin.com/in/lakshgoyal" target="_blank" rel="noopener">LinkedIn ↗</a>
+          <a href="https://x.com/Lgoyal6" target="_blank" rel="noopener">X ↗</a>
+        </div>
+      </div>
       <p class="hero-line rise d2">I build applied ML systems and the infrastructure under them: agent evals, storage engines, network transports, and API gateways that have to survive outside notebooks.</p>
       <div class="hero-path rise d2">Mumbai <span class="sep">→</span> San Diego <span class="sep">→</span> Mountain View</div>
       <div class="avail rise d2">Open to new opportunities: internships, research, ambitious teams.</div>
@@ -1004,17 +1002,15 @@
 
 <!-- ===== RESUME + CONTACT ===== -->
 <section id="resume" class="band wrap" data-bg1="#d3c6cc" data-bg2="#c4bac9">
+  <div class="sec-label">05 · Resume</div>
+  <h2>The one-pager.</h2>
+  <p class="sec-intro">Everything above, compressed to a page. Click it to open the full PDF, or <a href="Laksh_Resume.pdf" download style="color:var(--accent);font-weight:600;text-decoration:none;">download it ↗</a></p>
   <div class="rc-grid">
-    <div>
-      <div class="sec-label">05 · Resume</div>
-      <h2>The one-pager.</h2>
-      <p class="sec-intro">Everything above, compressed to a page. Click it to open the full PDF, or <a href="Laksh_Resume.pdf" download style="color:var(--accent);font-weight:600;text-decoration:none;">download it ↗</a></p>
-      <div class="resume-paper">
-        <object data="Laksh_Resume.pdf#toolbar=0&navpanes=0&scrollbar=0&view=Fit" type="application/pdf" aria-label="Laksh Goyal resume PDF preview">
-          <div class="resume-fallback">This browser can't display the PDF inline. <a href="Laksh_Resume.pdf" target="_blank" rel="noopener">Open or download it ↗</a></div>
-        </object>
-        <a class="resume-open" href="Laksh_Resume.pdf" target="_blank" rel="noopener" aria-label="Open resume PDF"><span>Open resume ↗</span></a>
-      </div>
+    <div class="resume-paper">
+      <object data="Laksh_Resume.pdf#toolbar=0&navpanes=0&scrollbar=0&view=Fit" type="application/pdf" aria-label="Laksh Goyal resume PDF preview">
+        <div class="resume-fallback">This browser can't display the PDF inline. <a href="Laksh_Resume.pdf" target="_blank" rel="noopener">Open or download it ↗</a></div>
+      </object>
+      <a class="resume-open" href="Laksh_Resume.pdf" target="_blank" rel="noopener" aria-label="Open resume PDF"><span>Open resume ↗</span></a>
     </div>
     <div class="panel" id="contact">
       <div class="sec-label">06 · Contact</div>
