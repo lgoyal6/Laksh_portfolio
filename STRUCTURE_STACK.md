@@ -1,8 +1,8 @@
-# Netra Website — HTML & CSS Structure
+# Netra Website - HTML & CSS Structure
 
 A full breakdown of how the page is laid out, layered, and styled. Pair with `MOTION_STACK.md`. Designed so you can lift the patterns into a portfolio without dragging the brand specifics along.
 
-## 1. The big idea — fixed stage, scrolling content
+## 1. The big idea - fixed stage, scrolling content
 
 Every "cinematic" site lives or dies on this layout choice:
 
@@ -19,7 +19,7 @@ z-index   layer
      0    <canvas id="stage">  ← fixed, full-screen WebGL
 ```
 
-The canvas is `position: fixed; inset: 0` and **stays put**. Content scrolls over it inside `#scroll`. That's the whole trick — the 3D scene never moves in the DOM, only the camera moves (driven by scroll-Y, see motion doc).
+The canvas is `position: fixed; inset: 0` and **stays put**. Content scrolls over it inside `#scroll`. That's the whole trick - the 3D scene never moves in the DOM, only the camera moves (driven by scroll-Y, see motion doc).
 
 ```html
 <body class="is-booting">
@@ -80,13 +80,13 @@ All brand and rhythm constants are CSS variables, mirrored from `src/config.js` 
 
 Key choices to copy:
 - **`--bg: #020203`** not `#000`. Pure black flattens fog and bloom.
-- **`clamp(22px, 5.5vw, 96px)`** for the page gutter — one variable scales horizontal rhythm from phone to ultrawide.
+- **`clamp(22px, 5.5vw, 96px)`** for the page gutter - one variable scales horizontal rhythm from phone to ultrawide.
 - **Three font families**: a tight display sans, a wide-tracked mono for kickers/metadata, a light wordmark sans. The mono carries 90% of the "tactical" feel.
-- **`--ease-out: cubic-bezier(0.16, 1, 0.3, 1)`** — the "soft-overshoot" easing used on every transition. Single token used everywhere.
+- **`--ease-out: cubic-bezier(0.16, 1, 0.3, 1)`** - the "soft-overshoot" easing used on every transition. Single token used everywhere.
 
 ## 3. Reset & global rules
 
-Minimal — no Tailwind, no Normalize:
+Minimal - no Tailwind, no Normalize:
 
 ```css
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -113,7 +113,7 @@ em { font-style: normal; color: var(--coral); }       /* repurpose <em> as accen
 ::selection { background: var(--red); color: #0a0a0a; }
 ```
 
-`body.is-booting` is the only place scroll gets locked — boot.js removes the class once the intro completes.
+`body.is-booting` is the only place scroll gets locked - boot.js removes the class once the intro completes.
 
 ## 4. The fixed atmospheric stack
 
@@ -181,7 +181,7 @@ A bonus: a dotted column motif down the right edge using a `position: fixed` pse
 @media (max-width: 720px) { #scroll::after { display: none; } }
 ```
 
-This is the cheapest possible "instrument panel" detail — looks expensive, costs nothing.
+This is the cheapest possible "instrument panel" detail - looks expensive, costs nothing.
 
 ## 5. Scrollable content (`#scroll`) + scene pattern
 
@@ -192,7 +192,7 @@ The content lane sits at `z-index: 2`:
 .scene { position: relative; }
 ```
 
-Each scene uses the **sticky-pin pattern** — the section is *taller* than the viewport, but its inner content is `position: sticky` so the copy holds while you scroll within the section:
+Each scene uses the **sticky-pin pattern** - the section is *taller* than the viewport, but its inner content is `position: sticky` so the copy holds while you scroll within the section:
 
 ```css
 .scene__pin {
@@ -235,7 +235,7 @@ A reusable `.block` with three alignment variants:
 .block--right  { align-items: flex-end;   text-align: right; max-width: min(720px, 62vw); margin-inline: auto 0; }
 ```
 
-**The single most important style on the site** — a softly-feathered backdrop blur ONLY behind the copy, so text is legible against a busy 3D scene but the field around the text stays crisp:
+**The single most important style on the site** - a softly-feathered backdrop blur ONLY behind the copy, so text is legible against a busy 3D scene but the field around the text stays crisp:
 
 ```css
 .block::before {
@@ -258,7 +258,7 @@ Stack on top of that: text-shadows on every type primitive so even where the mas
 
 ## 7. Type system
 
-Three sizes of display, plus body/caption/kicker — all `clamp()`-fluid:
+Three sizes of display, plus body/caption/kicker - all `clamp()`-fluid:
 
 ```css
 .kicker {                    /* tiny mono uppercase label */
@@ -312,7 +312,7 @@ Three sizes of display, plus body/caption/kicker — all `clamp()`-fluid:
 
 Patterns worth lifting:
 - **`max-width: 18ch` / `46ch`** caps line length in character units, never pixels.
-- **`text-shadow` with three stops** (sharp / mid / wide) gives legibility AND a subtle "glow" feel — pure visual cheat-code.
+- **`text-shadow` with three stops** (sharp / mid / wide) gives legibility AND a subtle "glow" feel - pure visual cheat-code.
 - **mono kickers + serif/grotesk headlines** is a low-effort recipe for "design-conscious" hierarchy.
 
 ## 8. Buttons
@@ -404,7 +404,7 @@ A header that slides in once the boot finishes, hides behind itself on demand:
 }
 ```
 
-`data-hidden` toggled in JS — declarative, no class-swap soup. Same idea for `#hud[data-hidden]`.
+`data-hidden` toggled in JS - declarative, no class-swap soup. Same idea for `#hud[data-hidden]`.
 
 ## 11. The drawer (drops down from top)
 
@@ -443,7 +443,7 @@ JS animates `translateY` from `-110%` → `0%`. CSS keeps a `-130%` baseline so 
 
 ## 12. The reticle (DOM overlay projected onto 3D)
 
-A perfectly-tactical UI element built from 4 corner brackets + a centered crosshair + a side readout — all positioned absolutely inside one host:
+A perfectly-tactical UI element built from 4 corner brackets + a centered crosshair + a side readout - all positioned absolutely inside one host:
 
 ```css
 #reticle {
@@ -510,7 +510,7 @@ Bottom-left scene counter:
 @media (max-width: 620px) { #hud { display: none; } }
 ```
 
-Bottom-edge progress strip — single `transform: scaleX` from JS:
+Bottom-edge progress strip - single `transform: scaleX` from JS:
 
 ```css
 #progress {
@@ -529,7 +529,7 @@ Bottom-edge progress strip — single `transform: scaleX` from JS:
 }
 ```
 
-The width is always `100%`; only `scaleX` changes. That hits the GPU compositor — no layout, no paint.
+The width is always `100%`; only `scaleX` changes. That hits the GPU compositor - no layout, no paint.
 
 ## 14. The CSS keyframe ledger
 
@@ -550,7 +550,7 @@ There is literally **one** `@keyframes` in the whole stylesheet:
 }
 ```
 
-A single 1px-wide div, gradient-faded, scaling on the Y axis to look like a pulsing antenna. The rest of the motion is JS — CSS handles passive ambient stuff that should never stop.
+A single 1px-wide div, gradient-faded, scaling on the Y axis to look like a pulsing antenna. The rest of the motion is JS - CSS handles passive ambient stuff that should never stop.
 
 ## 15. Reveal initial state (CSS / JS handoff)
 
@@ -643,7 +643,7 @@ To make a new scene:
 3. Set `.scene--newscene { min-height: ??vh }` based on how long the camera should dwell.
 4. Add keyframes in `director.js` `KEYS` array at the right `s` coordinate.
 
-That's it — no router, no component registration, no manifest.
+That's it - no router, no component registration, no manifest.
 
 ## 19. Responsive strategy
 
@@ -677,7 +677,7 @@ Lesson: with `clamp()` and `min()` doing 90% of the work, breakpoints exist only
 3. **Scene sections**: `.scene { } .scene__pin { position: sticky; top: 0; min-height: 100vh; }` with section heights in vh chosen to pace each beat.
 4. **Reveal contract**: `[data-reveal] > [data-r]` blocks + `body.js-anim [data-r] { opacity: 0 }`, IntersectionObserver-triggered.
 5. **`data-*` attribute API**: never use classes to mean "JS hook", always use `data-*`.
-6. **Block backdrop blur**: the masked `.block::before` is the secret weapon. Worth implementing even if you never do 3D — it gives any text legibility over busy backgrounds.
+6. **Block backdrop blur**: the masked `.block::before` is the secret weapon. Worth implementing even if you never do 3D - it gives any text legibility over busy backgrounds.
 7. **Mono + sans pairing**: one editorial sans, one tracked mono for kickers/labels/buttons. Instant editorial-tactical feel.
 8. **Three text-shadows + one rgba color**: legibility over anything.
 9. **`data-hidden` / `data-open` / `data-state`** patterns toggled in JS, styled in CSS. Beats class lists every time.

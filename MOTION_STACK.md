@@ -1,4 +1,4 @@
-# Netra Website — Motion & Animation Stack
+# Netra Website - Motion & Animation Stack
 
 A full breakdown of every framework, library, technique, and pattern used to drive the motion on this site. Drop this into your portfolio's context.
 
@@ -19,9 +19,9 @@ From `frontend/package.json`:
 ```
 
 Only **three libraries** drive everything:
-- **anime.js v4** — all DOM/SVG animation. (v4 is the ES-module, tree-shakeable rewrite; APIs differ from v3.)
-- **Lenis** — smooth-scroll. Pure scroll-position smoother, not a scroll-trigger framework.
-- **three.js** + its `examples/jsm/postprocessing` modules — `EffectComposer`, `RenderPass`, `UnrealBloomPass`, `OutputPass`.
+- **anime.js v4** - all DOM/SVG animation. (v4 is the ES-module, tree-shakeable rewrite; APIs differ from v3.)
+- **Lenis** - smooth-scroll. Pure scroll-position smoother, not a scroll-trigger framework.
+- **three.js** + its `examples/jsm/postprocessing` modules - `EffectComposer`, `RenderPass`, `UnrealBloomPass`, `OutputPass`.
 
 No GSAP, no Framer Motion, no ScrollTrigger, no React Three Fiber. It's all vanilla.
 
@@ -53,7 +53,7 @@ Two layers run side-by-side and never directly couple:
 
 A `try/catch` around the WebGL boot means a GPU failure leaves the static page perfectly readable.
 
-## 3. Smooth scroll — Lenis
+## 3. Smooth scroll - Lenis
 
 ```js
 // main.js
@@ -70,13 +70,13 @@ const lraf = (time) => { lenis.raf(time); requestAnimationFrame(lraf); };
 requestAnimationFrame(lraf);
 ```
 
-CSS: `html { scroll-behavior: auto; overflow-x: clip; }` — native smooth must be off so Lenis owns scroll feel. `overflow-x: clip` (not `hidden`) doesn't break sticky/Lenis.
+CSS: `html { scroll-behavior: auto; overflow-x: clip; }` - native smooth must be off so Lenis owns scroll feel. `overflow-x: clip` (not `hidden`) doesn't break sticky/Lenis.
 
 Anchor links use `lenis.scrollTo(target, { offset: -40, duration: 1.1 })`; if Lenis is unavailable, falls back to anime.js animating `window.scrollTo`.
 
 ## 4. Scroll → continuous "scene coordinate"
 
-`scroll.js` — the key insight that lets the camera glide across sections instead of snapping:
+`scroll.js` - the key insight that lets the camera glide across sections instead of snapping:
 
 ```js
 // caches each section's { top, height } on resize/load
@@ -94,9 +94,9 @@ function read() {
 
 So `s ∈ [0, N-1]` is one continuous float. Every animation reads from `s`.
 
-## 5. The Director — scroll → camera & morph state
+## 5. The Director - scroll → camera & morph state
 
-`three/director.js` — translates `s` into:
+`three/director.js` - translates `s` into:
 
 **Camera keyframes** at exact scene-coords, lerped with smoothstep:
 ```js
@@ -110,7 +110,7 @@ const KEYS = [
 ```
 Bracket the two keyframes around current `s`, smoothstep the local fraction, `lerpVectors`.
 
-**Morph state** — abstract floats that the world reads:
+**Morph state** - abstract floats that the world reads:
 ```js
 morph.ignite = smoothstep(0.0, 0.85, s);              // ramp
 morph.dim    = band(1.1, 1.45, 1.7, 2.0, s);          // triangle window
@@ -119,9 +119,9 @@ morph.drone  = smoothstep(3.05, 3.5, s);              // gated start
 morph.lock   = clamp(smoothstep(3.45, 3.72, s)) * (1 - smoothstep(4.1, 4.45, s));
 ```
 
-`band(lo,a,b,hi,s) = smoothstep(lo,a,s) - smoothstep(b,hi,s)` is the workhorse pulse — 0→1→0 across a window. This is how every effect appears, peaks, and recedes as you scroll past it.
+`band(lo,a,b,hi,s) = smoothstep(lo,a,s) - smoothstep(b,hi,s)` is the workhorse pulse - 0→1→0 across a window. This is how every effect appears, peaks, and recedes as you scroll past it.
 
-## 6. The stage — three.js setup
+## 6. The stage - three.js setup
 
 `three/stage.js`:
 
@@ -137,7 +137,7 @@ scene.fog = new THREE.FogExp2(COLOR.black, 0.026);   // depth fade
 const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 240);
 ```
 
-**Post-processing (bloom)** — disabled on low-power:
+**Post-processing (bloom)** - disabled on low-power:
 ```js
 composer = new EffectComposer(renderer);
 composer.addPass(new RenderPass(scene, camera));
@@ -148,24 +148,24 @@ composer.addPass(new OutputPass());
 ```
 Threshold of 0.42 keeps the dark grid from blooming; only hot node cores glow.
 
-**Frame loop** — single `THREE.Clock`, `dt` capped at 0.05 to prevent spike on tab return, a callback Set so any module can hook in:
+**Frame loop** - single `THREE.Clock`, `dt` capped at 0.05 to prevent spike on tab return, a callback Set so any module can hook in:
 ```js
 stage.onFrame((dt, t) => { /* sync director output → camera + world */ });
 ```
 
-**Pointer parallax** — pointer recorded as `-1..1` and damped:
+**Pointer parallax** - pointer recorded as `-1..1` and damped:
 ```js
 pointerSmooth.x = damp(pointerSmooth.x, pointer.x, 6, dt);
 ```
 
-**Frame-independent damping** (`util.js`) — the entire reason camera moves feel buttery, not floaty:
+**Frame-independent damping** (`util.js`) - the entire reason camera moves feel buttery, not floaty:
 ```js
 export const damp = (cur, tgt, lambda, dt) =>
   lerp(cur, tgt, 1 - Math.exp(-lambda * dt));
 ```
 Used everywhere camera/pointer/FOV need to follow a moving target.
 
-**3D → DOM projection** — drives the lock-on reticle and device labels:
+**3D → DOM projection** - drives the lock-on reticle and device labels:
 ```js
 function projectToScreen(vec3) {
   _p.copy(vec3).project(camera);
@@ -177,24 +177,24 @@ function projectToScreen(vec3) {
 }
 ```
 
-**Visibility pause** — `clock.getDelta()` called once on resume to swallow the gap so `dt` doesn't spike.
+**Visibility pause** - `clock.getDelta()` called once on resume to swallow the gap so `dt` doesn't spike.
 
-## 7. The world — meshes, shaders, layers
+## 7. The world - meshes, shaders, layers
 
 `three/world.js` is the big file (~1100 lines). Layers:
 
-- **`field`** — `THREE.Points` with custom GLSL shader (additive blending, fog, ignite, dim, breathe, depth-faded `gl_PointSize`).
-- **`links`** — `THREE.LineSegments`; vertex shader does "draw-on" by interpolating the end vertex from the start using a `uLink` uniform, fragment shader has a traveling pulse `fract(uTime * 0.22 + vSeed * 7.0)`.
-- **`pylons`** — `THREE.InstancedMesh` of `BoxGeometry`, brightness updated per-instance per-frame via `setColorAt` + `instanceColor.needsUpdate = true`.
-- **`grid`** — fragment shader procedural grid using `fwidth(coord)` for antialiased lines + radial fade for "infinite floor without a hard edge".
-- **`packet`** — `THREE.Sprite` traveling along a precomputed BFS path through the link graph; trail = 6 trailing sprites at staggered `t`.
-- **`pathTrace`** — `Line` whose fragment shader lights up segments where `vT < uHead` (the head position), with `smoothstep(0.09, 0.0, abs(d))` for a bright leading edge.
-- **`worldfield`** — wider second `Points` layer, scaled radius up to 80 units, with rare bright "pin" points (critical infrastructure markers).
-- **`drone`** — manually-modeled quadrotor (`OctahedronGeometry` body + 4 `TorusGeometry` rotors + dashed `LineDashedMaterial` uplink). Rotors spun per-frame; entire group `lerp`'d from entry to hover.
-- **`rings`** — three `RingGeometry` meshes scaled and fading on `(1 - phase) * 0.7` (modality-coded RGB).
-- **`converge`** — `LineSegments` whose end vertices `lerp` from each node toward the drone as `lock` ramps.
+- **`field`** - `THREE.Points` with custom GLSL shader (additive blending, fog, ignite, dim, breathe, depth-faded `gl_PointSize`).
+- **`links`** - `THREE.LineSegments`; vertex shader does "draw-on" by interpolating the end vertex from the start using a `uLink` uniform, fragment shader has a traveling pulse `fract(uTime * 0.22 + vSeed * 7.0)`.
+- **`pylons`** - `THREE.InstancedMesh` of `BoxGeometry`, brightness updated per-instance per-frame via `setColorAt` + `instanceColor.needsUpdate = true`.
+- **`grid`** - fragment shader procedural grid using `fwidth(coord)` for antialiased lines + radial fade for "infinite floor without a hard edge".
+- **`packet`** - `THREE.Sprite` traveling along a precomputed BFS path through the link graph; trail = 6 trailing sprites at staggered `t`.
+- **`pathTrace`** - `Line` whose fragment shader lights up segments where `vT < uHead` (the head position), with `smoothstep(0.09, 0.0, abs(d))` for a bright leading edge.
+- **`worldfield`** - wider second `Points` layer, scaled radius up to 80 units, with rare bright "pin" points (critical infrastructure markers).
+- **`drone`** - manually-modeled quadrotor (`OctahedronGeometry` body + 4 `TorusGeometry` rotors + dashed `LineDashedMaterial` uplink). Rotors spun per-frame; entire group `lerp`'d from entry to hover.
+- **`rings`** - three `RingGeometry` meshes scaled and fading on `(1 - phase) * 0.7` (modality-coded RGB).
+- **`converge`** - `LineSegments` whose end vertices `lerp` from each node toward the drone as `lock` ramps.
 
-**Shader pattern used throughout** — uniforms updated each frame from `morph`:
+**Shader pattern used throughout** - uniforms updated each frame from `morph`:
 ```js
 fieldUniforms.uIgnite.value = s.ignite;
 linkUniforms.uLink.value    = s.link;
@@ -202,16 +202,16 @@ swarmUniforms.uSwarm.value  = s.swarm;
 worldUniforms.uWorld.value  = s.world;
 ```
 
-The vertex shader gates each point's appearance by comparing a per-vertex seed to the uniform — this gives the deploy-from-center cascade for free:
+The vertex shader gates each point's appearance by comparing a per-vertex seed to the uniform - this gives the deploy-from-center cascade for free:
 ```glsl
 float lit = smoothstep(aSeed - 0.05, aSeed + 0.12, uIgnite);
 ```
 
-**Deterministic layout** — a `mulberry32` PRNG (`rng(SEED)` in `util.js`) seeds node positions so what you see is identical every load. Layout uses a **phyllotaxis disk** (`i * golden + jitter`) for organic-looking-but-even spread.
+**Deterministic layout** - a `mulberry32` PRNG (`rng(SEED)` in `util.js`) seeds node positions so what you see is identical every load. Layout uses a **phyllotaxis disk** (`i * golden + jitter`) for organic-looking-but-even spread.
 
-**Performance profiles** — `isLowPower()` checks `pointer: coarse`, narrow viewport, `navigator.hardwareConcurrency <= 4`, `deviceMemory <= 4`. The `lite` profile uses fewer nodes, no bloom, smaller pixel ratio, no antialias.
+**Performance profiles** - `isLowPower()` checks `pointer: coarse`, narrow viewport, `navigator.hardwareConcurrency <= 4`, `deviceMemory <= 4`. The `lite` profile uses fewer nodes, no bloom, smaller pixel ratio, no antialias.
 
-## 8. DOM animation — anime.js v4
+## 8. DOM animation - anime.js v4
 
 v4 imports are **named exports**, not a default `anime()`:
 ```js
@@ -219,7 +219,7 @@ import { animate, utils, stagger, createTimeline, createDrawable, splitText }
   from 'animejs';
 ```
 
-### Boot intro — `dom/boot.js`
+### Boot intro - `dom/boot.js`
 
 SVG draw-on via `createDrawable` (the v4 replacement for v3's `strokeDashoffset` hack):
 ```js
@@ -240,7 +240,7 @@ Boot also tweens a **plain JS object** (`state.bootIgnite`) so the WebGL world c
 animate(state, { bootIgnite: [0, 0.7], duration: 1900, ease: 'inOut(2)' });
 ```
 
-### Reveals — `dom/reveals.js`
+### Reveals - `dom/reveals.js`
 
 Headlines use `splitText` to cascade per-character:
 ```js
@@ -268,7 +268,7 @@ const io = new IntersectionObserver((entries) => {
 }, { threshold: 0.2, rootMargin: '0px 0px -10% 0px' });
 ```
 
-### Word cycler — `dom/cycle.js`
+### Word cycler - `dom/cycle.js`
 
 Old text fades up-out, new text fades up-in. Only ticks while in view:
 ```js
@@ -316,7 +316,7 @@ Animation modules find their targets via `data-*` rather than classes, so markup
 
 ## 10. CSS motion (small but load-bearing)
 
-Almost no CSS animation — JS owns it. The handful of CSS-driven things:
+Almost no CSS animation - JS owns it. The handful of CSS-driven things:
 
 ```css
 :root { --ease-out: cubic-bezier(0.16, 1, 0.3, 1); }
@@ -338,7 +338,7 @@ Almost no CSS animation — JS owns it. The handful of CSS-driven things:
 .reticle   { will-change: transform, opacity; }
 ```
 
-A `#veil` element sits between the canvas and content and has its `opacity` set from JS each frame (`(1 - smoothstep(0,0.82,r.s)) * 0.9`) — that's how the scene fades out of the dark on first scroll. A `#scanlines` overlay with `mix-blend-mode: overlay` and a `repeating-linear-gradient` adds the CRT texture.
+A `#veil` element sits between the canvas and content and has its `opacity` set from JS each frame (`(1 - smoothstep(0,0.82,r.s)) * 0.9`) - that's how the scene fades out of the dark on first scroll. A `#scanlines` overlay with `mix-blend-mode: overlay` and a `repeating-linear-gradient` adds the CRT texture.
 
 ## 11. Translating this to a personal portfolio
 
@@ -347,9 +347,9 @@ The minimum recipe to clone the feel **without** the WebGL stage:
 1. `npm i animejs lenis`
 2. Wire Lenis (the 8-line snippet above).
 3. Mark sections with `data-scene`, add the `createScroll(sceneIds)` controller from `scroll.js` (it's standalone, 50 lines).
-4. Use `[data-reveal]` blocks + `data-r` / `data-split` / `data-count` and copy `reveals.js` wholesale — it works with any markup.
+4. Use `[data-reveal]` blocks + `data-r` / `data-split` / `data-count` and copy `reveals.js` wholesale - it works with any markup.
 5. For "cinematic" feel without three.js: drive CSS variables (`element.style.setProperty('--t', s.toFixed(3))`) from the scroll coordinate each frame, and have CSS read them to translate/scale/blur/opacity hero artwork.
-6. Steal `damp()`, `smoothstep()`, `band()`, `pulse()` from `util.js` — they're the core of how every transition feels weighted instead of linear.
+6. Steal `damp()`, `smoothstep()`, `band()`, `pulse()` from `util.js` - they're the core of how every transition feels weighted instead of linear.
 7. If you want the WebGL background: the `stage.js` setup (renderer + bloom composer + `onFrame` registry + `projectToScreen`) is fully reusable as a black-box; only `world.js` is project-specific.
 
-The file you most want to copy as a template is **`director.js`** — the `KEYS` array + `band()` pattern is how you make scroll feel like a director's camera path rather than independent section animations.
+The file you most want to copy as a template is **`director.js`** - the `KEYS` array + `band()` pattern is how you make scroll feel like a director's camera path rather than independent section animations.
