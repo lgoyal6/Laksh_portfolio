@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The bugs that only exist after you deploy · Laksh Goyal</title>
+<meta name="description" content="My gateway had a full test suite, a green CI matrix, and a one-click deploy button in the README. The button did not work. Here are the six things that were broken, none of which a test could have caught." />
+<link rel="canonical" href="https://lakshgoyal.com/blog/deploy-only-bugs.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The bugs that only exist after you deploy · Laksh Goyal">
+<meta property="og:description" content="My gateway had a full test suite, a green CI matrix, and a one-click deploy button in the README. The button did not work. Here are the six things that were broken, none of which a test could have caught.">
+<meta property="og:url" content="https://lakshgoyal.com/blog/deploy-only-bugs.html">
+<meta property="og:image" content="https://lakshgoyal.com/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body class="subpage">
+
+<div id="backdrop" aria-hidden="true"></div>
+
+<div class="wrap">
+  <nav>
+    <div class="nav-roles"><a href="../index.html" style="text-decoration:none">LAKSH GOYAL</a> · BLOG</div>
+    <div class="nav-links">
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#work">Projects</a>
+      <a href="../index.html#experience">Experience</a>
+      <a href="../index.html#resume">Resume</a>
+      <a href="../blog.html" style="color:var(--accent)">Blog</a>
+      <a href="../freelance.html">Freelance</a>
+      <a href="../index.html#contact">Contact</a>
+    </div>
+  </nav>
+</div>
+
+<div class="wrap">
+  <article class="post">
+    <div class="when">26 August 2026 · infrastructure, go, deployment</div>
+    <h1>The bugs that only exist after you deploy</h1>
+    <p class="standfirst">My gateway had a full test suite, a green CI matrix, and a one-click deploy button in the README. The button did not work. Here are the six things that were broken, none of which a test could have caught.</p>
+<p>I built <a href="https://github.com/lgoyal6/tollgate">tollgate</a> so a team can share one LLM
+provider key safely. Everyone gets a personal revocable key with its own rate budget,
+and the real credential is injected server side where nobody sees it. It has a test
+suite, a CI matrix, load tests at 2,000 requests a second, and a Deploy button in the
+README.</p>
+<p>Then I actually pressed the button, and nothing worked.</p>
+<p>What follows is every bug I found in the two hours after that. Not one of them is a
+logic error. Every one of them lives in the gap between a repository that builds and a
+repository that runs somewhere other than my laptop, which is a gap no unit test is
+looking at.</p>
+<h2>1. The browser could not talk to it at all</h2>
+<p>The gateway answered <code>curl</code> perfectly and answered a browser with nothing. No CORS
+headers, so the preflight failed and the real request never left the tab.</p>
+<p>The fix is one middleware, but where you put it decides whether it works. A preflight
+<code>OPTIONS</code> request carries no <code>Authorization</code> header, by design, because the browser
+sends it before it will show your code the response. So if CORS sits inside the auth
+middleware, auth rejects the preflight and the browser never gets permission to send
+the request that would have carried the credential. It has to sit inside the panic
+recovery and outside auth:</p>
+<pre><code class="language-go">r.Use(middleware.Recover)
+r.Use(middleware.CORS(cfg.AllowedOrigins))  // must answer unauthenticated
+r.Use(middleware.Auth(store))
+</code></pre>
+<p>Ordering bugs in middleware chains are invisible in tests that call handlers directly.
+Mine did.</p>
+<h2>2. Managed Redis hands you a URL, not a host and a port</h2>
+<p>My config wanted <code>REDIS_HOST</code>, <code>REDIS_PORT</code>, <code>REDIS_PASSWORD</code>. Every managed Redis on
+every platform gives you one <code>REDIS_URL</code> with the credentials embedded, and expects you
+to parse it. This is such a well-established convention that I had simply never noticed
+it, because on my laptop Redis is on localhost with no password.</p>
+<p>Accepting the URL and falling back to the discrete fields took ten minutes. Not knowing
+the convention existed cost more than that.</p>
+<h2>3. The database had no schema</h2>
+<p>The deploy created a Postgres instance, the gateway connected to it, and every query
+failed because no table existed. My migrations ran through a separate command I had
+always invoked by hand.</p>
+<p>The obvious fix is &ldquo;run the migrate command as a release step&rdquo;, and that is where the
+second problem showed up: the image is distroless. There is no shell in it to run a
+command in. That is the correct choice for a production container and it means the
+schema has to arrive some other way.</p>
+<p>So the migrations are embedded in the binary and applied on boot behind a flag:</p>
+<pre><code class="language-go">//go:embed migrations/*.sql
+var migrations embed.FS
+</code></pre>
+<p>Each migration runs in its own transaction, so a failure halfway leaves the ones before
+it committed and the schema in a state you can reason about. <code>AUTO_MIGRATE</code> is off by
+default and on in the deploy templates, because a platform with no shell needs it and a
+Kubernetes cluster with a proper job step does not.</p>
+<h2>4. The platform deployed the wrong half of my application</h2>
+<p>My Dockerfile is multi-stage: a builder, then a <code>gateway</code> stage, then a <code>demo-upstream</code>
+stage for the echo service the tests proxy to. I build the one I want with
+<code>--target gateway</code>.</p>
+<p>Platforms as a rule build the <strong>last</strong> stage in the file, and give you no way to pick a
+different one. So the button deployed the demo echo service and called it my gateway.</p>
+<p>Reordering so the gateway is last fixed that, and immediately created the next problem:
+the gateway is only half of a deployment. Every route needs something to proxy to, and
+now there was no way to deploy the upstream at all. It needed its own Dockerfile whose
+default stage is the upstream, which feels redundant until you accept that &ldquo;the default
+stage&rdquo; is an interface the platform reads, not an implementation detail.</p>
+<h2>5. Exiting on the first connection error is a crash loop</h2>
+<p>The gateway connected to Postgres and Redis on boot and exited if either failed. That is
+reasonable-looking code and it is wrong on every platform I care about.</p>
+<p>Kubernetes starts containers in no particular order. A restarted Postgres takes a moment
+before it accepts connections. And a platform that sleeps idle services wakes them on the
+first connection attempt, which means the first attempt is <em>guaranteed</em> to fail. Exiting
+on the first error turned all three of those normal situations into a container that died
+and restarted forever, with a log line that said only <code>connection refused</code>.</p>
+<p>Both dependencies now back off up to a ninety second budget and log every attempt. A slow
+dependency reads as a slow boot rather than as a service that keeps dying for no stated
+reason.</p>
+<h2>6. The demo could not demonstrate the thing it existed to demonstrate</h2>
+<p>This one is not a deploy bug. It is worse, and I only saw it because deploying made it
+obvious.</p>
+<p>The project&rsquo;s page ran the real limiter compiled to WebAssembly on a virtual clock. Real
+code, real algorithm, running in your tab. And it could not possibly show the one property
+the product exists for, because a bucket living in your browser is not a bucket anyone
+else can spend from. Nothing another visitor did could change what you saw. I had built a
+convincing demonstration of the wrong claim.</p>
+<p>The page now calls the deployed gateway. Twelve tokens, refilling at one a second, one
+bucket shared by everyone with the page open. If a token vanishes while you sit still,
+that was somebody else. The 429 is the gateway&rsquo;s real answer with its real <code>Retry-After</code>.
+The key is scoped to a tenant whose only route points at an echo service, so the worst
+anyone can do is drain a bucket that refills.</p>
+<h2>What I took from it</h2>
+<p>The tests were fine. They tested the code, and the code was right. Every one of these
+bugs lived in the boundary: the shape of a config value, which stage a builder picks,
+whether a dependency is allowed to be slow, what a browser sends before it sends the real
+request.</p>
+<p>The only way I found them was to press the button myself and watch it fail. If your
+README has a deploy button you have never pressed, it is not a deploy button. It is a
+claim.</p>
+    <div class="post-foot">
+      <a href="../blog.html">← All posts</a>
+      <span></span>
+    </div>
+  </article>
+</div>
+
+<div class="copyright">© 2026 Laksh Goyal</div>
+</body>
+</html>
