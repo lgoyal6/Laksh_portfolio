@@ -5,627 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Laksh Goyal</title>
 <meta name="description" content="Laksh Goyal, CS @ UC San Diego. Applied ML systems, agent evals, and the infrastructure underneath: storage engines, transports, gateways." />
+<link rel="canonical" href="https://lakshgoyal.com/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Laksh Goyal">
+<meta property="og:description" content="I build applied ML systems and the infrastructure under them, and I publish the number next to what the number cost. Seventeen of them run in your browser.">
+<meta property="og:url" content="https://lakshgoyal.com/">
+<meta property="og:image" content="https://lakshgoyal.com/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --ink: #1d1b18;
-    --muted: #5f5b53;
-    --faint: #8f8a80;
-    --accent: #c05621;
-    --live: #1db954;
-    --glass: rgba(255, 255, 255, 0.62);
-    --glass-border: rgba(255, 255, 255, 0.75);
-    --card-shadow: 0 2px 6px rgba(29, 27, 24, .05), 0 18px 44px rgba(29, 27, 24, .09);
-    --heading: 'Space Grotesk', 'Inter', sans-serif;
-    --sans: 'Inter', system-ui, -apple-system, sans-serif;
-    --mono: 'JetBrains Mono', monospace;
-    --bg1: #faf7f2;
-    --bg2: #f4e9dd;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    font-family: var(--sans);
-    color: var(--ink);
-    line-height: 1.65;
-    font-size: 15.5px;
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-    overflow-x: clip;
-  }
-  a { color: inherit; }
-
-  /* ===== Morphing gradient backdrop ===== */
-  #backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    background: linear-gradient(160deg, var(--bg1), var(--bg2));
-  }
-  #backdrop::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: radial-gradient(rgba(29,27,24,.028) 1px, transparent 1.4px);
-    background-size: 22px 22px;
-  }
-
-  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 clamp(16px, 3vw, 32px); }
-
-  @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
-  .rise { animation: rise .7s cubic-bezier(0.16, 1, 0.3, 1) both; }
-  .rise.d1 { animation-delay: .08s; }
-  .rise.d2 { animation-delay: .16s; }
-  .rise.d3 { animation-delay: .24s; }
-  @media (prefers-reduced-motion: reduce) { .rise { animation: none; } }
-
-  /* ===== Nav ===== */
-  nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
-    padding: 22px 0;
-  }
-  .nav-roles {
-    font-family: var(--mono);
-    font-size: 12px;
-    letter-spacing: .07em;
-    text-transform: uppercase;
-    color: var(--ink);
-    font-weight: 500;
-    min-width: 0;
-  }
-  .nav-links { display: flex; gap: 22px; align-items: center; flex-wrap: nowrap; flex-shrink: 0; white-space: nowrap; }
-  .nav-links a {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--ink);
-    text-decoration: none;
-    transition: color .15s;
-  }
-  .nav-links a:hover { color: var(--accent); }
-
-  /* ===== Hero ===== */
-  .hero {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 360px;
-    gap: clamp(28px, 5vw, 64px);
-    align-items: start;
-    padding: clamp(10px, 2.5vh, 26px) 0 clamp(26px, 4vh, 44px);
-  }
-  .hero-side { display: flex; flex-direction: column; gap: 14px; }
-  .hero .bio { margin-top: 28px; }
-  .h1-row { display: flex; align-items: baseline; gap: 20px; flex-wrap: wrap; margin-bottom: 16px; }
-  .h1-row h1 { margin-bottom: 0; }
-  .h1-social { display: flex; gap: 14px; }
-  .h1-social a {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--muted);
-    text-decoration: none;
-    transition: color .15s;
-  }
-  .h1-social a:hover { color: var(--accent); }
-  h1 {
-    font-family: var(--heading);
-    font-weight: 700;
-    font-size: clamp(38px, 5vw, 58px);
-    line-height: 1.02;
-    letter-spacing: -0.03em;
-    margin-bottom: 16px;
-  }
-  .hero-line {
-    font-size: clamp(15px, 1.4vw, 17px);
-    color: var(--muted);
-    max-width: 560px;
-    margin-bottom: 14px;
-  }
-  .avail {
-    font-size: 14px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    margin-bottom: 28px;
-  }
-  .avail::before {
-    content: "";
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: var(--live);
-    box-shadow: 0 0 0 3px rgba(29,185,84,.18);
-    flex-shrink: 0;
-  }
-  .hero-links { display: flex; gap: 12px; flex-wrap: wrap; }
-  .hero-links a {
-    font-family: var(--heading);
-    font-size: 14px;
-    font-weight: 600;
-    text-decoration: none;
-    padding: 10px 18px;
-    border-radius: 10px;
-    transition: transform .15s, background .15s, color .15s, border-color .15s;
-  }
-  .hero-links a.solid { background: var(--ink); color: #fff; }
-  .hero-links a.solid:hover { background: var(--accent); transform: translateY(-1px); }
-  .hero-links a.line { border: 1.5px solid rgba(29,27,24,.25); }
-  .hero-links a.line:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
-  .hero-path {
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--muted);
-    letter-spacing: .04em;
-    margin-bottom: 14px;
-  }
-  .hero-path .sep { color: var(--accent); padding: 0 4px; }
-  .hero-stats {
-    display: flex;
-    flex-wrap: wrap;
-    gap: clamp(22px, 4vw, 44px);
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(29,27,24,.12);
-  }
-  .hstat .n {
-    font-family: var(--heading);
-    font-weight: 700;
-    font-size: 27px;
-    letter-spacing: -0.02em;
-    line-height: 1;
-  }
-  .hstat .l {
-    font-family: var(--mono);
-    font-size: 10.5px;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    color: var(--faint);
-    margin-top: 7px;
-  }
-
-  /* ===== Sections ===== */
-  section.band { padding: clamp(34px, 5.5vh, 60px) 0; }
-  .sec-label {
-    font-family: var(--mono);
-    font-size: 11.5px;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 10px;
-  }
-  h2 {
-    font-family: var(--heading);
-    font-weight: 700;
-    font-size: clamp(28px, 3.6vw, 42px);
-    letter-spacing: -0.025em;
-    line-height: 1.05;
-    margin-bottom: 18px;
-  }
-  .sec-intro { color: var(--muted); max-width: 620px; margin-bottom: 24px; font-size: 16px; }
-  .sec-intro strong { color: var(--ink); font-weight: 600; }
-
-  /* What I do */
-  .cap-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 14px;
-  }
-  .cap {
-    background: var(--glass);
-    border: 1px solid var(--glass-border);
-    border-radius: 16px;
-    padding: 24px 24px 26px;
-    box-shadow: var(--card-shadow);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-  }
-  .cap-num {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--faint);
-    display: block;
-    margin-bottom: 14px;
-  }
-  .cap h3 {
-    font-family: var(--heading);
-    font-weight: 600;
-    font-size: 19px;
-    letter-spacing: -0.015em;
-    margin-bottom: 8px;
-  }
-  .cap p { color: var(--muted); font-size: 14px; }
-
-  /* Bio (inside hero) + hackathon list */
-  .bio p { color: var(--muted); font-size: 15.5px; margin-bottom: 16px; max-width: 700px; }
-  .bio p:last-child { margin-bottom: 0; }
-  .bio strong { color: var(--ink); font-weight: 600; }
-  .portrait {
-    border-radius: 18px;
-    overflow: hidden;
-    border: 1px solid var(--glass-border);
-    background: var(--glass);
-    box-shadow: var(--card-shadow);
-    aspect-ratio: 1 / 1;
-  }
-  .portrait img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 22%; }
-  .facts {
-    background: var(--glass);
-    border: 1px solid var(--glass-border);
-    border-radius: 16px;
-    padding: 18px 20px;
-    box-shadow: var(--card-shadow);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-  }
-  .fact { padding: 9px 0; border-bottom: 1px dashed rgba(29,27,24,.12); }
-  .fact:first-child { padding-top: 0; }
-  .fact:last-child { border-bottom: 0; padding-bottom: 0; }
-  .fact .k {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: var(--faint);
-    margin-bottom: 2px;
-  }
-  .fact .v { font-size: 13px; color: var(--ink); font-weight: 500; line-height: 1.5; }
-  .hack-list {
-    background: var(--glass);
-    border: 1px solid var(--glass-border);
-    border-radius: 16px;
-    padding: 18px 20px;
-    box-shadow: var(--card-shadow);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-  }
-  .hack-head {
-    font-family: var(--mono);
-    font-size: 10.5px;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: var(--faint);
-    margin-bottom: 8px;
-  }
-  .hack {
-    display: flex;
-    gap: 12px;
-    align-items: baseline;
-    padding: 8px 0;
-    border-bottom: 1px dashed rgba(29,27,24,.12);
-  }
-  .hack:last-child { border-bottom: 0; }
-  .hack .hname { font-family: var(--heading); font-weight: 600; font-size: 14px; white-space: nowrap; text-decoration: none; color: inherit; transition: color .15s; }
-  a.hname:hover { color: var(--accent); }
-  .hack .hgo { font-family: var(--mono); font-size: 10px; color: var(--accent); }
-  .hack .hdesc { color: var(--muted); font-size: 13px; }
-
-  /* Resume: paper-sized preview, click to open */
-  .resume-paper {
-    position: relative;
-    width: min(100%, 540px);
-    aspect-ratio: 8.5 / 11;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 1px solid var(--glass-border);
-    box-shadow: var(--card-shadow);
-    background: #fff;
-  }
-  .resume-paper object { width: 100%; height: 100%; display: block; border: 0; pointer-events: none; }
-  .resume-fallback { padding: 34px; text-align: center; color: var(--muted); font-size: 14px; }
-  .resume-fallback a { color: var(--accent); font-weight: 600; }
-  .resume-open {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    padding: 16px;
-    text-decoration: none;
-  }
-  .resume-open span {
-    background: var(--ink);
-    color: #fff;
-    font-family: var(--heading);
-    font-weight: 600;
-    font-size: 13px;
-    padding: 9px 18px;
-    border-radius: 999px;
-    box-shadow: 0 6px 18px rgba(29,27,24,.3);
-    transition: background .15s, transform .15s;
-  }
-  .resume-open:hover span { background: var(--accent); transform: translateY(-2px); }
-
-  /* ===== Experience ===== */
-  .xp-list { display: flex; flex-direction: column; gap: 12px; }
-  .xp {
-    background: var(--glass);
-    border: 1px solid var(--glass-border);
-    border-radius: 16px;
-    padding: 20px 24px;
-    box-shadow: var(--card-shadow);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-  }
-  .xp-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 16px;
-    flex-wrap: wrap;
-    margin-bottom: 6px;
-  }
-  .xp h3 {
-    font-family: var(--heading);
-    font-weight: 600;
-    font-size: 18px;
-    letter-spacing: -0.015em;
-  }
-  .xp h3 .role { color: var(--accent); }
-  .xp-date {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--faint);
-    letter-spacing: .04em;
-    white-space: nowrap;
-  }
-  .xp p { color: var(--muted); font-size: 14px; max-width: 720px; }
-  .xp .xp-prev {
-    margin-top: 8px;
-    padding-top: 8px;
-    border-top: 1px dashed rgba(29,27,24,.14);
-    font-size: 13px;
-  }
-  .xp .xp-prev strong { color: var(--ink); font-weight: 600; }
-
-  /* ===== Projects ===== */
-  .pgrid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
-  }
-  .belt-nav { display: flex; gap: 8px; flex-shrink: 0; }
-  .belt-btn {
-    width: 40px; height: 40px;
-    border-radius: 50%;
-    border: 1.5px solid rgba(29,27,24,.25);
-    background: transparent;
-    color: var(--ink);
-    font-size: 16px;
-    cursor: pointer;
-    transition: border-color .15s, color .15s, transform .15s;
-  }
-  .belt-btn:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
-  .belt {
-    display: flex;
-    gap: 16px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    padding: 4px 4px 16px;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(29,27,24,.25) transparent;
-  }
-  .belt::-webkit-scrollbar { height: 7px; }
-  .belt::-webkit-scrollbar-thumb { background: rgba(29,27,24,.22); border-radius: 999px; }
-  .belt::-webkit-scrollbar-track { background: transparent; }
-  .mcard {
-    flex: 0 0 260px;
-    scroll-snap-align: start;
-    background: var(--glass);
-    border: 1px solid var(--glass-border);
-    border-radius: 14px;
-    padding: 18px 20px;
-    box-shadow: 0 2px 8px rgba(29,27,24,.05);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    transition: transform .2s, border-color .2s;
-  }
-  a.mcard:hover { transform: translateY(-3px); border-color: var(--accent); }
-  .mcard h3 { font-family: var(--heading); font-weight: 600; font-size: 15.5px; letter-spacing: -0.01em; margin-bottom: 6px; }
-  a.mcard:hover h3 { color: var(--accent); }
-  .mcard p { color: var(--muted); font-size: 12.5px; line-height: 1.5; flex-grow: 1; }
-  .mcard .mstat { font-family: var(--mono); font-size: 10.5px; color: var(--ink); margin-top: 12px; }
-  .mcard .go { font-family: var(--mono); font-size: 10.5px; color: var(--accent); margin-top: 8px; letter-spacing: .06em; text-transform: uppercase; }
-  .mcard .go.dim { color: var(--faint); }
-  .more-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 18px;
-    margin: 36px 0 14px;
-    flex-wrap: wrap;
-  }
-  .more-head { font-family: var(--heading); font-weight: 600; font-size: 20px; letter-spacing: -0.015em; }
-  .all-link {
-    font-family: var(--mono);
-    font-size: 12px;
-    letter-spacing: .06em;
-    text-transform: uppercase;
-    color: var(--accent);
-    text-decoration: none;
-  }
-  .all-link:hover { text-decoration: underline; }
-  .pcard {
-    background: var(--glass);
-    border: 1px solid var(--glass-border);
-    border-radius: 18px;
-    padding: 26px;
-    box-shadow: var(--card-shadow);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    transition: transform .25s, border-color .25s;
-  }
-  a.pcard:hover { transform: translateY(-5px); border-color: var(--accent); }
-  .pcard-num { font-family: var(--mono); font-size: 11px; color: var(--faint); margin-bottom: 16px; }
-  .pcard h3 {
-    font-family: var(--heading);
-    font-weight: 600;
-    font-size: 21px;
-    letter-spacing: -0.02em;
-    line-height: 1.12;
-    margin-bottom: 10px;
-  }
-  a.pcard:hover h3 { color: var(--accent); }
-  .pcard p { color: var(--muted); font-size: 13.5px; flex-grow: 1; }
-  .pcard .stat {
-    font-family: var(--heading);
-    font-weight: 700;
-    font-size: 15px;
-    color: var(--ink);
-    margin: 14px 0 12px;
-    padding-left: 10px;
-    border-left: 3px solid var(--accent);
-  }
-  .pcard .tags { display: flex; flex-wrap: wrap; gap: 6px; }
-  .pcard .tag {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--muted);
-    padding: 3px 9px;
-    border: 1px solid rgba(29,27,24,.14);
-    border-radius: 999px;
-  }
-  .pcard .go {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--accent);
-    margin-top: 14px;
-    letter-spacing: .06em;
-    text-transform: uppercase;
-  }
-  .pcard .go.dim { color: var(--faint); }
-
-  /* Tech stack */
-  .stack-group { margin-bottom: 18px; }
-  .stack-group:last-child { margin-bottom: 0; }
-  .stack-name {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: var(--faint);
-    margin-bottom: 10px;
-  }
-  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
-  .chip {
-    font-family: var(--heading);
-    font-size: 13px;
-    font-weight: 500;
-    padding: 7px 14px;
-    border-radius: 999px;
-    background: var(--glass);
-    border: 1px solid var(--glass-border);
-    box-shadow: 0 2px 8px rgba(29,27,24,.05);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-  }
-  .chip.hot {
-    background: var(--ink);
-    color: #fff;
-    border-color: var(--ink);
-  }
-
-  /* ===== Resume + Contact row ===== */
-  .rc-grid {
-    display: grid;
-    grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
-    gap: clamp(24px, 3.5vw, 48px);
-    align-items: start;
-  }
-  .rc-grid .resume-paper { width: 100%; }
-  .panel {
-    background: #171512;
-    color: #f3efe7;
-    border-radius: 26px;
-    padding: clamp(28px, 3.5vw, 46px);
-    box-shadow: 0 30px 80px rgba(29,27,24,.28);
-  }
-  .panel .sec-label { color: #e8985c; }
-  .panel h2 { color: #fff; }
-  .panel p { color: #b5aea1; max-width: 520px; margin-bottom: 22px; }
-  .panel p a { color: #f3efe7; font-weight: 600; text-decoration: none; border-bottom: 1px solid #e8985c; }
-  .panel p a:hover { color: #e8985c; }
-  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .form-grid textarea, .form-grid button { grid-column: 1 / -1; }
-  .form-grid input, .form-grid textarea {
-    background: rgba(255,255,255,.07);
-    border: 1px solid rgba(255,255,255,.16);
-    border-radius: 10px;
-    padding: 11px 14px;
-    color: #f3efe7;
-    font-family: var(--sans);
-    font-size: 14px;
-    width: 100%;
-    resize: vertical;
-  }
-  .form-grid input::placeholder, .form-grid textarea::placeholder { color: #8d867a; }
-  .form-grid input:focus, .form-grid textarea:focus { outline: none; border-color: #e8985c; }
-  .f-send {
-    font-family: var(--heading);
-    font-weight: 600;
-    font-size: 14.5px;
-    background: #e8985c;
-    color: #171512;
-    border: 0;
-    border-radius: 10px;
-    padding: 12px 18px;
-    cursor: pointer;
-    transition: background .15s, transform .15s;
-  }
-  .f-send:hover { background: #f3b183; transform: translateY(-1px); }
-  .f-send:disabled { opacity: .55; cursor: default; transform: none; }
-  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
-  .f-note { margin-top: 12px; font-size: 13px; color: #b5aea1; min-height: 1em; }
-  .f-note.ok { color: #8fd9a8; }
-  .f-note.err { color: #ff9c8a; }
-  .f-note a { color: #f3efe7; font-weight: 600; }
-  .panel-links { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 24px; }
-  .panel-links a {
-    font-size: 13.5px;
-    color: #b5aea1;
-    text-decoration: none;
-    transition: color .15s;
-  }
-  .panel-links a:hover { color: #fff; }
-  .panel-elsewhere {
-    margin-top: 22px;
-    font-family: var(--mono);
-    font-size: 11px;
-    color: #6f695e;
-    letter-spacing: .04em;
-  }
-  .panel-elsewhere a { color: #6f695e; text-decoration: none; transition: color .15s; }
-  .panel-elsewhere a:hover { color: #b5aea1; }
-  .copyright {
-    text-align: center;
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--faint);
-    padding: 26px 0 30px;
-  }
-
-  /* ===== Responsive ===== */
-  @media (max-width: 860px) {
-    nav { flex-direction: column; align-items: flex-start; gap: 12px; }
-    .nav-links { flex-wrap: wrap; white-space: normal; }
-    .hero { grid-template-columns: 1fr; }
-    .pgrid { grid-template-columns: 1fr; }
-    .cap-grid { grid-template-columns: 1fr; }
-    .portrait { max-width: 320px; }
-    .xp-head { flex-direction: column; gap: 2px; }
-    .rc-grid { grid-template-columns: 1fr; }
-    .rc-grid > div:first-child { padding-top: 0; }
-    .rc-grid .sec-intro { min-height: 0; }
-    .form-grid { grid-template-columns: 1fr; }
-  }
-</style>
+<link rel="stylesheet" href="assets/site.css">
 </head>
 <body>
 <div id="backdrop" aria-hidden="true"></div>
@@ -635,10 +25,11 @@
     <div class="nav-roles">CS @ UC San Diego '28 · GTM/AI Engineer Intern @ GMI Cloud · ML @ Qualcomm Institute</div>
     <div class="nav-links">
       <a href="#about">About</a>
-      <a href="#experience">Experience</a>
       <a href="#work">Projects</a>
-      <a href="#stack">Stack</a>
+      <a href="#experience">Experience</a>
       <a href="#resume">Resume</a>
+      <a href="blog.html">Blog</a>
+      <a href="freelance.html">Freelance</a>
       <a href="#contact">Contact</a>
     </div>
   </nav>
@@ -658,7 +49,7 @@
       </div>
       <p class="hero-line rise d2">I build applied ML systems and the infrastructure under them: agent evals, storage engines, network transports, and API gateways that have to survive outside notebooks.</p>
       <div class="hero-path rise d2">Mumbai <span class="sep">→</span> San Diego <span class="sep">→</span> Mountain View</div>
-      <div class="avail rise d2">Open to new opportunities: internships, research, ambitious teams.</div>
+      <div class="avail rise d2">Open to new opportunities: internships, research, ambitious teams. <a href="freelance.html" style="color:var(--accent);font-weight:600;text-decoration:none;">Also taking freelance work ↗</a></div>
       <div class="hero-links rise d3">
         <a class="solid" href="mailto:lakshgoyal06@gmail.com">lakshgoyal06@gmail.com</a>
         <a class="line" href="Laksh_Resume.pdf" target="_blank" rel="noopener">Resume ↗</a>
@@ -762,47 +153,71 @@
 <section id="work" class="band wrap" data-bg1="#e5d5d5" data-bg2="#d4c7cf">
   <div class="sec-label">03 · Projects</div>
   <h2>Selected projects.</h2>
-  <p class="sec-intro">Every number below traces to a committed benchmark, test run, or published result, losing axes included.</p>
+  <p class="sec-intro">Every number below traces to a committed benchmark, test run, or published result, losing axes included. Seventeen of these run in your browser: not a recording of a benchmark, the repository’s own code compiled to WebAssembly or executed on the committed data, so you can move the input and watch the result move with it.</p>
   <div class="pgrid">
 
-    <a class="pcard" href="https://github.com/lgoyal6/strata" target="_blank" rel="noopener">
-      <div class="pcard-num">01</div>
+    <div class="pcard">
+      <div class="pcard-top"><div class="pcard-num">01</div><span class="live-pill">live demo</span></div>
       <h3>strata · LSM-Tree Storage Engine</h3>
       <p>A leveled LSM-tree key-value store from scratch: checksummed WAL, MVCC snapshots, Bloom-filtered SSTables, group commit. Durability verified by a harness that tears writes and SIGKILLs the engine mid-flight; the same matrix gates every push in CI.</p>
       <div class="stat">11,149 SIGKILLs · 2.22M acked writes, 0 lost · 50× RocksDB on sync commits</div>
       <div class="tags"><span class="tag">C++20</span><span class="tag">libFuzzer</span><span class="tag">TSan</span><span class="tag">YCSB</span></div>
-      <div class="go">repo ↗</div>
-    </a>
+      <div class="acts">
+        <a class="act run" href="https://lgoyal6.github.io/strata/" target="_blank" rel="noopener">Run it ↗</a>
+        <a class="act repo" href="https://github.com/lgoyal6/strata" target="_blank" rel="noopener">Repo</a>
+      </div>
+    </div>
 
-    <a class="pcard" href="https://github.com/lgoyal6/taut" target="_blank" rel="noopener">
-      <div class="pcard-num">02</div>
+    <div class="pcard">
+      <div class="pcard-top"><div class="pcard-num">02</div><span class="live-pill">live demo</span></div>
       <h3>taut · Reliable-UDP Transport + SWIM</h3>
       <p>Transport library for small messages on lossy links: SACK-based ARQ, adaptive RTO, SWIM failure detection on a lock-free epoll loop. Trades bulk throughput for tail latency, and publishes the losing axis (kernel TCP wins clean-link throughput ~27×).</p>
       <div class="stat">p99 ~6× below kernel TCP at 5% loss · ~12× at 20% loss</div>
       <div class="tags"><span class="tag">C++20</span><span class="tag">epoll</span><span class="tag">netem</span><span class="tag">libFuzzer</span></div>
-      <div class="go">repo ↗</div>
-    </a>
+      <div class="acts">
+        <a class="act run" href="https://lgoyal6.github.io/taut/" target="_blank" rel="noopener">Run it ↗</a>
+        <a class="act repo" href="https://github.com/lgoyal6/taut" target="_blank" rel="noopener">Repo</a>
+      </div>
+    </div>
 
-    <a class="pcard" href="https://github.com/lgoyal6/tautq" target="_blank" rel="noopener">
-      <div class="pcard-num">03</div>
+    <div class="pcard">
+      <div class="pcard-top"><div class="pcard-num">03</div><span class="live-pill">live demo</span></div>
       <h3>tautq · Distributed Webhook Delivery</h3>
       <p>Built on taut: a coordinator-less delivery service replicating a write-ahead log by majority commit under epoch-fenced leases, with no ZooKeeper and no etcd. Building it surfaced two SWIM protocol bugs, fixed upstream. A chaos suite gates every PR.</p>
       <div class="stat">800 jobs/s · p99 107ms · 100% completion at 0–20% UDP loss</div>
       <div class="tags"><span class="tag">C++20</span><span class="tag">WAL replication</span><span class="tag">chaos testing</span></div>
-      <div class="go">repo ↗</div>
-    </a>
+      <div class="acts">
+        <a class="act run" href="https://lgoyal6.github.io/tautq/" target="_blank" rel="noopener">Run it ↗</a>
+        <a class="act repo" href="https://github.com/lgoyal6/tautq" target="_blank" rel="noopener">Repo</a>
+      </div>
+    </div>
 
-    <a class="pcard" href="https://github.com/lgoyal6/tollgate" target="_blank" rel="noopener">
-      <div class="pcard-num">04</div>
+    <div class="pcard">
+      <div class="pcard-top"><div class="pcard-num">04</div><span class="live-pill">live demo</span></div>
       <h3>Tollgate · Multi-Tenant LLM API Gateway</h3>
       <p>Lets a team share one LLM provider key safely: personal revocable keys with rate budgets, the real credential injected server-side. Atomic Redis rate limits hold a global ceiling across replicas where per-replica limiters admit 3× the limit.</p>
       <div class="stat">2,000 req/s, 0 errors, p99 46ms · 300 req/s global limit held across 3 replicas</div>
       <div class="tags"><span class="tag">Go</span><span class="tag">Redis</span><span class="tag">Kubernetes</span><span class="tag">Terraform</span><span class="tag">OTel</span></div>
-      <div class="go">repo ↗</div>
-    </a>
+      <div class="acts">
+        <a class="act run" href="https://lgoyal6.github.io/tollgate/" target="_blank" rel="noopener">Run it ↗</a>
+        <a class="act repo" href="https://github.com/lgoyal6/tollgate" target="_blank" rel="noopener">Repo</a>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-top"><div class="pcard-num">05</div><span class="live-pill">live demo</span></div>
+      <h3>tickvault · Full-Depth Order Book Archive</h3>
+      <p>There is no free source of full-depth crypto order book history you can trust: everything free is top-of-book, resampled, or carries undocumented gaps. This records six venues to Parquet and publishes its own coverage, so a window you can't trust says so instead of interpolating.</p>
+      <div class="stat">6 venues · reconstruction to any instant · every gap published, not filled</div>
+      <div class="tags"><span class="tag">Rust</span><span class="tag">WebAssembly</span><span class="tag">Parquet</span><span class="tag">Arrow</span></div>
+      <div class="acts">
+        <a class="act run" href="https://lgoyal6.github.io/tickvault/" target="_blank" rel="noopener">Run it ↗</a>
+        <a class="act repo" href="https://github.com/lgoyal6/tickvault" target="_blank" rel="noopener">Repo</a>
+      </div>
+    </div>
 
     <a class="pcard" href="https://x.com/gmi_cloud/status/2077124979397947824" target="_blank" rel="noopener">
-      <div class="pcard-num">05</div>
+      <div class="pcard-num">06</div>
       <h3>Verify-then-Escalate Model Cascade</h3>
       <p>Two-stage routing (Opus 4.8 primary, GLM 5.2 FP8 rescue on verifier failure) over 100 frozen EvalPlus tasks, ranked by $/solved-task. Beat every single-model baseline; the gain traced to complementary failure modes, not a uniformly better model.</p>
       <div class="stat">94/100 vs best single model's 90 · 47.1% cheaper · published by GMI Cloud</div>
@@ -811,7 +226,7 @@
     </a>
 
     <div class="pcard">
-      <div class="pcard-num">06</div>
+      <div class="pcard-num">07</div>
       <h3>Mint · Lead Intelligence Platform</h3>
       <p>End-to-end lead intelligence at GMI Cloud: identity resolution across Apollo and Exa evidence chains, LLM ICP tiering with human-review gates and audit trails, and a 16-tool conversational agent over the lead database.</p>
       <div class="stat">18K LOC · 45 endpoints · 251 tests · 51 qualified leads from a 367-person triage set</div>
@@ -820,7 +235,7 @@
     </div>
 
     <a class="pcard" href="https://github.com/TC960/winnow" target="_blank" rel="noopener">
-      <div class="pcard-num">07</div>
+      <div class="pcard-num">08</div>
       <h3>Winnow · LLM Prompt Compression</h3>
       <p>Voice-first compression on two orthogonal axes: token-space (LLMLingua + self-implemented AttentionRAG behind an order-preserving merge) and model-space (~4-bit TurboQuant KV cache + LCLM latent compression), so the savings multiply.</p>
       <div class="stat">~60× KV cache reduction · F1 0.437 vs 0.376 fp16 baseline on LongBench</div>
@@ -829,7 +244,7 @@
     </a>
 
     <a class="pcard" href="https://github.com/lgoyal6/pylon" target="_blank" rel="noopener">
-      <div class="pcard-num">08</div>
+      <div class="pcard-num">09</div>
       <h3>Pylon · Counter-UAS Sensor Mesh</h3>
       <p>Built at the Bow Capital Defense Hackathon (UCSD), now part of the Bow Capital incubator. Anomaly-based RF detection over dual SDR backends, a UDP gossip mesh, and a 3D operator dashboard in Next.js + deck.gl.</p>
       <div class="stat">Catches novel emitters a signature-library baseline misses 100% of · mesh converges ~2s</div>
@@ -838,7 +253,7 @@
     </a>
 
     <a class="pcard" href="https://github.com/lgoyal6/vigil" target="_blank" rel="noopener">
-      <div class="pcard-num">09</div>
+      <div class="pcard-num">10</div>
       <h3>Vigil · Autonomous AI On-Call Engineer</h3>
       <p>Built at the Loop Engineering Hackathon: detects, diagnoses, and remediates production incidents end-to-end while holding zero standing credentials: single-use, scope-bound grants behind a Pomerium identity-aware proxy, with policy-denied escalation and a full audit trail.</p>
       <div class="stat">5 services · zero standing creds · single-use 60s-TTL grants</div>
@@ -847,7 +262,7 @@
     </a>
 
     <a class="pcard" href="https://github.com/lgoyal6/Locus" target="_blank" rel="noopener">
-      <div class="pcard-num">10</div>
+      <div class="pcard-num">11</div>
       <h3>LOCUS · Voice-Driven SAR Command Center</h3>
       <p>Search-and-rescue ops: LLM agents profile the missing person, a Monte Carlo engine turns hypotheses into a live probability heatmap and team assignments, and the coordinator drives it all hands-free by voice.</p>
       <div class="stat">150 walks/hypothesis × 4 ISRID profiles · 1.5s sim tick with zero LLM calls in-loop</div>
@@ -855,6 +270,68 @@
       <div class="go">repo ↗</div>
     </a>
 
+  </div>
+
+  <div class="sub-head">Studies you can run.</div>
+  <p class="sub-note">Each of these started as a claim I could not find a number for, so I built the smallest
+  thing that would settle it. The page runs the repository's own code in your browser, on the committed
+  data, so you can move the input and watch the finding hold or break. Eleven of them, all reproducible.</p>
+  <div class="sgrid">
+    <a class="scard" href="https://lgoyal6.github.io/decode-anatomy/" target="_blank" rel="noopener">
+      <h3>decode-anatomy</h3>
+      <p>&quot;Decode is memory-bound&quot; is the most repeated claim in LLM inference. On an A6000 at batch 1 it is neither memory-bound nor compute-bound: 38.3% of the step is not kernel work at all, and it vanishes with batching.</p>
+      <div class="verb">Drag the batch size ↗</div>
+    </a>
+    <a class="scard" href="https://lgoyal6.github.io/ddp-crossover/" target="_blank" rel="noopener">
+      <h3>ddp-crossover</h3>
+      <p>On two T4s over PCIe the second GPU pays on small models and stops paying on large ones, which is the opposite of the usual advice.</p>
+      <div class="verb">Drag the model size ↗</div>
+    </a>
+    <a class="scard" href="https://lgoyal6.github.io/noisy-rag-bench/" target="_blank" rel="noopener">
+      <h3>noisy-rag-bench</h3>
+      <p>At 5% OCR error, retrieval recall is exactly what it was on clean documents while half the answers have already become unrecoverable. Recall is the metric that will not warn you.</p>
+      <div class="verb">Drag the noise ↗</div>
+    </a>
+    <a class="scard" href="https://lgoyal6.github.io/open-refusal-steering/" target="_blank" rel="noopener">
+      <h3>open-refusal-steering</h3>
+      <p>An open reproduction of feature-level activation steering. At the strength that reaches a 100% response rate every behavioural check passes and the model is emitting token soup. Only perplexity catches it.</p>
+      <div class="verb">Sweep the strength ↗</div>
+    </a>
+    <a class="scard" href="https://lgoyal6.github.io/memharness/" target="_blank" rel="noopener">
+      <h3>memharness</h3>
+      <p>A memory system reads a conversation once and answers cheaply forever. The reading is an LLM pass over every turn, and it cost 12.7x what all twenty questions cost combined.</p>
+      <div class="verb">Find the payback point ↗</div>
+    </a>
+    <a class="scard" href="https://lgoyal6.github.io/actiongate/" target="_blank" rel="noopener">
+      <h3>actiongate</h3>
+      <p>Writing every extracted action item puts 18 wrong rows into the CRM out of 40. Gating at 0.65 cuts that to 2 and still auto-commits 19 of the 22 genuine ones.</p>
+      <div class="verb">Paste a transcript ↗</div>
+    </a>
+    <a class="scard" href="https://lgoyal6.github.io/icp-benchmark/" target="_blank" rel="noopener">
+      <h3>icp-benchmark</h3>
+      <p>120 real YC companies, hand-labeled on three axes. Enriching every lead is 25% precision; a rules filter gets 93.8% and misses half the real ones. Both numbers matter and neither is published anywhere.</p>
+      <div class="verb">Pick a filter ↗</div>
+    </a>
+    <a class="scard" href="https://lgoyal6.github.io/promptgate/" target="_blank" rel="noopener">
+      <h3>promptgate</h3>
+      <p>A published production manager prompt states its reject contract four times and contradicts itself once. A parser built from the majority form reads that reject as silence, and the gate treats silence as approval.</p>
+      <div class="verb">Break the parser ↗</div>
+    </a>
+    <a class="scard" href="https://lgoyal6.github.io/pms-race/" target="_blank" rel="noopener">
+      <h3>pms-race</h3>
+      <p>A computer-use agent driving a booking screen has no transaction. Sixteen agents, one room: the legacy path books it 93 times, and the obvious fix removes that entirely while doing nothing for lost updates.</p>
+      <div class="verb">Race 16 agents ↗</div>
+    </a>
+    <a class="scard" href="https://lgoyal6.github.io/flightrisk/" target="_blank" rel="noopener">
+      <h3>flightrisk</h3>
+      <p>Deposit-flight risk is U-shaped. A bank that just took a large inflow is about as likely to have a drawdown next quarter as one that just lost deposits. Every US bank, 2015 to 2026.</p>
+      <div class="verb">Query a bank ↗</div>
+    </a>
+    <a class="scard" href="https://lgoyal6.github.io/apparatus-comps/" target="_blank" rel="noopener">
+      <h3>apparatus-comps</h3>
+      <p>A comparable-sales estimator for fire apparatus, back-tested against real sales. Half the estimates are off by more than 36%, and covering nine cases in ten takes a range nearly seven times wide.</p>
+      <div class="verb">Price a truck ↗</div>
+    </a>
   </div>
 
   <div class="more-top">
@@ -867,11 +344,11 @@
   </div>
   <div class="belt" id="belt">
 
-    <a class="mcard" href="https://github.com/lgoyal6/agentbench" target="_blank" rel="noopener">
+    <a class="mcard" href="https://lgoyal6.github.io/agentbench/" target="_blank" rel="noopener">
       <h3>AgentBench</h3>
       <p>Eval framework for LangGraph agents: cost-adjusted accuracy, async-safe usage attribution, Ray Tune HPO</p>
       <div class="mstat">0.964 acc · n=55 · $0.042</div>
-      <div class="go">repo ↗</div>
+      <div class="go">run it ↗</div>
     </a>
 
     <a class="mcard" href="https://github.com/lgoyal6/checkit_health" target="_blank" rel="noopener">
@@ -1096,41 +573,8 @@
     });
   })();
 
-  /* ---------- Inquiry form ---------- */
-  (function initInquiry() {
-    const form = document.getElementById('inquiry');
-    const note = document.getElementById('inquiry-note');
-    if (!form) return;
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const data = Object.fromEntries(new FormData(form));
-      if (!data.name?.trim() || !data.email?.trim() || !data.message?.trim()) {
-        note.className = 'f-note err';
-        note.textContent = 'All three fields are needed.';
-        return;
-      }
-      const btn = form.querySelector('.f-send');
-      btn.disabled = true;
-      note.className = 'f-note';
-      note.textContent = 'Sending…';
-      try {
-        const r = await fetch('/api/inquiry', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
-        });
-        if (!r.ok) throw new Error('send failed');
-        note.className = 'f-note ok';
-        note.textContent = "Sent. I'll get back to you soon.";
-        form.reset();
-      } catch (err) {
-        btn.disabled = false;
-        note.className = 'f-note err';
-        note.innerHTML = 'Couldn\'t send just now. Email me directly: <a href="mailto:lakshgoyal06@gmail.com">lakshgoyal06@gmail.com</a>';
-      }
-    });
-  })();
 </script>
+<script src="assets/inquiry.js"></script>
 
 </body>
 </html>
