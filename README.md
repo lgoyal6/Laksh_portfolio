@@ -2,18 +2,59 @@
 
 Source for my personal site: **[lakshgoyal.com](https://www.lakshgoyal.com)**
 
-A hand-built single page. No framework, no build step, no bundler. `index.html` is the
-site; Vercel serves it as-is and runs the handlers in `api/` as serverless functions.
+Hand-built static HTML. No framework and no bundler. Vercel serves the files as-is and
+runs the handlers in `api/` as serverless functions. The only build step is the blog,
+and it writes HTML you commit, so the deployed site stays static either way.
+
+Shared styling lives in `assets/site.css` and the contact form in `assets/inquiry.js`,
+so `index.html`, `projects.html`, `freelance.html` and every blog page look and behave
+like one site rather than four.
 
 ## What's on it
 
-| Section | |
+| Page or section | |
 |---|---|
-| Work | Where I've worked |
-| Projects | Selected projects, with the full list on [`/projects.html`](https://www.lakshgoyal.com/projects.html) |
+| Projects | Selected projects. Seventeen link to a live demo that runs the repository's own code |
+| Experience | Where I've worked |
 | Stack | Tools I reach for |
 | Resume | The one-pager |
+| [`/projects.html`](https://lakshgoyal.com/projects.html) | Every project in one list |
+| [`/blog.html`](https://lakshgoyal.com/blog.html) | Writing, built from markdown |
+| [`/freelance.html`](https://lakshgoyal.com/freelance.html) | What I take on as freelance work, and how it runs |
 | Contact | An inquiry form that posts to a serverless handler rather than a mailto link |
+
+## Writing a post
+
+Posts are markdown in `blog/posts/`, one file per post, named for the URL slug you
+want. The frontmatter block is small:
+
+```markdown
+---
+title: The bugs that only exist after you deploy
+date: 2026-08-26
+summary: One or two sentences. This is what shows on the index and in a link preview.
+tags: infrastructure, go, deployment
+crosspost: https://example.com/same-piece   # optional
+draft: true                                  # optional, keeps it out of the build
+---
+```
+
+Then rebuild and commit what changes:
+
+```bash
+python3 build_blog.py
+```
+
+It writes `blog/<slug>.html` for each post and regenerates `blog.html`. The generated
+HTML is committed, so nothing has to run at deploy time. `markdown` is the only
+dependency and it is only needed locally.
+
+## The share card
+
+`assets/og.png` is the 1200x630 image link previews use. It is generated rather than
+designed by hand, from the site's own palette and type, so it cannot drift from the
+page. The generator lives outside this repo with the ones that build the per-project
+cards.
 
 ## API handlers
 
