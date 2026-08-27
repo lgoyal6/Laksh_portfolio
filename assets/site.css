@@ -849,3 +849,23 @@
 .glance .g .v { color: var(--ink); }
 .glance .g .v em { color: var(--muted); font-style: normal; }
 @media (max-width: 980px) { .head-split { grid-template-columns: 1fr; gap: 30px; } }
+
+/* The resume no longer shares its row with a contact panel: centre it at a
+   readable width instead of leaving a half-empty grid. */
+.rc-grid.solo { grid-template-columns: minmax(0, 780px); justify-content: center; }
+
+.site-foot {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 20px; flex-wrap: wrap; padding: 40px 0 8px;
+  border-top: 1px solid rgba(29,27,24,.14); margin-top: 56px;
+}
+.foot-links { display: flex; gap: 20px; flex-wrap: wrap; }
+.foot-links a {
+  font-size: 14px; font-weight: 600; color: var(--ink);
+  text-decoration: none; transition: color .15s;
+}
+.foot-links a:hover { color: var(--accent); }
+.foot-elsewhere { font-family: var(--mono); font-size: 12px; color: var(--faint); }
+.foot-elsewhere a { color: var(--muted); text-decoration: none; }
+.foot-elsewhere a:hover { color: var(--accent); }
+@media (max-width: 700px) { .site-foot { flex-direction: column; gap: 14px; } }
