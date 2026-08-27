@@ -45,7 +45,7 @@ export default async function handler(req, res) {
       to: [TO_ADDRESS],
       reply_to: email,
       subject: `Portfolio inquiry from ${name.replace(/[\r\n]/g, ' ')}`,
-      text: `${message}\n\n— ${name} <${email}>\nSent from the portfolio contact form.`,
+      text: `${message}\n\n- ${name} <${email}>\nSent from the portfolio contact form.`,
     }),
   });
 
