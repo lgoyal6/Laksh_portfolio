@@ -1,27 +1,29 @@
 # lakshgoyal.com
 
-Source for my personal site: **[lakshgoyal.com](https://www.lakshgoyal.com)**
+Source for my personal site: **[lakshgoyal.com](https://lakshgoyal.com)**
 
 Hand-built static HTML. No framework and no bundler. Vercel serves the files as-is and
 runs the handlers in `api/` as serverless functions. The only build step is the blog,
 and it writes HTML you commit, so the deployed site stays static either way.
 
-Shared styling lives in `assets/site.css` and the contact form in `assets/inquiry.js`,
-so `index.html`, `projects.html`, `freelance.html` and every blog page look and behave
-like one site rather than four.
+Shared styling lives in `assets/site.css` and the inquiry form in `assets/inquiry.js`.
+`index.html`, `freelance.html` and every blog page pull the same stylesheet, so they
+look and behave like one site; `projects.html` still carries its own inline copy.
 
 ## What's on it
 
+The home page is four sections, then a footer.
+
 | Page or section | |
 |---|---|
-| Projects | Selected projects. Seventeen link to a live demo that runs the repository's own code |
+| About | Who I am, and the hackathon builds |
 | Experience | Where I've worked |
+| Projects | Selected projects, then the studies you can run. Seventeen link to a live demo that runs the repository's own code |
 | Stack | Tools I reach for |
-| Resume | The one-pager |
 | [`/projects.html`](https://lakshgoyal.com/projects.html) | Every project in one list |
 | [`/blog.html`](https://lakshgoyal.com/blog.html) | Writing, built from markdown |
-| [`/freelance.html`](https://lakshgoyal.com/freelance.html) | What I take on as freelance work, and how it runs |
-| Contact | An inquiry form that posts to a serverless handler rather than a mailto link |
+| [`/freelance.html`](https://lakshgoyal.com/freelance.html) | What I take on as freelance work, and how it runs. The inquiry form lives here, and posts to a serverless handler rather than a mailto link |
+| `Laksh_Resume.pdf` | Linked from the nav and the hero. There is no resume section on the page |
 
 ## Writing a post
 
@@ -58,15 +60,20 @@ cards.
 
 ## API handlers
 
-Everything under `api/` is a Vercel serverless function. They exist so the page can show
-live data without shipping any keys to the browser.
+Everything under `api/` is a Vercel serverless function. They exist so a page can show
+live data, or take a submission, without shipping any keys to the browser.
+
+- `inquiry.js` validates and length-caps the inquiry form on `/freelance.html`, then
+  sends it through Resend. It is the only handler any page calls today.
+
+The rest are kept for the personal panels, which are coming back on a page of their
+own. They still deploy; nothing on the site requests them right now:
 
 - `spotify.js` and `callback.js` run the Spotify OAuth refresh-token flow server-side and
   return what I am listening to.
 - `letterboxd.js` parses my Letterboxd RSS feed for recent films.
 - `letterboxd-poster.js` proxies poster images, allow-listing only `a.ltrbxd.com` and
   `s.ltrbxd.com` so the endpoint cannot be turned into an open image proxy.
-- `inquiry.js` validates and length-caps the contact form, then sends it through Resend.
 
 ## Running it
 
@@ -76,9 +83,10 @@ There is no build. Open `index.html` directly, or for the API routes:
 npx vercel dev
 ```
 
-Spotify needs `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET` and `SPOTIFY_REFRESH_TOKEN`;
-the contact form needs `RESEND_API_KEY`. Without them the page still renders, the
-now-playing panel just stays empty.
+The inquiry form needs `RESEND_API_KEY`; without it the page still renders and the
+form just fails to send. The Spotify handlers need `SPOTIFY_CLIENT_ID`,
+`SPOTIFY_CLIENT_SECRET` and `SPOTIFY_REFRESH_TOKEN` if you call them directly, which
+no page does.
 
 ## Notes on the repo
 
