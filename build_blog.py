@@ -47,31 +47,33 @@ HEAD = """<!DOCTYPE html>
 <meta name="twitter:card" content="summary_large_image">
 {extra}<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{base}assets/site.css">
 </head>
-<body class="subpage">
+<body>
 
-<div id="backdrop" aria-hidden="true"></div>
+<a class="skip" href="#main">Skip to content</a>
 
-<div class="wrap">
-  <nav>
-    <div class="nav-roles"><a href="{base}index.html" style="text-decoration:none">LAKSH GOYAL</a> · BLOG</div>
-    <div class="nav-links">
-      <a href="{base}index.html#about">About</a>
-      <a href="{base}index.html#work">Projects</a>
-      <a href="{base}index.html#experience">Experience</a>
-      <a href="{base}index.html#resume">Resume</a>
-      <a href="{base}blog.html" style="color:var(--accent)">Blog</a>
-      <a href="{base}freelance.html">Freelance</a>
-      <a href="{base}index.html#contact">Contact</a>
-    </div>
-  </nav>
-</div>
+<header class="wrap">
+  <div class="mast">
+    <a class="home" href="{base}index.html">Laksh Goyal</a>
+    <nav aria-label="Site">
+      <ul>
+        <li><a href="{base}index.html#work">Work</a></li>
+        <li><a href="{base}index.html#studies">Studies</a></li>
+        <li><a href="{base}index.html#experience">Experience</a></li>
+        <li><a href="{base}blog.html" aria-current="page">Writing</a></li>
+        <li><a href="{base}Laksh_Resume.pdf">Resume</a></li>
+        <li><a href="{base}freelance.html">Freelance</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
 """
 
 FOOT = """
-<div class="copyright">© 2026 Laksh Goyal</div>
+</main>
+<footer class="wrap"><div class="site-foot"><ul><li><a href="mailto:lakshgoyal06@gmail.com">Email</a></li><li><a href="https://github.com/lgoyal6" target="_blank" rel="noopener">GitHub</a></li><li><a href="https://linkedin.com/in/lakshgoyal" target="_blank" rel="noopener">LinkedIn</a></li></ul><small>© 2026 Laksh Goyal</small></div></footer>
 </body>
 </html>
 """
@@ -118,7 +120,7 @@ def render_post(meta):
         url=f"{SITE}/blog/{meta['slug']}.html",
         site=SITE, base="../", extra="")
     return head + f"""
-<div class="wrap">
+<main id="main" class="wrap">
   <article class="post">
     <div class="when">{pretty(meta['date'])}{tagline}</div>
     <h1>{html.escape(meta['title'])}</h1>
@@ -129,7 +131,6 @@ def render_post(meta):
       <span>{cross}</span>
     </div>
   </article>
-</div>
 """ + FOOT
 
 
@@ -155,7 +156,7 @@ def render_index(posts):
               "thing taught me that reading about it did not."),
         ogtype="website", url=f"{SITE}/blog.html", site=SITE, base="", extra="")
     return head + f"""
-<div class="wrap blog-col">
+<main id="main" class="wrap blog-col">
 <div class="page-head">
   <div class="sec-label">Writing</div>
   <h1>Notes from building<br>and measuring.</h1>
@@ -172,7 +173,6 @@ def render_index(posts):
     <a href="https://linkedin.com/in/lakshgoyal">linkedin</a> &middot;
     <a href="https://x.com/Lgoyal6">x</a>
   </div>
-</div>
 </div>
 """ + FOOT
 

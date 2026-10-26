@@ -14,28 +14,30 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/site.css">
 </head>
-<body class="subpage">
+<body>
 
-<div id="backdrop" aria-hidden="true"></div>
+<a class="skip" href="#main">Skip to content</a>
 
-<div class="wrap">
-  <nav>
-    <div class="nav-roles"><a href="index.html" style="text-decoration:none">LAKSH GOYAL</a> · FREELANCE</div>
-    <div class="nav-links">
-      <a href="index.html#about">About</a>
-      <a href="index.html#work">Projects</a>
-      <a href="index.html#experience">Experience</a>
-      <a href="Laksh_Resume.pdf" target="_blank" rel="noopener">Resume</a>
-      <a href="blog.html">Blog</a>
-      <a href="freelance.html" style="color:var(--accent)">Freelance</a>
-      <a href="#talk">Contact</a>
-    </div>
-  </nav>
-</div>
+<header class="wrap">
+  <div class="mast">
+    <a class="home" href="index.html">Laksh Goyal</a>
+    <nav aria-label="Site">
+      <ul>
+        <li><a href="index.html#work">Work</a></li>
+        <li><a href="index.html#studies">Studies</a></li>
+        <li><a href="index.html#experience">Experience</a></li>
+        <li><a href="blog.html">Writing</a></li>
+        <li><a href="Laksh_Resume.pdf">Resume</a></li>
+        <li><a href="freelance.html" aria-current="page">Freelance</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
 
+<main id="main">
 <div class="wrap page-head">
  <div class="head-split">
   <div>
@@ -166,9 +168,12 @@
     <a href="mailto:lakshgoyal06@gmail.com" style="color:var(--accent);font-weight:600;text-decoration:none;">lakshgoyal06@gmail.com</a>,
     or leave it here and I'll come back to you.</p>
     <form class="form-grid" id="inquiry" novalidate style="margin-top:22px;max-width:560px">
-      <input type="text" name="name" placeholder="Your name" maxlength="100" required>
-      <input type="email" name="email" placeholder="Your email" maxlength="200" required>
-      <textarea name="message" rows="5" placeholder="What are you building, and what don't you know about it yet?" maxlength="5000" required></textarea>
+      <label class="vh" for="f-name">Your name</label>
+      <input type="text" id="f-name" name="name" autocomplete="name" placeholder="Your name" maxlength="100" required>
+      <label class="vh" for="f-email">Your email</label>
+      <input type="email" id="f-email" name="email" autocomplete="email" placeholder="Your email" maxlength="200" required>
+      <label class="vh" for="f-msg">What you are building</label>
+      <textarea id="f-msg" name="message" rows="5" placeholder="What are you building, and what don't you know about it yet?" maxlength="5000" required></textarea>
       <input type="text" name="company" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
       <button type="submit" class="f-send">Send inquiry →</button>
     </form>
@@ -181,8 +186,9 @@
   </div>
 
 </div>
+</main>
 
-<div class="copyright">© 2026 Laksh Goyal</div>
+<footer class="wrap"><div class="site-foot"><ul><li><a href="mailto:lakshgoyal06@gmail.com">Email</a></li><li><a href="https://github.com/lgoyal6" target="_blank" rel="noopener">GitHub</a></li><li><a href="https://linkedin.com/in/lakshgoyal" target="_blank" rel="noopener">LinkedIn</a></li></ul><small>© 2026 Laksh Goyal</small></div></footer>
 
 <script src="assets/inquiry.js"></script>
 </body>
