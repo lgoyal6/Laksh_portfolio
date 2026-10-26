@@ -7,19 +7,22 @@ runs the handlers in `api/` as serverless functions. The only build step is the 
 and it writes HTML you commit, so the deployed site stays static either way.
 
 Shared styling lives in `assets/site.css` and the inquiry form in `assets/inquiry.js`.
-`index.html`, `freelance.html` and every blog page pull the same stylesheet, so they
-look and behave like one site; `projects.html` still carries its own inline copy.
+Every page, `projects.html` included, pulls the same stylesheet and the same masthead, so
+they look and behave like one site. It follows the system light or dark setting and runs
+no animation.
 
 ## What's on it
 
-The home page is four sections, then a footer.
+The home page is an intro, five sections, then a footer.
 
 | Page or section | |
 |---|---|
-| About | Who I am, and the hackathon builds |
+| Intro | Who I am, what I'm looking for, and the three things to read first |
+| Selected work | Seven case studies (problem, what I built, the decision, the result, where it loses) |
+| Studies | Eleven studies, each a page that runs the repository's own code |
 | Experience | Where I've worked |
-| Projects | Selected projects, then the studies you can run. Seventeen link to a live demo that runs the repository's own code |
-| Stack | Tools I reach for |
+| More builds | Eight more, team builds marked as such, then a link to the full list |
+| Writing | The latest post, plus a short toolbox |
 | [`/projects.html`](https://lakshgoyal.com/projects.html) | Every project in one list |
 | [`/blog.html`](https://lakshgoyal.com/blog.html) | Writing, built from markdown |
 | [`/freelance.html`](https://lakshgoyal.com/freelance.html) | What I take on as freelance work, and how it runs. The inquiry form lives here, and posts to a serverless handler rather than a mailto link |
