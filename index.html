@@ -4,553 +4,344 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Laksh Goyal</title>
-<meta name="description" content="Laksh Goyal, CS @ UC San Diego. Applied ML systems, agent evals, and the infrastructure underneath: storage engines, transports, gateways." />
+<meta name="description" content="Laksh Goyal, CS at UC San Diego. Backend and distributed systems, and the ML infrastructure under applied AI: storage engines, transports, gateways, and evals, each with the number and what it cost." />
+<meta name="color-scheme" content="light dark">
 <link rel="canonical" href="https://lakshgoyal.com/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Laksh Goyal">
-<meta property="og:description" content="I build applied ML systems and the infrastructure under them, and I publish the number next to what the number cost. Seventeen of them run in your browser.">
+<meta property="og:description" content="I build backend and distributed systems and the ML infrastructure under them, and I publish the number next to what the number cost. Seventeen of them run in your browser.">
 <meta property="og:url" content="https://lakshgoyal.com/">
 <meta property="og:image" content="https://lakshgoyal.com/assets/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/site.css">
 </head>
 <body>
-<div id="backdrop" aria-hidden="true"></div>
+<a class="skip" href="#main">Skip to content</a>
 
-<div class="wrap">
-  <nav class="rise">
-    <div class="nav-roles">CS @ UC San Diego '28 · GMI Cloud · Qualcomm Institute</div>
-    <div class="nav-links">
-      <a href="#about">About</a>
-      <a href="#work">Projects</a>
-      <a href="#experience">Experience</a>
-      <a href="Laksh_Resume.pdf" target="_blank" rel="noopener">Resume</a>
-      <a href="blog.html">Blog</a>
-      <a href="freelance.html">Freelance</a>
-      <a href="freelance.html#talk">Contact</a>
-    </div>
-  </nav>
-</div>
-
-<!-- ===== HERO ===== -->
-<header class="wrap" data-bg1="#faf7f2" data-bg2="#f4e9dd">
-  <div class="hero">
-    <div>
-      <div class="h1-row rise d1">
-        <h1>Laksh Goyal</h1>
-        <div class="h1-social">
-          <a href="https://github.com/lgoyal6" target="_blank" rel="noopener">GitHub ↗</a>
-          <a href="https://linkedin.com/in/lakshgoyal" target="_blank" rel="noopener">LinkedIn ↗</a>
-          <a href="https://x.com/Lgoyal6" target="_blank" rel="noopener">X ↗</a>
-        </div>
-      </div>
-      <p class="hero-line rise d2">I build applied ML systems and the infrastructure under them: agent evals, storage engines, network transports, and API gateways that have to survive outside notebooks.</p>
-      <div class="hero-path rise d2">Mumbai <span class="sep">→</span> San Diego <span class="sep">→</span> Mountain View</div>
-      <div class="avail rise d2">Open to new opportunities: internships, research, ambitious teams. <a href="freelance.html" style="color:var(--accent);font-weight:600;text-decoration:none;">Also taking freelance work ↗</a></div>
-      <div class="hero-links rise d3">
-        <a class="solid" href="mailto:lakshgoyal06@gmail.com">lakshgoyal06@gmail.com</a>
-        <a class="line" href="Laksh_Resume.pdf" target="_blank" rel="noopener">Resume ↗</a>
-      </div>
-      <div class="hero-stats rise d3">
-        <div class="hstat"><div class="n">20+</div><div class="l">projects built</div></div>
-        <div class="hstat"><div class="n">5</div><div class="l">hackathon wins</div></div>
-        <div class="hstat"><div class="n">11</div><div class="l">engineers led</div></div>
-        <div class="hstat"><div class="n">1</div><div class="l">published paper</div></div>
-      </div>
-      <div class="bio rise d3">
-        <p>I'm from Mumbai, studying CS at <strong>UC San Diego ('28)</strong> with minors in cognitive science and business economics. Right now my week splits between Mountain View and San Diego: <strong>GTM/AI engineering at GMI Cloud</strong>, and <strong>bioacoustics ML research</strong> with Engineers for Exploration at the Qualcomm Institute. I like to build, break, and ship fast, mostly at the intersection of startups, medtech, and applied AI.</p>
-        <p>I like owning a system end to end: the eval harness <em>and</em> the agent on top of it, the storage engine <em>and</em> the service that stresses it, the model <em>and</em> the deploy path that puts it in front of people. House rule for everything I build: <strong>publish the number, and publish what the number cost.</strong> Every benchmark on this page states its losing axis, because a result you can't interrogate is marketing, not engineering.</p>
-        <p>A lot of that starts at hackathons: five of the projects on this page were built in a weekend or less, and GMI Cloud <strong>published my model-cascade benchmark</strong>. Off the keyboard: poker, 8-ball, F1 weekends, Lego builds, soccer, and too much sci-fi.</p>
-      </div>
-    </div>
-    <div class="hero-side rise d2">
-      <div class="portrait"><img src="IMG_8054.jpg" alt="Laksh Goyal"></div>
-      <div class="facts">
-        <div class="fact"><div class="k">Education</div><div class="v">UC San Diego · B.S. CS '28 · minors in CogSci &amp; Business-Econ</div></div>
-        <div class="fact"><div class="k">Currently</div><div class="v">GTM/AI Engineer Intern @ GMI Cloud · ML research @ E4E, Qualcomm Institute</div></div>
-      </div>
-      <div class="hack-list">
-        <div class="hack-head">Built at hackathons</div>
-        <div class="hack"><a class="hname" href="https://github.com/lgoyal6/pylon" target="_blank" rel="noopener">Pylon <span class="hgo">↗</span></a><span class="hdesc">counter-UAS RF sensor mesh over dual SDR backends</span></div>
-        <div class="hack"><a class="hname" href="https://github.com/lgoyal6/vigil" target="_blank" rel="noopener">Vigil <span class="hgo">↗</span></a><span class="hdesc">autonomous AI on-call engineer holding zero standing credentials</span></div>
-        <div class="hack"><a class="hname" href="https://github.com/lgoyal6/Locus" target="_blank" rel="noopener">LOCUS <span class="hgo">↗</span></a><span class="hdesc">voice-driven search-and-rescue command center</span></div>
-        <div class="hack"><a class="hname" href="https://github.com/TC960/winnow" target="_blank" rel="noopener">Winnow <span class="hgo">↗</span></a><span class="hdesc">real-time LLM prompt compression on two orthogonal axes</span></div>
-        <div class="hack"><a class="hname" href="https://github.com/lgoyal6/RepoMap" target="_blank" rel="noopener">RepoMap <span class="hgo">↗</span></a><span class="hdesc">VS Code extension mapping codebases as dependency graphs</span></div>
-      </div>
-    </div>
+<header class="wrap">
+  <div class="mast">
+    <a class="home" href="index.html" aria-current="page">Laksh Goyal</a>
+    <nav aria-label="Site">
+      <ul>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#studies">Studies</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="blog.html">Writing</a></li>
+        <li><a href="Laksh_Resume.pdf">Resume</a></li>
+        <li><a href="freelance.html">Freelance</a></li>
+      </ul>
+    </nav>
   </div>
 </header>
 
-<!-- ===== WHAT I DO ===== -->
-<section id="about" class="band wrap" data-bg1="#f6efe3" data-bg2="#efdfc9">
-  <div class="sec-label">01 · What I do</div>
-  <h2>Build it, measure it, ship it.</h2>
-  <div class="cap-grid">
-    <div class="cap">
-      <span class="cap-num">/01</span>
-      <h3>Agentic AI &amp; evals</h3>
-      <p>Orchestration frameworks, eval harnesses, and self-correcting agents, measured on accuracy, cost, and latency, not vibes.</p>
-    </div>
-    <div class="cap">
-      <span class="cap-num">/02</span>
-      <h3>ML systems</h3>
-      <p>Vision and audio pipelines for messy real-world data: medical imagery, bioacoustics, RF signals, geospatial rasters.</p>
-    </div>
-    <div class="cap">
-      <span class="cap-num">/03</span>
-      <h3>Systems &amp; infra</h3>
-      <p>Storage engines, transports, and gateways in C++ and Go, benchmarked head-to-head, with the losing axes published, not hidden.</p>
-    </div>
-  </div>
-</section>
+<main id="main" class="wrap">
 
-<!-- ===== EXPERIENCE ===== -->
-<section id="experience" class="band wrap" data-bg1="#f3e6d8" data-bg2="#e9d9d2">
-  <div class="sec-label">02 · Experience</div>
-  <h2>Where I've worked.</h2>
-  <div class="xp-list">
+  <section class="intro" aria-labelledby="intro-h">
+    <div>
+      <div class="kicker">CS at UC San Diego, class of 2028</div>
+      <h1 id="intro-h">I build backend and distributed systems, and the ML infrastructure under applied AI.</h1>
+      <p class="lede">I like owning a system end to end: the storage engine <strong>and</strong> the harness that SIGKILLs it eleven thousand times, the gateway <strong>and</strong> the load test that sets its limits, the model router <strong>and</strong> the cost accounting that decides whether it ships. House rule for everything here: <strong>publish the number, and publish what the number cost.</strong></p>
+      <p class="lede">Right now I split my week between Mountain View and San Diego: GTM/AI engineering at <strong>GMI Cloud</strong>, and ML systems research with Engineers for Exploration at the <strong>Qualcomm Institute</strong>. I'm open to internships and research roles in backend, distributed systems, and ML infrastructure.</p>
+      <div class="contact-row">
+        <a class="primary" href="mailto:lakshgoyal06@gmail.com">lakshgoyal06@gmail.com</a>
+        <a class="ext" href="https://github.com/lgoyal6" target="_blank" rel="noopener">GitHub</a>
+        <a class="ext" href="https://linkedin.com/in/lakshgoyal" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="Laksh_Resume.pdf">Resume (PDF)</a>
+      </div>
 
+      <div class="start">
+        <h2>If you read three things</h2>
+        <ol>
+          <li><div><a href="#strata">strata</a>, a storage engine in C++20. <span class="num">11,149 SIGKILLs · 2,223,252 acked writes · 0 lost</span></div></li>
+          <li><div><a href="#taut">taut and tautq</a>, a reliable-UDP transport and a coordinator-less job queue built on it. <span class="num">p99 ~6× below kernel TCP at 5% loss</span></div></li>
+          <li><div><a href="#cascade">A model cascade at GMI Cloud</a> that the company published. <span class="num">94/100 tasks · 47.1% cheaper than Fable 5</span></div></li>
+        </ol>
+      </div>
+    </div>
+    <figure>
+      <img class="portrait" src="IMG_8054.jpg" width="486" height="657" alt="Portrait of Laksh Goyal">
+      <figcaption class="portrait-cap">Mumbai → San Diego → Mountain View</figcaption>
+    </figure>
+  </section>
+
+  <!-- ===== SELECTED WORK ===== -->
+  <section class="section" id="work" aria-labelledby="work-h">
+    <div class="sec-head">
+      <div class="kicker">01 · Selected work</div>
+      <div>
+        <h2 id="work-h">Seven builds, each with its losing axis.</h2>
+        <p>Every number traces to a committed benchmark, test run, or published result. Five of these run in your browser on the repository's own code, compiled to WebAssembly, so you can move the input and watch the result move.</p>
+      </div>
+    </div>
+
+    <h3 class="track">Storage and distributed systems</h3>
+
+    <article class="case" id="strata" aria-labelledby="strata-h">
+      <div class="case-meta">
+        <div class="where">Solo · 2026</div>
+        <div class="stack">C++20 · libFuzzer · ASan/UBSan · TSan · YCSB</div>
+        <div class="links">
+          <a class="btn run" href="https://lgoyal6.github.io/strata/" target="_blank" rel="noopener">Run it <span aria-hidden="true">↗</span></a>
+          <a class="btn" href="https://github.com/lgoyal6/strata" target="_blank" rel="noopener">Code <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+      <div>
+        <h3 id="strata-h">strata</h3>
+        <p class="sub">A leveled LSM-tree key-value store, written from scratch, whose durability claim is tested by killing it.</p>
+        <dl>
+          <div><dt>Built</dt><dd>Checksummed WAL, lock-free-reader skiplist memtables, prefix-compressed SSTables with Bloom filters behind a sharded block cache, leveled compaction with write backpressure, MVCC snapshots, and group commit.</dd></div>
+          <div><dt>Decision</dt><dd>Group commit: one leader appends and fsyncs the WAL for the whole waiting group, and readers only see a batch after it is applied. That is where the synchronous-commit win comes from.</dd></div>
+          <div class="row-result"><dt>Result</dt><dd class="result">12,000-iteration crash matrix: 11,149 real SIGKILLs with writes torn at random offsets, 2,223,252 acknowledged writes, zero lost. CI gates 10,200 kill points per push. 50× RocksDB on synchronous commits (1,015 vs 20 ops/s).</dd></div>
+          <div><dt>Loses</dt><dd class="loses">0.65 to 0.79× RocksDB on 4-thread point reads (three global mutexes per get) and 0.43× on single-threaded scans. Both root causes are written up in the repo.</dd></div>
+        </dl>
+      </div>
+    </article>
+
+    <article class="case" id="taut" aria-labelledby="taut-h">
+      <div class="case-meta">
+        <div class="where">Solo · 2026</div>
+        <div class="stack">C++20 · epoll · netem · libFuzzer</div>
+        <div class="links">
+          <a class="btn run" href="https://lgoyal6.github.io/taut/" target="_blank" rel="noopener">Run it <span aria-hidden="true">↗</span></a>
+          <a class="btn" href="https://github.com/lgoyal6/taut" target="_blank" rel="noopener">Code <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+      <div>
+        <h3 id="taut-h">taut</h3>
+        <p class="sub">A reliable-UDP transport with SWIM membership, for small messages on lossy links where kernel TCP's tail latency hurts.</p>
+        <dl>
+          <div><dt>Built</dt><dd>Sliding-window ARQ with a cumulative ack plus 64-bit SACK bitmap, Jacobson/Karn adaptive RTO with a 25 ms floor, per-message reliability classes, flow control, and SWIM failure detection on a single-threaded epoll loop.</dd></div>
+          <div><dt>Decision</dt><dd>A deterministic seeded simulator, so any failure replays from one <code>--seed</code>, plus a libFuzzer codec harness under ASan/UBSan and a netem soak of 20/20 byte-identical 10 MB transfers at 5% loss.</dd></div>
+          <div class="row-result"><dt>Result</dt><dd class="result">p99 RTT 62 to 92 ms vs 409 ms for kernel TCP at 5% loss (~6×); ~280 ms vs 3,363 ms at 20% loss (~12×).</dd></div>
+          <div><dt>Loses</dt><dd class="loses">Kernel TCP wins clean-link bulk throughput by ~27× (235 vs 8.7 Mbit/s). This is a transport for telemetry, not file transfer.</dd></div>
+        </dl>
+      </div>
+    </article>
+
+    <article class="case" id="tautq" aria-labelledby="tautq-h">
+      <div class="case-meta">
+        <div class="where">Solo · 2026 · built on taut</div>
+        <div class="stack">C++20 · WAL replication · chaos testing</div>
+        <div class="links">
+          <a class="btn run" href="https://lgoyal6.github.io/tautq/" target="_blank" rel="noopener">Run it <span aria-hidden="true">↗</span></a>
+          <a class="btn" href="https://github.com/lgoyal6/tautq" target="_blank" rel="noopener">Code <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+      <div>
+        <h3 id="tautq-h">tautq</h3>
+        <p class="sub">Distributed webhook delivery with no ZooKeeper and no etcd: the nodes coordinate among themselves over taut.</p>
+        <dl>
+          <div><dt>Built</dt><dd>A write-ahead log replicated by majority commit under epoch-fenced leases, with SWIM-driven failover. A partitioned owner's writes are rejected on heal, and failover inherits only majority-committed leases.</dd></div>
+          <div><dt>Found</dt><dd>Two membership-protocol gaps that taut's unit tests could not reach, including a SWIM partition-heal bug. Both are fixed upstream in taut.</dd></div>
+          <div class="row-result"><dt>Result</dt><dd class="result">800 jobs/s sustained (16,000/16,000 completed), p99 107 ms at the knee. 100% completion at 0 to 20% injected UDP loss. A chaos gate runs node kill, partition, packet loss, and a corrupted log on every PR: zero lost, zero double-completed.</dd></div>
+          <div><dt>Loses</dt><dd class="loses">The knee is fsync-bound, not network-bound. The benchmark is a recorded five-node run, not a multi-host deployment.</dd></div>
+        </dl>
+      </div>
+    </article>
+
+    <article class="case" id="tollgate" aria-labelledby="tollgate-h">
+      <div class="case-meta">
+        <div class="where">Solo · 2026</div>
+        <div class="stack">Go · Redis · Postgres · Kubernetes · Terraform · OpenTelemetry · k6</div>
+        <div class="links">
+          <a class="btn run" href="https://lgoyal6.github.io/tollgate/" target="_blank" rel="noopener">Run it <span aria-hidden="true">↗</span></a>
+          <a class="btn" href="https://github.com/lgoyal6/tollgate" target="_blank" rel="noopener">Code <span aria-hidden="true">↗</span></a>
+          <a class="btn" href="blog/deploy-only-bugs.html">Write-up</a>
+        </div>
+      </div>
+      <div>
+        <h3 id="tollgate-h">Tollgate</h3>
+        <p class="sub">A multi-tenant API gateway that lets a team share one LLM provider key safely: personal revocable keys, and the real credential injected server-side.</p>
+        <dl>
+          <div><dt>Built</dt><dd>Rate limits as atomic Redis Lua scripts (token bucket or sliding-window log, per tenant), tenant and key changes hot-reloaded from Postgres via LISTEN/NOTIFY in about a second, per-upstream circuit breakers, and OTel traces. Deploys are tag-triggered to EKS over GitHub OIDC, with no long-lived AWS credentials.</dd></div>
+          <div><dt>Decision</dt><dd>One global limit in Redis instead of per-replica counters, because a per-replica limit quietly multiplies by the replica count the moment you scale out.</dd></div>
+          <div class="row-result"><dt>Result</dt><dd class="result">A 300 req/s global limit held at 9,000 admissions over 30 s across 3 replicas, where a per-replica limiter admitted 26,942 (3×). 2,000 req/s with zero errors and p99 46 ms under k6, against a mocked upstream.</dd></div>
+          <div><dt>Costs</dt><dd class="loses">Going global costs a median 0.36 ms of p50 latency over per-replica limiting, measured in-cluster on EKS over 12 paired runs.</dd></div>
+        </dl>
+      </div>
+    </article>
+
+    <h3 class="track">ML infrastructure and data</h3>
+
+    <article class="case" id="cascade" aria-labelledby="cascade-h">
+      <div class="case-meta">
+        <div class="where">GMI Cloud · 2026</div>
+        <div class="stack">Python · EvalPlus · cost accounting · load testing</div>
+        <div class="links">
+          <a class="btn run" href="https://x.com/gmi_cloud/status/2077124979397947824" target="_blank" rel="noopener">Published result <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+      <div>
+        <h3 id="cascade-h">Verify-then-escalate model cascade</h3>
+        <p class="sub">Is one frontier model the cheapest way to solve coding tasks? I built the harness to find out, and GMI Cloud published the result.</p>
+        <dl>
+          <div><dt>Built</dt><dd>A two-stage router, GLM 5.2 first and Opus 4.8 when the checker rejects, over 100 frozen EvalPlus tasks (50 HumanEval+, 50 MBPP+), with per-configuration token and dollar accounting.</dd></div>
+          <div><dt>Decision</dt><dd>Rank configurations by dollars per solved task instead of raw pass rate. The gain came from complementary failure modes, not from either model being uniformly better.</dd></div>
+          <div class="row-result"><dt>Result</dt><dd class="result">94/100 solved vs 90 for Opus 4.8 and 89 for Fable 5, at $0.4251 vs $0.8033 (47.1% cheaper than Fable 5). A load test across 8 configurations and 500+ requests set the production concurrency cap at 16 users.</dd></div>
+          <div><dt>Costs</dt><dd class="loses">85.4% more tokens than a single model. It is a dollar-efficiency win, not a token-efficiency one.</dd></div>
+        </dl>
+      </div>
+    </article>
+
+    <article class="case" id="mint" aria-labelledby="mint-h">
+      <div class="case-meta">
+        <div class="where">GMI Cloud · 2026 · internal</div>
+        <div class="stack">FastAPI · PostgreSQL · Redis · React · LLM classification</div>
+      </div>
+      <div>
+        <h3 id="mint-h">Mint</h3>
+        <p class="sub">An internal platform that turns event guest lists into evidence-backed sales leads a person can review.</p>
+        <dl>
+          <div><dt>Built</dt><dd>Identity resolution across Apollo and Exa evidence chains, LLM ICP tiering behind human-review gates with an audit trail, and a 16-tool conversational agent over the lead database.</dd></div>
+          <div><dt>Decision</dt><dd>Resolve identity before any paid enrichment call, dedupe company requests, and cache provider results, so the expensive APIs only see records that need them. Ingestion retries per row from idempotent checkpoints.</dd></div>
+          <div class="row-result"><dt>Result</dt><dd class="result">Lead-research time cut 90% against the manual workflow. Apollo and Exa spend cut 75% against enriching every record. 25 injected ingestion failures recovered with no loss or duplication.</dd></div>
+        </dl>
+      </div>
+    </article>
+
+    <article class="case" id="tickvault" aria-labelledby="tickvault-h">
+      <div class="case-meta">
+        <div class="where">Solo · 2026</div>
+        <div class="stack">Rust · WebAssembly · Parquet · Arrow</div>
+        <div class="links">
+          <a class="btn run" href="https://lgoyal6.github.io/tickvault/" target="_blank" rel="noopener">Run it <span aria-hidden="true">↗</span></a>
+          <a class="btn" href="https://github.com/lgoyal6/tickvault" target="_blank" rel="noopener">Code <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+      <div>
+        <h3 id="tickvault-h">tickvault</h3>
+        <p class="sub">Free crypto order book history is top-of-book, resampled, or silently incomplete. This records full depth and publishes its own gaps.</p>
+        <dl>
+          <div><dt>Built</dt><dd>A recorder for six venues writing to Parquet, with book reconstruction to any instant and a WebAssembly viewer. Validation is per venue (counters, CRC32, chained IDs, update-ID ranges), because each exchange offers a different proof.</dd></div>
+          <div><dt>Decision</dt><dd>Publish coverage per venue per interval, so a consumer excludes a bad window up front instead of discovering it inside a backtest.</dd></div>
+          <div class="row-result"><dt>Result</dt><dd class="result">2.7M rows/s end to end. 100% clean coverage on 5 of 6 feeds. One venue went from 0% to 100% verifiable by recording it order by order: 3,999 consecutive events chained exactly.</dd></div>
+          <div><dt>Loses</dt><dd class="loses">The sixth feed is published as 0% verified rather than rounded up.</dd></div>
+        </dl>
+      </div>
+    </article>
+  </section>
+
+  <!-- ===== STUDIES ===== -->
+  <section class="section" id="studies" aria-labelledby="studies-h">
+    <div class="sec-head">
+      <div class="kicker">02 · Studies you can run</div>
+      <div>
+        <h2 id="studies-h">Claims I couldn't find a number for, so I measured them.</h2>
+        <p>Each page runs the repository's own code in your browser on the committed data, so you can move the input and watch the finding hold or break.</p>
+      </div>
+    </div>
+    <ul class="studies">
+      <li><span class="name">decode-anatomy</span><p>"Decode is memory-bound" is the most repeated claim in LLM inference. On an A6000 at batch 1 it is neither memory-bound nor compute-bound: 38.3% of the step is not kernel work at all, and it vanishes with batching.</p><a class="go" href="https://lgoyal6.github.io/decode-anatomy/" target="_blank" rel="noopener">Drag the batch size ↗</a></li>
+      <li><span class="name">ddp-crossover</span><p>On two T4s over PCIe the second GPU pays on small models and stops paying on large ones, which is the opposite of the usual advice.</p><a class="go" href="https://lgoyal6.github.io/ddp-crossover/" target="_blank" rel="noopener">Drag the model size ↗</a></li>
+      <li><span class="name">noisy-rag-bench</span><p>At 5% OCR error, retrieval recall is exactly what it was on clean documents while half the answers have already become unrecoverable. Recall is the metric that will not warn you.</p><a class="go" href="https://lgoyal6.github.io/noisy-rag-bench/" target="_blank" rel="noopener">Drag the noise ↗</a></li>
+      <li><span class="name">open-refusal-steering</span><p>An open reproduction of feature-level activation steering. At the strength that reaches a 100% response rate every behavioural check passes and the model is emitting token soup. Only perplexity catches it.</p><a class="go" href="https://lgoyal6.github.io/open-refusal-steering/" target="_blank" rel="noopener">Sweep the strength ↗</a></li>
+      <li><span class="name">memharness</span><p>A memory system reads a conversation once and answers cheaply forever. The reading is an LLM pass over every turn, and it cost 12.7x what all twenty questions cost combined.</p><a class="go" href="https://lgoyal6.github.io/memharness/" target="_blank" rel="noopener">Find the payback point ↗</a></li>
+      <li><span class="name">actiongate</span><p>Writing every extracted action item puts 18 wrong rows into the CRM out of 40. Gating at 0.65 cuts that to 2 and still auto-commits 19 of the 22 genuine ones.</p><a class="go" href="https://lgoyal6.github.io/actiongate/" target="_blank" rel="noopener">Paste a transcript ↗</a></li>
+      <li><span class="name">icp-benchmark</span><p>120 real YC companies, hand-labeled on three axes. Enriching every lead is 25% precision; a rules filter gets 93.8% and misses half the real ones. Both numbers matter and neither is published anywhere.</p><a class="go" href="https://lgoyal6.github.io/icp-benchmark/" target="_blank" rel="noopener">Pick a filter ↗</a></li>
+      <li><span class="name">promptgate</span><p>A published production manager prompt states its reject contract four times and contradicts itself once. A parser built from the majority form reads that reject as silence, and the gate treats silence as approval.</p><a class="go" href="https://lgoyal6.github.io/promptgate/" target="_blank" rel="noopener">Break the parser ↗</a></li>
+      <li><span class="name">pms-race</span><p>A computer-use agent driving a booking screen has no transaction. Sixteen agents, one room: the legacy path books it 93 times, and the obvious fix removes that entirely while doing nothing for lost updates.</p><a class="go" href="https://lgoyal6.github.io/pms-race/" target="_blank" rel="noopener">Race 16 agents ↗</a></li>
+      <li><span class="name">flightrisk</span><p>Deposit-flight risk is U-shaped. A bank that just took a large inflow is about as likely to have a drawdown next quarter as one that just lost deposits. Every US bank, 2015 to 2026.</p><a class="go" href="https://lgoyal6.github.io/flightrisk/" target="_blank" rel="noopener">Query a bank ↗</a></li>
+      <li><span class="name">apparatus-comps</span><p>A comparable-sales estimator for fire apparatus, back-tested against real sales. Half the estimates are off by more than 36%, and covering nine cases in ten takes a range nearly seven times wide.</p><a class="go" href="https://lgoyal6.github.io/apparatus-comps/" target="_blank" rel="noopener">Price a truck ↗</a></li>
+    </ul>
+  </section>
+
+  <!-- ===== EXPERIENCE ===== -->
+  <section class="section" id="experience" aria-labelledby="xp-h">
+    <div class="sec-head">
+      <div class="kicker">03 · Experience</div>
+      <div><h2 id="xp-h">Where I've worked.</h2></div>
+    </div>
     <div class="xp">
-      <div class="xp-head">
-        <h3>GMI Cloud · <span class="role">GTM/AI Engineer Intern</span></h3>
-        <span class="xp-date">Jun 2026 – Present · Mountain View, CA</span>
+      <div class="when">Jun 2026 to present<br>Mountain View, CA</div>
+      <div>
+        <h3>GMI Cloud <span class="role">· GTM/AI Engineer Intern</span></h3>
+        <p>Built Mint, an internal lead-intelligence platform that turns event guest lists into evidence-backed, reviewable sales leads, and designed the verify-then-escalate model cascade benchmark GMI Cloud published.</p>
       </div>
-      <p>Built Mint, an internal lead-intelligence platform that turns event guest lists into evidence-backed, reviewable sales leads, and designed the verify-then-escalate model cascade benchmark GMI Cloud published.</p>
     </div>
-
     <div class="xp">
-      <div class="xp-head">
-        <h3>Inovasity · <span class="role">Applied Machine Learning Intern</span></h3>
-        <span class="xp-date">Mar 2026 – Aug 2026 · San Diego, CA</span>
+      <div class="when">Mar 2026 to Aug 2026<br>San Diego, CA</div>
+      <div>
+        <h3>Inovasity <span class="role">· Applied Machine Learning Intern</span></h3>
+        <p>Worked across the ML core, LLM agent layer, and backend of a medical wound-imaging pipeline: MedSAM2 segmentation, clinical-documentation agents, and the persistence and deploy path behind a 3D viewer.</p>
       </div>
-      <p>Worked across the ML core, LLM agent layer, and backend of a medical wound-imaging pipeline: MedSAM2 segmentation, clinical-documentation agents, and the persistence and deploy path behind a 3D viewer.</p>
     </div>
-
     <div class="xp">
-      <div class="xp-head">
-        <h3>Engineers for Exploration, Qualcomm Institute · <span class="role">Software Engineer, ML Systems</span></h3>
-        <span class="xp-date">Jan 2026 – Present · San Diego, CA</span>
+      <div class="when">Jan 2026 to present<br>San Diego, CA</div>
+      <div>
+        <h3>Engineers for Exploration, Qualcomm Institute <span class="role">· Software Engineer, ML Systems</span></h3>
+        <p>Build ingestion and indexing pipelines for multi-terabyte bioacoustic datasets and study focal-to-soundscape domain shift for bird-call classifiers.</p>
+        <p class="prev">Previously Research Engineer, Computer Vision (Oct 2025 to Jan 2026): boundary-aware evaluation for mangrove canopy segmentation, exposing errors standard IoU masked.</p>
       </div>
-      <p>Build ingestion and indexing pipelines for multi-terabyte bioacoustic datasets and study focal-to-soundscape domain shift for bird-call classifiers.</p>
-      <p class="xp-prev"><strong>Previously: Research Engineer, Computer Vision</strong> (Oct 2025 – Jan 2026): boundary-aware evaluation for mangrove canopy segmentation, exposing errors standard IoU masked.</p>
     </div>
-
     <div class="xp">
-      <div class="xp-head">
-        <h3>Xyntopia (Taskyon) · <span class="role">LLM Systems Engineer Intern</span></h3>
-        <span class="xp-date">Jun 2025 – Oct 2025 · San Diego, CA</span>
-      </div>
-      <p>Built an LLM task-orchestration framework powering a VS Code chat extension, plus an end-to-end-encrypted proxy routing LLM and third-party API requests with server-side credit accounting.</p>
-    </div>
-
-  </div>
-</section>
-
-<!-- ===== PROJECTS ===== -->
-<section id="work" class="band wrap" data-bg1="#e5d5d5" data-bg2="#d4c7cf">
-  <div class="sec-label">03 · Projects</div>
-  <h2>Selected projects.</h2>
-  <p class="sec-intro">Every number below traces to a committed benchmark, test run, or published result, losing axes included. Seventeen of these run in your browser: not a recording of a benchmark, the repository’s own code compiled to WebAssembly or executed on the committed data, so you can move the input and watch the result move with it.</p>
-  <div class="pgrid">
-
-    <div class="pcard">
-      <div class="pcard-top"><div class="pcard-num">01</div><span class="live-pill">live demo</span></div>
-      <h3>strata · LSM-Tree Storage Engine</h3>
-      <p>A leveled LSM-tree key-value store from scratch: checksummed WAL, MVCC snapshots, Bloom-filtered SSTables, group commit. Durability verified by a harness that tears writes and SIGKILLs the engine mid-flight; the same matrix gates every push in CI.</p>
-      <div class="stat">11,149 SIGKILLs · 2.22M acked writes, 0 lost · 50× RocksDB on sync commits</div>
-      <div class="tags"><span class="tag">C++20</span><span class="tag">libFuzzer</span><span class="tag">TSan</span><span class="tag">YCSB</span></div>
-      <div class="acts">
-        <a class="act run" href="https://lgoyal6.github.io/strata/" target="_blank" rel="noopener">Run it ↗</a>
-        <a class="act repo" href="https://github.com/lgoyal6/strata" target="_blank" rel="noopener">Repo</a>
+      <div class="when">Jun 2025 to Oct 2025<br>San Diego, CA</div>
+      <div>
+        <h3>Xyntopia (Taskyon) <span class="role">· LLM Systems Engineer Intern</span></h3>
+        <p>Built an LLM task-orchestration framework powering a VS Code chat extension, plus an end-to-end-encrypted proxy routing LLM and third-party API requests with server-side credit accounting.</p>
       </div>
     </div>
+  </section>
 
-    <div class="pcard">
-      <div class="pcard-top"><div class="pcard-num">02</div><span class="live-pill">live demo</span></div>
-      <h3>taut · Reliable-UDP Transport + SWIM</h3>
-      <p>Transport library for small messages on lossy links: SACK-based ARQ, adaptive RTO, SWIM failure detection on a lock-free epoll loop. Trades bulk throughput for tail latency, and publishes the losing axis (kernel TCP wins clean-link throughput ~27×).</p>
-      <div class="stat">p99 ~6× below kernel TCP at 5% loss · ~12× at 20% loss</div>
-      <div class="tags"><span class="tag">C++20</span><span class="tag">epoll</span><span class="tag">netem</span><span class="tag">libFuzzer</span></div>
-      <div class="acts">
-        <a class="act run" href="https://lgoyal6.github.io/taut/" target="_blank" rel="noopener">Run it ↗</a>
-        <a class="act repo" href="https://github.com/lgoyal6/taut" target="_blank" rel="noopener">Repo</a>
+  <!-- ===== MORE BUILDS ===== -->
+  <section class="section" id="more" aria-labelledby="more-h">
+    <div class="sec-head">
+      <div class="kicker">04 · More builds</div>
+      <div>
+        <h2 id="more-h">Agents, ML, and hackathon builds.</h2>
+        <p>Builds marked <span class="tag">team</span> were made with other people; the repository history shows who wrote what. <a href="projects.html">All 33 projects in one list →</a></p>
       </div>
     </div>
+    <ul class="builds">
+      <li><a class="name ext" href="https://github.com/lgoyal6/amac" target="_blank" rel="noopener">amac</a><p>A control plane for the AI coding agents on my Mac: every session and automation on one page, a work queue with fencing, reachable from my phone.</p><div class="num">200 SIGKILLs · 8,000 acked events · 0 lost</div></li>
+      <li><a class="name ext" href="https://github.com/lgoyal6/winnow" target="_blank" rel="noopener">Winnow</a><p>A quantized KV cache with a fused Triton kernel, on top of a voice-first prompt-compression hackathon build.</p><div class="num">34× faster dequantization for 0.47 points of LongBench-E</div></li>
+      <li><a class="name ext" href="https://lgoyal6.github.io/agentbench/" target="_blank" rel="noopener">AgentBench</a><p>Eval framework for LangGraph agents: cost-adjusted accuracy, async-safe usage attribution, Ray Tune HPO.</p><div class="num">0.964 acc · n=55 · $0.042 total</div></li>
+      <li><a class="name ext" href="https://github.com/lgoyal6/argus" target="_blank" rel="noopener">Argus</a><p>Agentic training monitor: SPC detection across four failure modes, with bounded tool calls to self-correct runs.</p><div class="num">49% of anomalies auto-resolved</div></li>
+      <li><a class="name ext" href="https://github.com/lgoyal6/pylon" target="_blank" rel="noopener">Pylon</a><span class="tag">team</span><p>Counter-UAS RF sensor mesh: anomaly-based detection over dual SDR backends, so it flags novel emitters a signature library cannot know about, plus a UDP gossip mesh and a 3D dashboard.</p><div class="num">mesh converges in ~2 s</div></li>
+      <li><a class="name ext" href="https://github.com/lgoyal6/vigil" target="_blank" rel="noopener">Vigil</a><span class="tag">team</span><p>Autonomous AI on-call engineer that detects, diagnoses, and remediates incidents while holding zero standing credentials.</p><div class="num">single-use, scope-bound, 60 s-TTL grants</div></li>
+      <li><a class="name ext" href="https://github.com/lgoyal6/Locus" target="_blank" rel="noopener">LOCUS</a><span class="tag">team</span><p>Voice-driven search-and-rescue command center: LLM agents profile the missing person, and a Monte Carlo engine turns hypotheses into a live probability heatmap.</p><div class="num">150 walks/hypothesis · 1.5 s tick · zero LLM calls in the loop</div></li>
+      <li><a class="name ext" href="https://cse110-sp26-group15.pages.dev/" target="_blank" rel="noopener">SitRep</a><span class="tag">team</span><p>Led an 11-engineer team through a 10-week Agile SDLC to ship a Scrum/Kanban/XP app on Cloudflare.</p><div class="num">11 engineers · 5 sprints</div></li>
+    </ul>
+  </section>
 
-    <div class="pcard">
-      <div class="pcard-top"><div class="pcard-num">03</div><span class="live-pill">live demo</span></div>
-      <h3>tautq · Distributed Webhook Delivery</h3>
-      <p>Built on taut: a coordinator-less delivery service replicating a write-ahead log by majority commit under epoch-fenced leases, with no ZooKeeper and no etcd. Building it surfaced two SWIM protocol bugs, fixed upstream. A chaos suite gates every PR.</p>
-      <div class="stat">800 jobs/s · p99 107ms · 100% completion at 0–20% UDP loss</div>
-      <div class="tags"><span class="tag">C++20</span><span class="tag">WAL replication</span><span class="tag">chaos testing</span></div>
-      <div class="acts">
-        <a class="act run" href="https://lgoyal6.github.io/tautq/" target="_blank" rel="noopener">Run it ↗</a>
-        <a class="act repo" href="https://github.com/lgoyal6/tautq" target="_blank" rel="noopener">Repo</a>
+  <!-- ===== WRITING + TOOLS ===== -->
+  <section class="section" id="writing" aria-labelledby="writing-h">
+    <div class="sec-head">
+      <div class="kicker">05 · Writing</div>
+      <div>
+        <h2 id="writing-h">Notes from building and measuring.</h2>
+        <p><a href="blog/deploy-only-bugs.html">The bugs that only exist after you deploy</a>: Tollgate had a full test suite, a green CI matrix, and a one-click deploy button that did not work. Six things were broken, and no test could have caught them. <a href="blog.html">All writing →</a></p>
       </div>
     </div>
-
-    <div class="pcard">
-      <div class="pcard-top"><div class="pcard-num">04</div><span class="live-pill">live demo</span></div>
-      <h3>Tollgate · Multi-Tenant LLM API Gateway</h3>
-      <p>Lets a team share one LLM provider key safely: personal revocable keys with rate budgets, the real credential injected server-side. Atomic Redis rate limits hold a global ceiling across replicas where per-replica limiters admit 3× the limit.</p>
-      <div class="stat">2,000 req/s, 0 errors, p99 46ms · 300 req/s global limit held across 3 replicas</div>
-      <div class="tags"><span class="tag">Go</span><span class="tag">Redis</span><span class="tag">Kubernetes</span><span class="tag">Terraform</span><span class="tag">OTel</span></div>
-      <div class="acts">
-        <a class="act run" href="https://lgoyal6.github.io/tollgate/" target="_blank" rel="noopener">Run it ↗</a>
-        <a class="act repo" href="https://github.com/lgoyal6/tollgate" target="_blank" rel="noopener">Repo</a>
-      </div>
+    <div class="sec-head" style="margin-bottom:0">
+      <div class="kicker">Toolbox</div>
+      <dl class="tools">
+        <div><dt>Languages</dt><dd>C++20, Go, Rust, Python, TypeScript, SQL, Java</dd></div>
+        <div><dt>Systems and infra</dt><dd>Docker, Kubernetes, Terraform, AWS, Redis, PostgreSQL, OpenTelemetry, GitHub Actions, k6, libFuzzer, ASan/TSan</dd></div>
+        <div><dt>ML</dt><dd>PyTorch, Triton, vLLM, Hugging Face, scikit-learn, LangGraph, Ray Tune, Modal</dd></div>
+        <div><dt>Web and backend</dt><dd>FastAPI, Node, React, Next.js, Supabase, Cloudflare, Vercel</dd></div>
+      </dl>
     </div>
+  </section>
 
-    <div class="pcard">
-      <div class="pcard-top"><div class="pcard-num">05</div><span class="live-pill">live demo</span></div>
-      <h3>tickvault · Full-Depth Order Book Archive</h3>
-      <p>There is no free source of full-depth crypto order book history you can trust: everything free is top-of-book, resampled, or carries undocumented gaps. This records six venues to Parquet and publishes its own coverage, so a window you can't trust says so instead of interpolating.</p>
-      <div class="stat">6 venues · reconstruction to any instant · every gap published, not filled</div>
-      <div class="tags"><span class="tag">Rust</span><span class="tag">WebAssembly</span><span class="tag">Parquet</span><span class="tag">Arrow</span></div>
-      <div class="acts">
-        <a class="act run" href="https://lgoyal6.github.io/tickvault/" target="_blank" rel="noopener">Run it ↗</a>
-        <a class="act repo" href="https://github.com/lgoyal6/tickvault" target="_blank" rel="noopener">Repo</a>
-      </div>
-    </div>
+</main>
 
-    <a class="pcard" href="https://x.com/gmi_cloud/status/2077124979397947824" target="_blank" rel="noopener">
-      <div class="pcard-num">06</div>
-      <h3>Verify-then-Escalate Model Cascade</h3>
-      <p>Two-stage routing (Opus 4.8 primary, GLM 5.2 FP8 rescue on verifier failure) over 100 frozen EvalPlus tasks, ranked by $/solved-task. Beat every single-model baseline; the gain traced to complementary failure modes, not a uniformly better model.</p>
-      <div class="stat">94/100 vs best single model's 90 · 47.1% cheaper · published by GMI Cloud</div>
-      <div class="tags"><span class="tag">Python</span><span class="tag">EvalPlus</span><span class="tag">cost accounting</span></div>
-      <div class="go">published result ↗</div>
-    </a>
-
-    <div class="pcard">
-      <div class="pcard-num">07</div>
-      <h3>Mint · Lead Intelligence Platform</h3>
-      <p>End-to-end lead intelligence at GMI Cloud: identity resolution across Apollo and Exa evidence chains, LLM ICP tiering with human-review gates and audit trails, and a 16-tool conversational agent over the lead database.</p>
-      <div class="stat">18K LOC · 45 endpoints · 251 tests · 51 qualified leads from a 367-person triage set</div>
-      <div class="tags"><span class="tag">FastAPI</span><span class="tag">PostgreSQL</span><span class="tag">React</span><span class="tag">LLM classification</span></div>
-      <div class="go dim">internal @ GMI Cloud · demo coming soon</div>
-    </div>
-
-    <a class="pcard" href="https://github.com/TC960/winnow" target="_blank" rel="noopener">
-      <div class="pcard-num">08</div>
-      <h3>Winnow · LLM Prompt Compression</h3>
-      <p>Voice-first compression on two orthogonal axes: token-space (LLMLingua + self-implemented AttentionRAG behind an order-preserving merge) and model-space (~4-bit TurboQuant KV cache + LCLM latent compression), so the savings multiply.</p>
-      <div class="stat">~60× KV cache reduction · F1 0.437 vs 0.376 fp16 baseline on LongBench</div>
-      <div class="tags"><span class="tag">PyTorch</span><span class="tag">Modal</span><span class="tag">Deepgram</span></div>
-      <div class="go">repo ↗</div>
-    </a>
-
-    <a class="pcard" href="https://github.com/lgoyal6/pylon" target="_blank" rel="noopener">
-      <div class="pcard-num">09</div>
-      <h3>Pylon · Counter-UAS Sensor Mesh</h3>
-      <p>Built at the Bow Capital Defense Hackathon (UCSD). Anomaly-based RF detection over dual SDR backends, a UDP gossip mesh, and a 3D operator dashboard in Next.js + deck.gl.</p>
-      <div class="stat">Catches novel emitters a signature-library baseline misses 100% of · mesh converges ~2s</div>
-      <div class="tags"><span class="tag">Python</span><span class="tag">scikit-learn</span><span class="tag">SDR</span><span class="tag">deck.gl</span></div>
-      <div class="go">repo ↗</div>
-    </a>
-
-    <a class="pcard" href="https://github.com/lgoyal6/vigil" target="_blank" rel="noopener">
-      <div class="pcard-num">10</div>
-      <h3>Vigil · Autonomous AI On-Call Engineer</h3>
-      <p>Built at the Loop Engineering Hackathon: detects, diagnoses, and remediates production incidents end-to-end while holding zero standing credentials: single-use, scope-bound grants behind a Pomerium identity-aware proxy, with policy-denied escalation and a full audit trail.</p>
-      <div class="stat">5 services · zero standing creds · single-use 60s-TTL grants</div>
-      <div class="tags"><span class="tag">TypeScript</span><span class="tag">Pomerium</span><span class="tag">Docker</span><span class="tag">Akash</span></div>
-      <div class="go">repo ↗</div>
-    </a>
-
-    <a class="pcard" href="https://github.com/lgoyal6/Locus" target="_blank" rel="noopener">
-      <div class="pcard-num">11</div>
-      <h3>LOCUS · Voice-Driven SAR Command Center</h3>
-      <p>Search-and-rescue ops: LLM agents profile the missing person, a Monte Carlo engine turns hypotheses into a live probability heatmap and team assignments, and the coordinator drives it all hands-free by voice.</p>
-      <div class="stat">150 walks/hypothesis × 4 ISRID profiles · 1.5s sim tick with zero LLM calls in-loop</div>
-      <div class="tags"><span class="tag">TypeScript</span><span class="tag">Convex</span><span class="tag">Mapbox GL</span><span class="tag">Web Speech</span></div>
-      <div class="go">repo ↗</div>
-    </a>
-
+<footer class="wrap">
+  <div class="site-foot">
+    <ul>
+      <li><a href="mailto:lakshgoyal06@gmail.com">Email</a></li>
+      <li><a href="https://github.com/lgoyal6" target="_blank" rel="noopener">GitHub</a></li>
+      <li><a href="https://linkedin.com/in/lakshgoyal" target="_blank" rel="noopener">LinkedIn</a></li>
+      <li><a href="https://x.com/Lgoyal6" target="_blank" rel="noopener">X</a></li>
+      <li><a href="https://devpost.com/Spockerson" target="_blank" rel="noopener">Devpost</a></li>
+      <li><a href="freelance.html">Freelance</a></li>
+    </ul>
+    <div class="elsewhere">Off the keyboard: poker, 8-ball, F1, Lego, soccer, sci-fi · <a href="https://letterboxd.com/spockur/" target="_blank" rel="noopener">letterboxd</a> · <a href="https://open.spotify.com/user/317m7wxlsb353dh5t7kn5wuds4ri" target="_blank" rel="noopener">spotify</a> · <a href="https://instagram.com/lakshgoyall" target="_blank" rel="noopener">instagram</a></div>
+    <small>© 2026 Laksh Goyal</small>
   </div>
-
-  <div class="sub-head">Studies you can run.</div>
-  <p class="sub-note">Each of these started as a claim I could not find a number for, so I built the smallest
-  thing that would settle it. The page runs the repository's own code in your browser, on the committed
-  data, so you can move the input and watch the finding hold or break. Eleven of them, all reproducible.</p>
-  <div class="sgrid">
-    <a class="scard" href="https://lgoyal6.github.io/decode-anatomy/" target="_blank" rel="noopener">
-      <h3>decode-anatomy</h3>
-      <p>&quot;Decode is memory-bound&quot; is the most repeated claim in LLM inference. On an A6000 at batch 1 it is neither memory-bound nor compute-bound: 38.3% of the step is not kernel work at all, and it vanishes with batching.</p>
-      <div class="verb">Drag the batch size ↗</div>
-    </a>
-    <a class="scard" href="https://lgoyal6.github.io/ddp-crossover/" target="_blank" rel="noopener">
-      <h3>ddp-crossover</h3>
-      <p>On two T4s over PCIe the second GPU pays on small models and stops paying on large ones, which is the opposite of the usual advice.</p>
-      <div class="verb">Drag the model size ↗</div>
-    </a>
-    <a class="scard" href="https://lgoyal6.github.io/noisy-rag-bench/" target="_blank" rel="noopener">
-      <h3>noisy-rag-bench</h3>
-      <p>At 5% OCR error, retrieval recall is exactly what it was on clean documents while half the answers have already become unrecoverable. Recall is the metric that will not warn you.</p>
-      <div class="verb">Drag the noise ↗</div>
-    </a>
-    <a class="scard" href="https://lgoyal6.github.io/open-refusal-steering/" target="_blank" rel="noopener">
-      <h3>open-refusal-steering</h3>
-      <p>An open reproduction of feature-level activation steering. At the strength that reaches a 100% response rate every behavioural check passes and the model is emitting token soup. Only perplexity catches it.</p>
-      <div class="verb">Sweep the strength ↗</div>
-    </a>
-    <a class="scard" href="https://lgoyal6.github.io/memharness/" target="_blank" rel="noopener">
-      <h3>memharness</h3>
-      <p>A memory system reads a conversation once and answers cheaply forever. The reading is an LLM pass over every turn, and it cost 12.7x what all twenty questions cost combined.</p>
-      <div class="verb">Find the payback point ↗</div>
-    </a>
-    <a class="scard" href="https://lgoyal6.github.io/actiongate/" target="_blank" rel="noopener">
-      <h3>actiongate</h3>
-      <p>Writing every extracted action item puts 18 wrong rows into the CRM out of 40. Gating at 0.65 cuts that to 2 and still auto-commits 19 of the 22 genuine ones.</p>
-      <div class="verb">Paste a transcript ↗</div>
-    </a>
-    <a class="scard" href="https://lgoyal6.github.io/icp-benchmark/" target="_blank" rel="noopener">
-      <h3>icp-benchmark</h3>
-      <p>120 real YC companies, hand-labeled on three axes. Enriching every lead is 25% precision; a rules filter gets 93.8% and misses half the real ones. Both numbers matter and neither is published anywhere.</p>
-      <div class="verb">Pick a filter ↗</div>
-    </a>
-    <a class="scard" href="https://lgoyal6.github.io/promptgate/" target="_blank" rel="noopener">
-      <h3>promptgate</h3>
-      <p>A published production manager prompt states its reject contract four times and contradicts itself once. A parser built from the majority form reads that reject as silence, and the gate treats silence as approval.</p>
-      <div class="verb">Break the parser ↗</div>
-    </a>
-    <a class="scard" href="https://lgoyal6.github.io/pms-race/" target="_blank" rel="noopener">
-      <h3>pms-race</h3>
-      <p>A computer-use agent driving a booking screen has no transaction. Sixteen agents, one room: the legacy path books it 93 times, and the obvious fix removes that entirely while doing nothing for lost updates.</p>
-      <div class="verb">Race 16 agents ↗</div>
-    </a>
-    <a class="scard" href="https://lgoyal6.github.io/flightrisk/" target="_blank" rel="noopener">
-      <h3>flightrisk</h3>
-      <p>Deposit-flight risk is U-shaped. A bank that just took a large inflow is about as likely to have a drawdown next quarter as one that just lost deposits. Every US bank, 2015 to 2026.</p>
-      <div class="verb">Query a bank ↗</div>
-    </a>
-    <a class="scard" href="https://lgoyal6.github.io/apparatus-comps/" target="_blank" rel="noopener">
-      <h3>apparatus-comps</h3>
-      <p>A comparable-sales estimator for fire apparatus, back-tested against real sales. Half the estimates are off by more than 36%, and covering nine cases in ten takes a range nearly seven times wide.</p>
-      <div class="verb">Price a truck ↗</div>
-    </a>
-  </div>
-
-  <div class="more-top">
-    <div class="more-head">More builds.</div>
-    <a class="all-link" href="projects.html">All 20 projects ↗</a>
-    <div class="belt-nav">
-      <button class="belt-btn" data-dir="-1" aria-label="Scroll more builds left">←</button>
-      <button class="belt-btn" data-dir="1" aria-label="Scroll more builds right">→</button>
-    </div>
-  </div>
-  <div class="belt" id="belt">
-
-    <a class="mcard" href="https://lgoyal6.github.io/agentbench/" target="_blank" rel="noopener">
-      <h3>AgentBench</h3>
-      <p>Eval framework for LangGraph agents: cost-adjusted accuracy, async-safe usage attribution, Ray Tune HPO</p>
-      <div class="mstat">0.964 acc · n=55 · $0.042</div>
-      <div class="go">run it ↗</div>
-    </a>
-
-    <a class="mcard" href="https://github.com/lgoyal6/checkit_health" target="_blank" rel="noopener">
-      <h3>Checkit Health</h3>
-      <p>7-stage misinformation-detection pipeline over 4 live social APIs with a cost-tiered LLM path</p>
-      <div class="mstat">64 tests · free tier held</div>
-      <div class="go">repo ↗</div>
-    </a>
-
-    <a class="mcard" href="https://github.com/lgoyal6/argus" target="_blank" rel="noopener">
-      <h3>Argus</h3>
-      <p>Agentic training monitor: SPC detection across 4 failure modes, bounded tool calls to self-correct runs</p>
-      <div class="mstat">49% anomalies auto-resolved</div>
-      <div class="go">repo ↗</div>
-    </a>
-
-    <a class="mcard" href="https://cse110-sp26-group15.pages.dev/" target="_blank" rel="noopener">
-      <h3>SitRep</h3>
-      <p>Led an 11-engineer team through a 10-week Agile SDLC to ship a Scrum/Kanban/XP app on Cloudflare</p>
-      <div class="mstat">11 engineers · 5 sprints</div>
-      <div class="go">live ↗</div>
-    </a>
-
-    <a class="mcard" href="https://github.com/anirudh9280/ChainSense" target="_blank" rel="noopener">
-      <h3>ChainSense</h3>
-      <p>Ethereum behavioral analytics: 16-feature wallet matrix clustered into 9 archetypes with anomaly flags</p>
-      <div class="mstat">403K txns · 59K wallets</div>
-      <div class="go">repo ↗</div>
-    </a>
-
-    <a class="mcard" href="https://github.com/lgoyal6/RepoMap" target="_blank" rel="noopener">
-      <h3>RepoMap</h3>
-      <p>VS Code extension mapping any repo as an interactive dependency graph with AI file explanations</p>
-      <div class="mstat">6 languages parsed</div>
-      <div class="go">repo ↗</div>
-    </a>
-
-    <a class="mcard" href="https://github.com/pynay/agrishield" target="_blank" rel="noopener">
-      <h3>AgriShield</h3>
-      <p>Wildfire risk pipeline: ELMFIRE fire-spread ensembles score 24 candidate firebreak layouts</p>
-      <div class="mstat">92 tests · mypy-strict</div>
-      <div class="go">repo ↗</div>
-    </a>
-
-    <a class="mcard" href="https://github.com/lgoyal6/UrbanSound8k-classification" target="_blank" rel="noopener">
-      <h3>UrbanSound8K</h3>
-      <p>CNN-free audio classification: 487-dim engineered features incl. wavelet scattering, leak-free CV</p>
-      <div class="mstat">72.9% top-1 · 0.51ms/clip</div>
-      <div class="go">repo ↗</div>
-    </a>
-
-    <a class="mcard" href="https://www.jetir.org/papers/JETIR2303781.pdf" target="_blank" rel="noopener">
-      <h3>Helmet Identification</h3>
-      <p>ResNet-50 pipeline detecting riders and classifying helmet use; published via Lumiere, top 10% of ~200</p>
-      <div class="mstat">94% acc · 0.92 mAP</div>
-      <div class="go">paper ↗</div>
-    </a>
-
-    <div class="mcard">
-      <h3>Project Liftoff</h3>
-      <p>Incubator management platform: 6-tier RBAC via Supabase row-level security across 13 tables</p>
-      <div class="mstat">100+ users onboarded</div>
-      <div class="go dim">private</div>
-    </div>
-
-  </div>
-</section>
-
-<!-- ===== STACK ===== -->
-<section id="stack" class="band wrap" data-bg1="#dccdd0" data-bg2="#cfc2cd">
-  <div class="sec-label">04 · Stack</div>
-  <h2>Tools I reach for.</h2>
-  <div class="stack-group">
-    <div class="stack-name">Languages</div>
-    <div class="chips">
-      <span class="chip hot">Python</span>
-      <span class="chip hot">C++20</span>
-      <span class="chip hot">TypeScript</span>
-      <span class="chip">Go</span>
-      <span class="chip">JavaScript</span>
-      <span class="chip">Java</span>
-      <span class="chip">SQL</span>
-    </div>
-  </div>
-  <div class="stack-group">
-    <div class="stack-name">ML &amp; Data</div>
-    <div class="chips">
-      <span class="chip hot">PyTorch</span>
-      <span class="chip">scikit-learn</span>
-      <span class="chip">LangGraph</span>
-      <span class="chip">Anthropic / OpenAI APIs</span>
-      <span class="chip">HuggingFace</span>
-      <span class="chip">Ray Tune</span>
-      <span class="chip">OpenCV</span>
-      <span class="chip">MONAI</span>
-      <span class="chip">LightGBM</span>
-      <span class="chip">NumPy / pandas</span>
-    </div>
-  </div>
-  <div class="stack-group">
-    <div class="stack-name">Web &amp; Backend</div>
-    <div class="chips">
-      <span class="chip hot">React / Next.js</span>
-      <span class="chip hot">FastAPI</span>
-      <span class="chip">Supabase / PostgreSQL</span>
-      <span class="chip">Redis</span>
-      <span class="chip">Node</span>
-      <span class="chip">Tailwind</span>
-    </div>
-  </div>
-  <div class="stack-group">
-    <div class="stack-name">Systems &amp; Infra</div>
-    <div class="chips">
-      <span class="chip hot">Docker</span>
-      <span class="chip hot">Kubernetes</span>
-      <span class="chip">Terraform</span>
-      <span class="chip">AWS</span>
-      <span class="chip">Modal</span>
-      <span class="chip">Vercel</span>
-      <span class="chip">Cloudflare</span>
-      <span class="chip">GitHub Actions</span>
-      <span class="chip">OpenTelemetry / Prometheus</span>
-      <span class="chip">libFuzzer / ASan / TSan</span>
-      <span class="chip">k6</span>
-    </div>
-  </div>
-</section>
-
-<div class="site-foot wrap">
-  <div class="foot-links">
-    <a href="https://github.com/lgoyal6" target="_blank" rel="noopener">GitHub</a>
-    <a href="https://linkedin.com/in/lakshgoyal" target="_blank" rel="noopener">LinkedIn</a>
-    <a href="https://x.com/Lgoyal6" target="_blank" rel="noopener">X (@Lgoyal6)</a>
-    <a href="https://instagram.com/lakshgoyall" target="_blank" rel="noopener">Instagram</a>
-    <a href="https://devpost.com/Spockerson" target="_blank" rel="noopener">Devpost</a>
-    <a href="mailto:lakshgoyal06@gmail.com">Email</a>
-    <a href="freelance.html#talk">Hire me</a>
-  </div>
-  <div class="foot-elsewhere">elsewhere &rarr; <a href="https://open.spotify.com/user/317m7wxlsb353dh5t7kn5wuds4ri" target="_blank" rel="noopener">spotify</a> &middot; <a href="https://letterboxd.com/spockur/" target="_blank" rel="noopener">letterboxd</a></div>
-</div>
-
-<div class="copyright">© 2026 Laksh Goyal</div>
-
-<script>
-  /* ---------- Scroll-morphing background ---------- */
-  (function initBackdrop() {
-    const backdrop = document.getElementById('backdrop');
-    const bands = Array.from(document.querySelectorAll('[data-bg1]'));
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    function hexToRgb(h) {
-      const n = parseInt(h.slice(1), 16);
-      return [n >> 16 & 255, n >> 8 & 255, n & 255];
-    }
-    function mix(a, b, t) {
-      return 'rgb(' + a.map((v, i) => Math.round(v + (b[i] - v) * t)).join(',') + ')';
-    }
-    const stops = bands.map(el => ({
-      el,
-      c1: hexToRgb(el.dataset.bg1),
-      c2: hexToRgb(el.dataset.bg2),
-    }));
-
-    let ticking = false;
-    function update() {
-      ticking = false;
-      const mid = window.scrollY + window.innerHeight * 0.5;
-      let i = 0;
-      for (let k = 0; k < stops.length; k++) {
-        const top = stops[k].el.offsetTop;
-        if (mid >= top) i = k;
-      }
-      const cur = stops[i];
-      const next = stops[Math.min(i + 1, stops.length - 1)];
-      let t = 0;
-      if (next !== cur) {
-        const span = Math.max(1, next.el.offsetTop - cur.el.offsetTop);
-        t = Math.max(0, Math.min(1, (mid - cur.el.offsetTop) / span));
-      }
-      if (reduced) t = Math.round(t);
-      backdrop.style.setProperty('--bg1', mix(cur.c1, next.c1, t));
-      backdrop.style.setProperty('--bg2', mix(cur.c2, next.c2, t));
-    }
-    window.addEventListener('scroll', () => {
-      if (!ticking) { ticking = true; requestAnimationFrame(update); }
-    }, { passive: true });
-    window.addEventListener('resize', update, { passive: true });
-    update();
-  })();
-
-  /* ---------- Project belt ---------- */
-  (function initBelt() {
-    const belt = document.getElementById('belt');
-    if (!belt) return;
-    document.querySelectorAll('.belt-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        belt.scrollBy({ left: Number(btn.dataset.dir) * 800, behavior: 'smooth' });
-      });
-    });
-  })();
-
-</script>
+</footer>
 
 </body>
 </html>
