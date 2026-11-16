@@ -1,0 +1,81 @@
+.site-header {
+  min-height: 91px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.site-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.8px;
+  text-decoration: none;
+}
+
+.profile-photo {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 50% 35%;
+  flex-shrink: 0;
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  font-size: 13px;
+}
+
+.site-nav a {
+  text-decoration: none;
+}
+
+.site-contact {
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 2px;
+}
+
+.site-menu {
+  display: none;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  padding: 10px 0 10px 16px;
+}
+
+@media (max-width: 800px) {
+  .site-header {
+    min-height: 75px;
+    flex-wrap: wrap;
+    gap: 0;
+  }
+
+  .site-header[data-enhanced] .site-menu {
+    display: block;
+  }
+
+  .site-nav {
+    width: 100%;
+    padding: 10px 0 22px;
+    gap: 8px 22px;
+    flex-wrap: wrap;
+  }
+
+  .site-nav a {
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .site-header[data-enhanced] .site-nav:not([data-open="true"]) {
+    display: none;
+  }
+}
