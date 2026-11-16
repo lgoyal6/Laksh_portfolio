@@ -76,34 +76,34 @@ body {
   margin: auto;
 }
 #laksh-studio .hero {
-  padding: 60px 0 63px;
+  padding: 40px 0 42px;
 }
 #laksh-studio .hero-grid {
   display: grid;
-  grid-template-columns: 1.65fr 1fr;
-  gap: 55px;
-  align-items: end;
+  gap: 18px;
 }
 #laksh-studio h1 {
-  font-size: clamp(46px, 6.6vw, 96px);
-  line-height: 1.02;
+  font-size: clamp(30px, 3vw, 44px);
+  line-height: 1.15;
   font-weight: 500;
-  letter-spacing: -0.065em;
+  letter-spacing: -0.045em;
 }
 #laksh-studio .intro {
-  max-width: 340px;
-  padding-bottom: 5px;
+  max-width: 760px;
 }
 #laksh-studio .intro p {
-  font-size: 16px;
+  font-size: 18px;
   line-height: 1.65;
   color: var(--muted);
+}
+#laksh-studio .intro p + p {
+  margin-top: 12px;
 }
 #laksh-studio .intro a {
   display: inline-flex;
   gap: 12px;
   align-items: center;
-  margin-top: 22px;
+  margin-top: 16px;
   font-size: 13px;
 }
 #laksh-studio .intro .icon {
@@ -114,13 +114,17 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 12px 27px;
-  margin-top: 34px;
-  font-size: 12px;
+  margin-top: 30px;
+  font-size: 13px;
   color: var(--muted);
 }
 #laksh-studio .credentials strong {
   color: var(--ink);
   font-weight: 500;
+}
+#laksh-studio .education {
+  margin-left: auto;
+  white-space: nowrap;
 }
 #laksh-studio .work-head {
   display: flex;
@@ -460,13 +464,6 @@ body {
   font-size: 12px;
 }
 @media (max-width: 900px) {
-  #laksh-studio .hero-grid {
-    gap: 28px;
-    grid-template-columns: 1.5fr 1fr;
-  }
-  #laksh-studio .intro p {
-    font-size: 14px;
-  }
   #laksh-studio .project-grid {
     grid-template-columns: 0.85fr 1.3fr;
     gap: 28px;
@@ -486,14 +483,13 @@ body {
     padding: 34px 0 38px;
   }
   #laksh-studio .hero-grid {
-    grid-template-columns: 1fr;
-    gap: 26px;
-  }
-  #laksh-studio h1 {
-    font-size: clamp(42px, 8.8vw, 59px);
+    gap: 16px;
   }
   #laksh-studio .intro {
-    max-width: 420px;
+    max-width: none;
+  }
+  #laksh-studio .intro p {
+    font-size: 16px;
   }
   #laksh-studio .intro a {
     margin-top: 13px;
@@ -501,7 +497,12 @@ body {
   #laksh-studio .credentials {
     margin-top: 23px;
     gap: 10px 20px;
-    font-size: 11px;
+    font-size: 12px;
+  }
+  #laksh-studio .education {
+    width: 100%;
+    margin-left: 0;
+    text-align: right;
   }
   #laksh-studio .work-head {
     align-items: flex-start;
@@ -572,11 +573,6 @@ body {
     display: inline-flex;
     align-items: center;
     min-height: 44px;
-  }
-}
-@media (max-width: 360px) {
-  #laksh-studio h1 {
-    font-size: 32px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
