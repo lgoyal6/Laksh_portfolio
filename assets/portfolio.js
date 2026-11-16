@@ -19,6 +19,9 @@
     projects.forEach((project) => {
       project.hidden = filter !== "all" && project.dataset.category !== filter;
     });
+    const visibleCount = projects.filter((project) => !project.hidden).length;
+    portfolio.querySelector("#project-status").textContent =
+      `Showing ${visibleCount} of ${projects.length} projects`;
     if (portfolio.querySelector("#leaf").hidden) video.pause();
   }
 
