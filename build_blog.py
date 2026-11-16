@@ -47,25 +47,26 @@ HEAD = """<!DOCTYPE html>
 <meta name="twitter:card" content="summary_large_image">
 {extra}<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{base}assets/site.css">
+<link rel="stylesheet" href="{base}assets/navigation.css">
+<script src="{base}assets/navigation.js" defer></script>
 </head>
 <body>
 
 <a class="skip" href="#main">Skip to content</a>
 
 <header class="wrap">
-  <div class="mast">
-    <a class="home" href="{base}index.html">Laksh Goyal</a>
-    <nav aria-label="Site">
-      <ul>
-        <li><a href="{base}index.html#work">Work</a></li>
-        <li><a href="{base}index.html#studies">Studies</a></li>
-        <li><a href="{base}index.html#experience">Experience</a></li>
-        <li><a href="{base}blog.html" aria-current="page">Writing</a></li>
-        <li><a href="{base}Laksh_Resume.pdf">Resume</a></li>
-        <li><a href="{base}freelance.html">Freelance</a></li>
-      </ul>
+  <div class="site-header">
+    <a class="site-brand" href="{base}index.html"><img class="profile-photo" src="{base}IMG_8054.jpg" alt="" width="42" height="42"><span>Laksh Goyal</span></a>
+    <button class="site-menu" type="button" aria-expanded="false" aria-controls="site-navigation">Menu</button>
+    <nav class="site-nav" id="site-navigation" aria-label="Main navigation">
+      <a href="{base}index.html#work">Work</a>
+      <a href="{base}index.html#experience">Experience</a>
+      <a href="{base}blog.html" aria-current="page">Blogs</a>
+      <a href="https://linkedin.com/in/lakshgoyal" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/lgoyal6" target="_blank" rel="noopener">GitHub</a>
+      <a class="site-contact" href="mailto:lakshgoyal06@gmail.com">Get in touch</a>
     </nav>
   </div>
 </header>
@@ -73,7 +74,7 @@ HEAD = """<!DOCTYPE html>
 
 FOOT = """
 </main>
-<footer class="wrap"><div class="site-foot"><ul><li><a href="mailto:lakshgoyal06@gmail.com">Email</a></li><li><a href="https://github.com/lgoyal6" target="_blank" rel="noopener">GitHub</a></li><li><a href="https://linkedin.com/in/lakshgoyal" target="_blank" rel="noopener">LinkedIn</a></li></ul><small>© 2026 Laksh Goyal</small></div></footer>
+<footer class="wrap"><div class="site-foot"><ul><li><a href="{base}projects.html">All projects</a></li><li><a href="{base}Laksh_Resume.pdf">Resume</a></li><li><a href="{base}freelance.html">Freelance</a></li><li><a href="mailto:lakshgoyal06@gmail.com">Email</a></li><li><a href="https://github.com/lgoyal6" target="_blank" rel="noopener">GitHub</a></li><li><a href="https://linkedin.com/in/lakshgoyal" target="_blank" rel="noopener">LinkedIn</a></li></ul><small>© 2026 Laksh Goyal</small></div></footer>
 </body>
 </html>
 """
@@ -131,7 +132,7 @@ def render_post(meta):
       <span>{cross}</span>
     </div>
   </article>
-""" + FOOT
+""" + FOOT.format(base="../")
 
 
 def render_index(posts):
@@ -158,7 +159,7 @@ def render_index(posts):
     return head + f"""
 <main id="main" class="wrap blog-col">
 <div class="page-head">
-  <div class="sec-label">Writing</div>
+  <div class="sec-label">Blogs</div>
   <h1>Notes from building<br>and measuring.</h1>
   <p class="lede">Most of what I learn comes from the gap between what a system was supposed to do and what it
   measurably did. These are the ones worth writing down: an eval that said the opposite of the received wisdom,
@@ -174,7 +175,7 @@ def render_index(posts):
     <a href="https://x.com/Lgoyal6">x</a>
   </div>
 </div>
-""" + FOOT
+""" + FOOT.format(base="")
 
 
 def main():
