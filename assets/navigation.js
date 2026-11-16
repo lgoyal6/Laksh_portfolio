@@ -19,6 +19,7 @@
   navigation.addEventListener("click", (event) => {
     if (event.target.closest("a")) closeMenu();
   });
+  header.querySelector(".site-brand").addEventListener("click", closeMenu);
 
   header.addEventListener("keydown", (event) => {
     if (

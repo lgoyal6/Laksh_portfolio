@@ -36,6 +36,10 @@
   text-decoration: none;
 }
 
+.site-nav a[aria-current="page"] {
+  color: var(--accent);
+}
+
 .site-contact {
   border-bottom: 1px solid currentColor;
   padding-bottom: 2px;
@@ -47,6 +51,8 @@
   background: transparent;
   color: inherit;
   font: inherit;
+  font-size: 15px;
+  line-height: 1.6;
   cursor: pointer;
   padding: 10px 0 10px 16px;
 }
@@ -70,7 +76,7 @@
   }
 
   .site-nav a {
-    min-height: 40px;
+    min-height: 44px;
     display: inline-flex;
     align-items: center;
   }

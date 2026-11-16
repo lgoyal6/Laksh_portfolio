@@ -35,6 +35,14 @@ body {
 #laksh-studio [hidden] {
   display: none !important;
 }
+#laksh-studio .vh {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
 #laksh-studio h1,
 #laksh-studio h2,
 #laksh-studio h3,
@@ -240,6 +248,7 @@ body {
 #laksh-studio .stage img,
 #laksh-studio .stage video {
   width: 100%;
+  height: auto;
   display: block;
   aspect-ratio: 16/9;
   object-fit: contain;
@@ -502,7 +511,7 @@ body {
   }
   #laksh-studio .filter {
     padding: 8px 12px;
-    min-height: 40px;
+    min-height: 44px;
     font-size: 11px;
   }
   #laksh-studio .project {
@@ -527,7 +536,7 @@ body {
     margin-top: 15px;
   }
   #laksh-studio .explore {
-    min-height: 40px;
+    min-height: 44px;
   }
   #laksh-studio .stage {
     padding: 20px;
@@ -536,7 +545,7 @@ body {
     margin-top: 14px;
   }
   #laksh-studio .play {
-    min-height: 36px;
+    min-height: 44px;
   }
   #laksh-studio .engineering {
     padding: 23px;
@@ -557,6 +566,12 @@ body {
     grid-template-columns: 1fr;
     gap: 30px;
     padding: 30px 0 35px;
+  }
+  #laksh-studio .source,
+  #laksh-studio .social a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
   }
 }
 @media (max-width: 360px) {
